@@ -8,16 +8,16 @@
         x:Name="wdMain"
         Title="MainWindow" Height="450" Width="800" Loaded="Window_Loaded">
     <Window.Resources>
-        <local:PreviewRenameConverter x:Key="PreviewRenameConverter"/>
+        <local:PreviewRenameConverter x:Key="PreviewRenameConverter" />
     </Window.Resources>
 
     <!--<Canvas>
-        <Button x:Name="loadPresetButton" Width="80" Height="35" Content="Load preset" Click="loadPresetButton_Click" Canvas.Left="555" Canvas.Top="41"/>
-        <Button x:Name="addFileButton" Width="80" Height="35" Content="Browse.." Canvas.Left="233" Canvas.Top="41" Click="addFileButton_Click"/>
+        <Button x:Name="LoadPresetButton" Width="80" Height="35" Content="Load preset" Click="LoadPresetButton_Click" Canvas.Left="555" Canvas.Top="41" />
+        <Button x:Name="AddFileButton" Width="80" Height="35" Content="Browse.." Canvas.Left="233" Canvas.Top="41" Click="AddFileButton_Click" />
         <ListView x:Name="sourceListView" Width="200" Height="300" Canvas.Left="233" Canvas.Top="93">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <TextBlock Text="{Binding ShortName}"/>
+                    <TextBlock Text="{Binding ShortName}" />
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
@@ -25,18 +25,17 @@
         <ListView x:Name="previewListView" Width="200" Height="300" HorizontalAlignment="Left" Canvas.Left="555" Canvas.Top="93" VerticalAlignment="Top">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <TextBlock Text="{Binding ShortName, Converter={StaticResource converter}}"/>
+                    <TextBlock Text="{Binding ShortName, Converter={StaticResource converter}}" />
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-
     </Canvas>-->
 
     <Grid>
         <StackPanel Orientation="Horizontal">
-            
+
             <StackPanel Orientation="Vertical">
-                <ListView x:Name="listViewRulesApply" Width="200" Height="300"
+                <ListView x:Name="ListViewRulesApply" Width="200" Height="300"
                           ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                           ScrollViewer.VerticalScrollBarVisibility="Visible"
                           HorizontalAlignment="Center" d:ItemsSource="{d:SampleData ItemCount=5}"
@@ -49,7 +48,7 @@
 
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <Border x:Name="border"
+                            <Border x:Name="Border"
                                 BorderBrush="Gray"
                                 BorderThickness="2"
                                 CornerRadius="3">
@@ -61,14 +60,14 @@
                                 <StackPanel Orientation="Horizontal"
                                         Width="180"
                                         Height="30">
-                                    <TextBlock Text="{Binding NameRule}"/>
+                                    <TextBlock Text="{Binding NameRule}" />
                                     <Button x:Name="buttonConfig"
                                             Width="50"
                                             Height="25"
                                             Margin="5 0 0 0"
                                             HorizontalAlignment="Right"
                                             Content="config"
-                                            Click="buttonConfig_Click"/>
+                                            Click="ButtonConfig_Click" />
                                 </StackPanel>
                             </Border>
 
@@ -76,18 +75,18 @@
                                 <Trigger Property="IsMouseOver"
                                  Value="True">
                                     <Setter Property="BorderBrush"
-                                    TargetName="border"
+                                    TargetName="Border"
                                     Value="Black" />
 
                                     <Setter Property="BorderThickness"
-                                    TargetName="border"
+                                    TargetName="Border"
                                     Value="2" />
                                 </Trigger>
                                 <DataTrigger Binding="{Binding Path=IsSelected, RelativeSource={
                                           RelativeSource Mode=FindAncestor, AncestorType={x:Type ListViewItem }}}"
                                           Value="True">
                                     <Setter Property="BorderBrush"
-                                    TargetName="border"
+                                    TargetName="Border"
                                     Value="#0033A1" />
                                     <Setter Property="Cursor" Value="Hand" />
                                 </DataTrigger>
@@ -115,7 +114,7 @@
             <!--<ListView x:Name="sourceListView" Width="200" Height="300" VerticalAlignment="Top">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{Binding ShortName}"/>
+                        <TextBlock Text="{Binding ShortName}" />
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
@@ -124,34 +123,32 @@
                 <ListView x:Name="previewListView" Width="200" Height="300" VerticalAlignment="Top">
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding ShortName, Converter={StaticResource PreviewRenameConverter}}"/>
+                            <TextBlock Text="{Binding ShortName, Converter={StaticResource PreviewRenameConverter}}" />
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
             </StackPanel>-->
             <GroupBox HorizontalAlignment="Left" Height="340" Header="File" Margin="10" VerticalAlignment="Top" Width="410">
-                <ListView x:Name="listViewFile" HorizontalAlignment="Left" Height="305" VerticalAlignment="Top" Width="410">
+                <ListView x:Name="ListViewFile" HorizontalAlignment="Left" Height="305" VerticalAlignment="Top" Width="410">
                     <ListView.View>
                         <GridView>
                             <GridViewColumn Header="Filename" Width="100" DisplayMemberBinding="{Binding ShortName}" />
                             <GridViewColumn Header="New Filename" Width="120" DisplayMemberBinding="{Binding ShortName, Converter={StaticResource PreviewRenameConverter}}" />
-                            <GridViewColumn Header= "Path" Width="120" DisplayMemberBinding="{Binding a}"/>
-                            <GridViewColumn Header= "Note" Width="60" DisplayMemberBinding="{Binding a}"/>
+                            <GridViewColumn Header= "Path" Width="120" DisplayMemberBinding="{Binding a}" />
+                            <GridViewColumn Header= "Note" Width="60" DisplayMemberBinding="{Binding a}" />
                         </GridView>
                     </ListView.View>
                 </ListView>
             </GroupBox>
 
             <StackPanel Orientation="Vertical">
-                <Button x:Name="loadPresetButton" Width="80" Height="35" Content="Load preset" Margin="10"/>
-                <Button x:Name="addFileButton" Width="80" Height="35" Content="Browse.." 
+                <Button x:Name="LoadPresetButton" Width="80" Height="35" Content="Load preset" Margin="10" />
+                <Button x:Name="AddFileButton" Width="80" Height="35" Content="Browse.."
                     Margin="10"
-                    Click="addFileButton_Click"/>
-                <Button x:Name="applyButton" Margin="10"
-                    Width="80" Height="35" Content="Apply" Click="applyButton_Click"/>
+                    Click="AddFileButton_Click" />
+                <Button x:Name="ApplyButton" Margin="10"
+                    Width="80" Height="35" Content="Apply" Click="ApplyButton_Click" />
             </StackPanel>
-           
         </StackPanel>
-        
     </Grid>
 </Window>

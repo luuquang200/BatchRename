@@ -5,17 +5,10 @@ using System.Collections.ObjectModel;
 using System.Data;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace BatchRename
 {
@@ -24,16 +17,18 @@ namespace BatchRename
     /// </summary>
     public partial class MainWindow : Window
     {
-        ObservableCollection<object> _sourceFiles;
-        ObservableCollection<ItemRule> _listItemRuleApply;
+        private ObservableCollection<object> _sourceFiles;
+        private ObservableCollection<ItemRule> _listItemRuleApply;
+        private readonly List<IRule> _activeRules = new();
+
         public MainWindow()
         {
             InitializeComponent();
             _sourceFiles = new ObservableCollection<object>();
+            _listItemRuleApply = new ObservableCollection<ItemRule>();
         }
-       
 
-        private void addFileButton_Click(object sender, RoutedEventArgs e)
+        private void AddFileButton_Click(object sender, RoutedEventArgs e)
         {
             var screen = new OpenFileDialog(); // CommonOpenFileDialog
 
@@ -50,12 +45,10 @@ namespace BatchRename
                 });
             }
 
-            listViewFile.ItemsSource = _sourceFiles;
+            ListViewFile.ItemsSource = _sourceFiles;
             //previewListView.ItemsSource = _sourceFiles;
         }
 
-
-        List<IRule> _activeRules = new List<IRule>();
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             // Đăng kí cho biết là mình có thể gặp những luật đổi tên gì?
@@ -80,7 +73,7 @@ namespace BatchRename
                 new ItemRule(){ NameRule = "OneSpace"}
             };
 
-            listViewRulesApply.ItemsSource = _listItemRuleApply;
+            ListViewRulesApply.ItemsSource = _listItemRuleApply;
 
             RuleFactory.Register(new RemoveSpecialCharsRule());
             RuleFactory.Register(new AddPrefixRule());
@@ -125,13 +118,13 @@ namespace BatchRename
         //    }
         //}
 
-        private void buttonConfig_Click(object sender, RoutedEventArgs e)
+        private void ButtonConfig_Click(object sender, RoutedEventArgs e)
         {
             Button btn = (Button)e.OriginalSource;
-            listViewRulesApply.SelectedItem = btn.DataContext;
+            ListViewRulesApply.SelectedItem = btn.DataContext;
 
-            int indexSelected = listViewRulesApply.SelectedIndex;
-            if(indexSelected != -1)
+            int indexSelected = ListViewRulesApply.SelectedIndex;
+            if (indexSelected != -1)
             {
                 ItemRule SelectedItem = _listItemRuleApply[indexSelected];
                 if (SelectedItem.NameRule.Equals("RemoveSpecialChars"))
@@ -155,14 +148,12 @@ namespace BatchRename
                     _listItemRuleApply[indexSelected].Data = "AddPrefix Prefix=Facebook";
                 }
             }
-            
         }
 
         private void List_PreviewLeftMouseDown(object sender, MouseButtonEventArgs e)
         {
-            ListViewItem clickedOnItem = (ListViewItem)GetParentDependencyObjectFromVisualTree((DependencyObject)e.MouseDevice.DirectlyOver, typeof(ListViewItem));
-
-            if (clickedOnItem != null)
+            if (GetParentDependencyObjectFromVisualTree((DependencyObject)e.MouseDevice.DirectlyOver,
+                                                        typeof(ListViewItem)) is ListViewItem clickedOnItem)
             {
                 if (clickedOnItem.IsSelected)
                 {
@@ -172,41 +163,41 @@ namespace BatchRename
                 clickedOnItem.Focus();
             }
         }
-        private static DependencyObject GetParentDependencyObjectFromVisualTree(DependencyObject startObject, Type type)
+
+        private static DependencyObject? GetParentDependencyObjectFromVisualTree(DependencyObject startObject, Type type)
         {
             //Walk the visual tree to get the parent of this control
             DependencyObject parent = startObject;
             while (parent != null)
             {
                 if (type.IsInstanceOfType(parent))
+                {
                     break;
+                }
                 else
+                {
                     parent = VisualTreeHelper.GetParent(parent);
+                }
             }
 
             return parent;
         }
 
-        private void applyButton_Click(object sender, RoutedEventArgs e)
+        private void ApplyButton_Click(object sender, RoutedEventArgs e)
         {
             _activeRules.Clear();
-            if(_listItemRuleApply.Count != 0)
+            if (_listItemRuleApply.Any() && _listItemRuleApply != null)
             {
-                foreach (ItemRule itemRule in _listItemRuleApply)
+                foreach (var itemRule in _listItemRuleApply!.Where(itemRule => itemRule.Data != null))
                 {
-                    if (itemRule.Data != null)
+                    var rule = RuleFactory.Instance().Parse(itemRule.Data);
+                    if (rule != null)
                     {
-                        var rule = RuleFactory.Instance().Parse(itemRule.Data);
-                        if (rule != null)
-                        {
-                            _activeRules.Add(rule);
-                        }
-                       
+                        _activeRules.Add(rule);
                     }
-                   
                 }
             }
-            
+
             // binding converter
             var converter = (PreviewRenameConverter)FindResource("PreviewRenameConverter");
             converter.Rules = _activeRules;
@@ -218,20 +209,17 @@ namespace BatchRename
             }
 
             _sourceFiles = temp;
-            listViewFile.ItemsSource = _sourceFiles;
+            ListViewFile.ItemsSource = _sourceFiles;
         }
 
-
-        public List<string> GetListName(List<IRule> _activeRules)
+        public static List<string> GetListName(List<IRule> _activeRules)
         {
-            List<string> strings = new List<string>();
-            foreach(IRule rule in _activeRules)
+            List<string> strings = new();
+            foreach (IRule rule in _activeRules)
             {
                 strings.Add(rule.Name);
             }
             return strings;
         }
     }
-
-
 }
