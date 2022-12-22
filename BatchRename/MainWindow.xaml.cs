@@ -15,7 +15,7 @@ namespace BatchRename
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow
     {
         private ObservableCollection<object> _sourceFiles;
         private ObservableCollection<ItemRule> _listItemRuleApply;
@@ -46,7 +46,6 @@ namespace BatchRename
             }
 
             ListViewFile.ItemsSource = _sourceFiles;
-            //previewListView.ItemsSource = _sourceFiles;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -54,17 +53,10 @@ namespace BatchRename
             // Đăng kí cho biết là mình có thể gặp những luật đổi tên gì?
             // Cảnh giới cuối: Đọc dll, đăng kí khả năng, chọn tập tin luật
 
-            // Cachs 1: Sắp làm: code cứng trước
-            //_activeRules.Add(new RemoveSpecialCharsRule()
-            //{
-            //    SpecialChars = new List<string> { "-", "_" }
-            //});
-            //_activeRules.Add(new OneSpaceRule());
-            //_activeRules.Add(new AddPrefixRule() { Prefix = "Google" });
+            // Cách 1: Sắp làm: code cứng trước
 
-            // Cach 2: Cac luat duoc luu trong tap tin Preset
+            // Cách 2: Cac luat duoc luu trong tap tin Preset
 
-            //
             _listItemRuleApply = new ObservableCollection<ItemRule>()
             {
                 new ItemRule(){ NameRule = "RemoveSpecialChars"},
@@ -80,43 +72,6 @@ namespace BatchRename
             RuleFactory.Register(new OneSpaceRule());
             RuleFactory.Register(new AddCounterRule());
         }
-
-        //private void loadPresetButton_Click(object sender, RoutedEventArgs e)
-        //{
-        //    //var screen = new OpenFileDialog();
-        //    OpenFileDialog screen = new()
-        //    {
-        //        Title = "Load preset file",
-        //        Filter = "All supported |*.jpg;*.jpeg;*.png;*.pdf;*.txt|" + "JPEG (*.jpg;*.jpeg)|*.jpg;*.jpeg|" + "Portable Network Graphic (*.png)|*.png"
-
-        //    };
-        //    if (screen.ShowDialog() == true)
-        //    {
-        //        string presetPath = screen.FileName;
-
-        //        var lines = File.ReadAllLines(presetPath);
-        //        RuleFactory factory = new RuleFactory();
-
-        //        foreach (var line in lines)
-        //        {
-        //            IRule rule = factory.Parse(line);
-        //            _activeRules.Add(rule);
-        //        }
-
-        //        var converter = (PreviewRenameConverter)FindResource("converter");
-        //        converter.Rules = _activeRules;
-
-        //        var temp = new ObservableCollection<object>();
-
-        //        foreach (var file in _sourceFiles)
-        //        {
-        //            temp.Add(file);
-        //        }
-
-        //        _sourceFiles = temp;
-        //        //previewListView.ItemsSource = _sourceFiles;
-        //    }
-        //}
 
         private void ButtonConfig_Click(object sender, RoutedEventArgs e)
         {
@@ -164,9 +119,9 @@ namespace BatchRename
             }
         }
 
-        private static DependencyObject? GetParentDependencyObjectFromVisualTree(DependencyObject startObject, Type type)
+        private static DependencyObject GetParentDependencyObjectFromVisualTree(DependencyObject startObject, Type type)
         {
-            //Walk the visual tree to get the parent of this control
+            // Walk the visual tree to get the parent of this control
             DependencyObject parent = startObject;
             while (parent != null)
             {
@@ -190,7 +145,7 @@ namespace BatchRename
             {
                 foreach (var itemRule in _listItemRuleApply!.Where(itemRule => itemRule.Data != null))
                 {
-                    var rule = RuleFactory.Instance().Parse(itemRule.Data);
+                    IRule rule = RuleFactory.Parse(itemRule.Data);
                     if (rule != null)
                     {
                         _activeRules.Add(rule);

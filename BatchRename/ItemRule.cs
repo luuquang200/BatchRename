@@ -7,6 +7,6 @@ namespace BatchRename
         public string NameRule { get; set; } = "";
         public string Data { get; set; } = "";
 
-        public event PropertyChangedEventHandler? PropertyChanged;
+        public event PropertyChangedEventHandler PropertyChanged;
     }
 }

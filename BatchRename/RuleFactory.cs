@@ -5,20 +5,18 @@ namespace BatchRename
 {
     public class RuleFactory
     {
-        static Dictionary<string, IRule> _prototypes = new Dictionary<string, IRule>();
+        private static readonly Dictionary<string, IRule> _prototypes = new();
 
         public static void Register(IRule prototype)
         {
             _prototypes.Add(prototype.Name, prototype);
         }
 
-        private static RuleFactory? _instance = null;
+        private static RuleFactory _instance = null;
+
         public static RuleFactory Instance()
         {
-            if (_instance == null)
-            {
-                _instance = new RuleFactory();
-            }
+            _instance ??= new RuleFactory();
 
             return _instance;
         }
@@ -26,7 +24,8 @@ namespace BatchRename
         private RuleFactory()
         {
         }
-        public IRule? Parse(string data)
+
+        public static IRule Parse(string data)
         {
             const string Space = " ";
 
@@ -34,7 +33,7 @@ namespace BatchRename
                 new string[] { Space }, StringSplitOptions.None
             );
             var keyword = tokens[0];
-            IRule? result = null;
+            IRule result = null;
 
             if (_prototypes.ContainsKey(keyword))
             {
@@ -45,31 +44,4 @@ namespace BatchRename
             return result;
         }
     }
-    //public class RuleFactory
-    //{
-    //    public IRule Parse(string data)
-    //    {
-    //        var tokens = data.Split(new string[] { " " },
-    //            StringSplitOptions.None);
-    //        var keyword = tokens[0]; // RemoveSpecialChars / AddPrefix
-
-    //        var rule1 = new RemoveSpecialCharsRule();
-    //        var rule2 = new AddPrefixRule();
-    //        var rule3 = new OneSpaceRule();
-    //        var rule4 = new AddCounterRule();
-
-    //        var prototypes = new Dictionary<string, IRule>()
-    //        {
-    //            { rule1.Name, rule1 },
-    //            { rule2.Name, rule2 },
-    //            { rule3.Name, rule3 },
-    //            { rule4.Name, rule4 },
-    //        };
-
-    //        var rule = prototypes[keyword].Parse(data);
-
-    //        return rule;
-    //    }
-
-    //}
 }
