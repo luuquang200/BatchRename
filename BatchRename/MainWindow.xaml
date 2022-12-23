@@ -48,12 +48,11 @@
         <StackPanel Grid.Row="1"
                     Orientation="Horizontal">
             <StackPanel Orientation="Vertical">
-                <ListView x:Name="ListViewRulesApply"
-                          Width="200" Height="300"
+                <ListView x:Name="ListViewRulesApply" Width="300" Height="300"
+                          Margin="2 0 0 0"
                           ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                           ScrollViewer.VerticalScrollBarVisibility="Visible"
-                          HorizontalAlignment="Center"
-                          d:ItemsSource="{d:SampleData ItemCount=5}"
+                          HorizontalAlignment="Center" d:ItemsSource="{d:SampleData ItemCount=5}"
                           PreviewMouseLeftButtonDown="List_PreviewLeftMouseDown">
                     <ListView.ItemsPanel>
                         <ItemsPanelTemplate>
@@ -63,49 +62,60 @@
 
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <Border x:Name="Border"
-                                    BorderBrush="Gray"
-                                    BorderThickness="2"
-                                    CornerRadius="3">
+                            <Border x:Name="border"
+                                BorderBrush="#C0C0C0"
+                                BorderThickness="1.1"
+                                CornerRadius="3">
                                 <Border.Background>
-                                    <LinearGradientBrush StartPoint="0.5,0"
-                                                         EndPoint="0.5,1">
-                                        <GradientStop Color="Transparent"
-                                                      Offset="1.0" />
+                                    <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                                        <GradientStop Color="Transparent" Offset="1.0" />
                                     </LinearGradientBrush>
                                 </Border.Background>
                                 <StackPanel Orientation="Horizontal"
-                                            Width="180"
-                                            Height="30">
-                                    <TextBlock Text="{Binding NameRule}" />
+                                        Width="300"
+                                        Height="30"
+                                            HorizontalAlignment="Right">
+                                    <TextBlock Text="{Binding NameRule}"
+                                               Width="180"
+                                               VerticalAlignment="Center"
+                                               Margin="45 0 0 0"
+                                               Style="{StaticResource TextblockTitleNormal}"/>
                                     <Button x:Name="buttonConfig"
-                                            Width="50"
-                                            Height="25"
+                                            Width="27"
+                                            Height="27"
                                             Margin="5 0 0 0"
-                                            HorizontalAlignment="Right"
                                             Content="config"
-                                            Click="ButtonConfig_Click" />
+                                            Style="{StaticResource ButtonConfig}"
+                                            Click="ButtonConfig_Click"/>
+
+                                    <Button x:Name="buttonRemove"
+                                            Width="27"
+                                            Height="27"
+                                            Margin="5 0 0 0"
+                                            Content="config"
+                                            Style="{StaticResource ButtonRemove}"
+                                            Click="ButtonRemove_Click"/>
                                 </StackPanel>
                             </Border>
 
                             <DataTemplate.Triggers>
                                 <Trigger Property="IsMouseOver"
-                                         Value="True">
+                                 Value="True">
                                     <Setter Property="BorderBrush"
-                                            TargetName="Border"
-                                            Value="Black" />
+                                    TargetName="border"
+                                    Value="Black" />
 
                                     <Setter Property="BorderThickness"
-                                            TargetName="Border"
-                                            Value="2" />
+                                    TargetName="border"
+                                    Value="1.2" />
                                 </Trigger>
                                 <DataTrigger Binding="{Binding Path=IsSelected, RelativeSource={
                                           RelativeSource Mode=FindAncestor, AncestorType={x:Type ListViewItem }}}"
                                           Value="True">
                                     <Setter Property="BorderBrush"
-                                            TargetName="Border"
-                                            Value="#0033A1" />
-                                    <Setter Property="Cursor" Value="Hand" />
+                                    TargetName="border"
+                                    Value="#0033A1" />
+
                                 </DataTrigger>
                             </DataTemplate.Triggers>
                         </DataTemplate>
@@ -121,7 +131,7 @@
                                     </ControlTemplate>
                                 </Setter.Value>
                             </Setter>
-                            <Setter Property="Tag" Value="{Binding ElementName=WindowMain}" />
+                            <Setter Property="Tag" Value="{Binding ElementName=wdMain}" />
                             <Setter Property="Margin" Value="5" />
                         </Style>
                     </ListView.ItemContainerStyle>
