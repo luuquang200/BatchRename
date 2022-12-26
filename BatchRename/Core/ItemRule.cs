@@ -1,12 +1,10 @@
 ﻿using System.ComponentModel;
 
-namespace BatchRename
+namespace BatchRename.Core
 {
-    public class ItemRule : INotifyPropertyChanged
+    public class ItemRule
     {
         public string NameRule { get; set; } = "";
         public string Data { get; set; } = "";
-
-        public event PropertyChangedEventHandler PropertyChanged;
     }
 }

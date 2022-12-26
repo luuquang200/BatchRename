@@ -1,6 +1,7 @@
 ﻿using System.Text;
+using BatchRename.Core;
 
-namespace BatchRename
+namespace BatchRename.Rules
 {
     public class OneSpaceRule : IRule
     {
@@ -11,7 +12,7 @@ namespace BatchRename
             return MemberwiseClone();
         }
 
-        public IRule Parse(string data)
+        public IRule Parse(string line)
         {
             return new OneSpaceRule();
         }

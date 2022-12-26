@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Text;
+using BatchRename.Core;
 
-namespace BatchRename
+namespace BatchRename.Rules
 {
     public class AddPrefixRule : IRule
     {
@@ -18,7 +19,7 @@ namespace BatchRename
         {
             var builder = new StringBuilder();
             builder.Append(Prefix);
-            builder.Append(" ");
+            builder.Append(' ');
             builder.Append(origin);
 
             string result = builder.ToString();
@@ -39,8 +40,10 @@ namespace BatchRename
             var pairs = data.Split(new string[] { "=" },
                 StringSplitOptions.None);
 
-            var rule = new AddPrefixRule();
-            rule.Prefix = pairs[1];
+            var rule = new AddPrefixRule
+            {
+                Prefix = pairs[1]
+            };
             return rule;
         }
     }

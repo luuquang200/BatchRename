@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using BatchRename.Core;
 
-namespace BatchRename
+namespace BatchRename.Rules
 {
     public class RemoveSpecialCharsRule : IRule
     {
@@ -16,11 +17,12 @@ namespace BatchRename
             SpecialChars = new List<string>();
             Replacement = " ";
         } // Tran---Duy-------Quang.pdf
-          //  Tran   Duy       Quang.pdf
+
+        //  Tran   Duy       Quang.pdf
 
         public string Rename(string origin)
         {
-            StringBuilder builder = new StringBuilder();
+            StringBuilder builder = new();
             foreach (var c in origin)
             {
                 if (SpecialChars.Contains($"{c}"))

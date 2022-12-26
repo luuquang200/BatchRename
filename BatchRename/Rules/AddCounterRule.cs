@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Text;
+using BatchRename.Core;
 
-namespace BatchRename
+namespace BatchRename.Rules
 {
     public class AddCounterRule : IRule
     {
@@ -17,6 +18,7 @@ namespace BatchRename
                 _current = value;
             }
         }
+
         public int Step { get; set; }
 
         public string Name => "AddCounter";
@@ -26,11 +28,12 @@ namespace BatchRename
             Start = 1;
             Step = 3;
         }
+
         public string Rename(string origin)
         {
             var builder = new StringBuilder();
             builder.Append(origin);
-            builder.Append(" ");
+            builder.Append(' ');
             builder.Append(_current);
 
             _current += Step;
@@ -56,9 +59,11 @@ namespace BatchRename
             var pairs1 = attributes[1].Split(new string[] { "=" },
                 StringSplitOptions.None);
 
-            var rule = new AddCounterRule();
-            rule.Start = int.Parse(pairs0[1]);
-            rule.Step = int.Parse(pairs1[1]);
+            var rule = new AddCounterRule
+            {
+                Start = int.Parse(pairs0[1]),
+                Step = int.Parse(pairs1[1])
+            };
 
             return rule;
         }
@@ -68,5 +73,4 @@ namespace BatchRename
             _current = Start;
         }
     }
-
 }

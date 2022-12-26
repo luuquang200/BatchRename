@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace BatchRename
+namespace BatchRename.Core
 {
     public class RuleFactory
     {
