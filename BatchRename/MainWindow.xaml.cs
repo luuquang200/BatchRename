@@ -24,6 +24,7 @@ namespace BatchRename
         public MainWindow()
         {
             InitializeComponent();
+
             _sourceFiles = new ObservableCollection<object>();
             _listItemRuleApply = new ObservableCollection<ItemRule>();
         }
@@ -66,6 +67,7 @@ namespace BatchRename
             };
 
             ListViewRulesApply.ItemsSource = _listItemRuleApply;
+            ComboboxRule.ItemsSource = _listItemRuleApply;
 
             RuleFactory.Register(new RemoveSpecialCharsRule());
             RuleFactory.Register(new AddPrefixRule());
