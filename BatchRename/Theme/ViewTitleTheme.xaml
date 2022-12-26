@@ -1,0 +1,26 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Style TargetType="TextBlock"
+            x:Key="TextblockTitle">
+        <Setter Property="FontSize" Value="44"/>
+        <Setter Property="Foreground" Value="#0033A1"/>
+        <Setter Property="FontWeight" Value="ExtraBold"/>
+        <Setter Property="TextElement.FontFamily" Value="{DynamicResource Inter}"/>
+    </Style>
+
+    <Style TargetType="TextBlock"
+            x:Key="TextblockTitleSmall">
+        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="Foreground" Value="#000000"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="TextElement.FontFamily" Value="{DynamicResource Inter}"/>
+    </Style>
+
+    <Style TargetType="TextBlock"
+            x:Key="TextblockTitleNormal">
+        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="Foreground" Value="#000000"/>
+        <Setter Property="FontWeight" Value="Medium"/>
+        <Setter Property="TextElement.FontFamily" Value="{DynamicResource Inter}"/>
+    </Style>
+</ResourceDictionary>

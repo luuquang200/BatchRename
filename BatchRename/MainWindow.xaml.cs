@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -86,13 +87,67 @@ namespace BatchRename
                 ItemRule SelectedItem = _listItemRuleApply[indexSelected];
                 if (SelectedItem.NameRule.Equals("RemoveSpecialChars"))
                 {
-                    MessageBox.Show("RemoveSpecialChars");
-                    _listItemRuleApply[indexSelected].Data = "RemoveSpecialChars SpecialChars=-_";
+                    //MessageBox.Show("RemoveSpecialChars");
+                    //_listItemRuleApply[indexSelected].Data = "RemoveSpecialChars SpecialChars=-_";
+
+                    string line = _listItemRuleApply[indexSelected].Data;
+                    var specials = "";
+                    if (line != "")
+                    {
+                        var tokens = line.Split(new string[] { " " }, StringSplitOptions.None);
+                        var data = tokens[1]; // SpecialChars=-_
+                        var pairs = data.Split(new string[] { "=" }, StringSplitOptions.None); // -_
+                        specials = pairs[1];
+                    }
+
+
+                    var screen = new InputRemoveSpecialCharsRule(specials);
+                    if (screen.ShowDialog() == true)
+                    {
+                        string input = screen.inputTextBox.Text;
+                        StringBuilder stringBuilder = new();
+                        stringBuilder.Append("RemoveSpecialChars SpecialChars=");
+                        stringBuilder.Append(input);
+                        _listItemRuleApply[indexSelected].Data = stringBuilder.ToString();
+                    }
+
                 }
                 else if (SelectedItem.NameRule.Equals("AddCounter"))
                 {
-                    MessageBox.Show(SelectedItem.NameRule);
-                    _listItemRuleApply[indexSelected].Data = "AddCounter Start=10,Step=5";
+                    //MessageBox.Show(SelectedItem.NameRule);
+                    //_listItemRuleApply[indexSelected].Data = "AddCounter Start=10,Step=5";
+
+                    string line = _listItemRuleApply[indexSelected].Data;
+                    string start = "";
+                    string step = "";
+
+                    if (line != "")
+                    {
+                        var tokens = line.Split(new string[] { " " },
+                            StringSplitOptions.None);
+                        var data = tokens[1];
+                        var attributes = data.Split(new string[] { "," },
+                            StringSplitOptions.None);
+                        var pairs0 = attributes[0].Split(new string[] { "=" },
+                            StringSplitOptions.None);
+                        var pairs1 = attributes[1].Split(new string[] { "=" },
+                            StringSplitOptions.None);
+                        start = pairs0[1];
+                        step = pairs1[1];
+                    }
+
+                    var screen = new InputAddCounter(start, step);
+                    if (screen.ShowDialog() == true)
+                    {
+                        start = screen.inputStartTextBox.Text;
+                        step = screen.inputStepTextBox.Text;
+                        StringBuilder stringBuilder = new();
+                        stringBuilder.Append("AddCounter Start=");
+                        stringBuilder.Append(start);
+                        stringBuilder.Append(",Step=");
+                        stringBuilder.Append(step);
+                        _listItemRuleApply[indexSelected].Data = stringBuilder.ToString();
+                    }
                 }
                 else if (SelectedItem.NameRule.Equals("OneSpace"))
                 {
@@ -106,7 +161,17 @@ namespace BatchRename
                 }
             }
         }
+        private void ButtonRemove_Click(object sender, RoutedEventArgs e)
+        {
+            Button btn = (Button)e.OriginalSource;
+            ListViewRulesApply.SelectedItem = btn.DataContext;
 
+            int indexSelected = ListViewRulesApply.SelectedIndex;
+            if (indexSelected != -1)
+            {
+                _listItemRuleApply.RemoveAt(indexSelected);
+            }
+        }
         private void List_PreviewLeftMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (GetParentDependencyObjectFromVisualTree((DependencyObject)e.MouseDevice.DirectlyOver,
@@ -178,5 +243,7 @@ namespace BatchRename
             }
             return strings;
         }
+
+        
     }
 }
