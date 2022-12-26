@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-
-namespace BatchRename.Core
+﻿namespace BatchRename.Core
 {
     public class ItemRule
     {

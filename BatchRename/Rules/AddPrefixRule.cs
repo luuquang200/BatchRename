@@ -17,13 +17,7 @@ namespace BatchRename.Rules
 
         public string Rename(string origin)
         {
-            var builder = new StringBuilder();
-            builder.Append(Prefix);
-            builder.Append(' ');
-            builder.Append(origin);
-
-            string result = builder.ToString();
-            return result;
+            return string.Concat(Prefix, origin);
         }
 
         public object Clone()
@@ -33,12 +27,10 @@ namespace BatchRename.Rules
 
         public IRule Parse(string line)
         {
-            var tokens = line.Split(new string[] { " " },
-                StringSplitOptions.None);
+            var tokens = line.Split(' ');
             var data = tokens[1];
 
-            var pairs = data.Split(new string[] { "=" },
-                StringSplitOptions.None);
+            var pairs = data.Split(' ');
 
             var rule = new AddPrefixRule
             {

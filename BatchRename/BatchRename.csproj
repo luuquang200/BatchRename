@@ -69,4 +69,8 @@
     </Resource>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Presets\" />
+  </ItemGroup>
+
 </Project>

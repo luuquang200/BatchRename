@@ -52,8 +52,10 @@ namespace BatchRename
 
             RuleFactory.Register(new RemoveSpecialCharsRule());
             RuleFactory.Register(new AddPrefixRule());
+            RuleFactory.Register(new AddSuffixRule());
             RuleFactory.Register(new OneSpaceRule());
             RuleFactory.Register(new AddCounterRule());
+            RuleFactory.Register(new RemoveWhiteSpaceRule());
         }
 
         private void LoadAvailableRules()
@@ -62,7 +64,9 @@ namespace BatchRename
             _availableRules.Add(new ItemRule() { NameRule = "RemoveSpecialChars" });
             _availableRules.Add(new ItemRule() { NameRule = "AddCounter" });
             _availableRules.Add(new ItemRule() { NameRule = "AddPrefix" });
+            _availableRules.Add(new ItemRule() { NameRule = "AddSuffix" });
             _availableRules.Add(new ItemRule() { NameRule = "OneSpace" });
+            _availableRules.Add(new ItemRule() { NameRule = "RemoveWhiteSpace" });
         }
 
         private void ButtonAddFile_Click(object sender, RoutedEventArgs e)
@@ -100,9 +104,9 @@ namespace BatchRename
                     var specials = "";
                     if (line != "")
                     {
-                        var tokens = line.Split(new string[] { " " }, StringSplitOptions.None);
+                        var tokens = line.Split(' ');
                         var data = tokens[1]; // SpecialChars=-_
-                        var pairs = data.Split(new string[] { "=" }, StringSplitOptions.None); // -_
+                        var pairs = data.Split('='); // -_
                         specials = pairs[1];
                     }
 
@@ -124,11 +128,11 @@ namespace BatchRename
 
                     if (line != "")
                     {
-                        var tokens = line.Split(new string[] { " " }, StringSplitOptions.None);
+                        var tokens = line.Split(' ');
                         var data = tokens[1];
-                        var attributes = data.Split(new string[] { "," }, StringSplitOptions.None);
-                        var pairs0 = attributes[0].Split(new string[] { "=" }, StringSplitOptions.None);
-                        var pairs1 = attributes[1].Split(new string[] { "=" }, StringSplitOptions.None);
+                        var attributes = data.Split(',');
+                        var pairs0 = attributes[0].Split('=');
+                        var pairs1 = attributes[1].Split('=');
                         start = pairs0[1];
                         step = pairs1[1];
                     }
