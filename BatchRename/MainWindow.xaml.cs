@@ -18,7 +18,7 @@ namespace BatchRename
     /// </summary>
     public partial class MainWindow
     {
-        private ObservableCollection<object> _sourceFiles;
+        private ObservableCollection<ItemFile> _sourceFiles;
         private ObservableCollection<ItemRule> _listItemRuleApply;
         private readonly List<IRule> _activeRules = new();
 
@@ -26,7 +26,7 @@ namespace BatchRename
         {
             InitializeComponent();
 
-            _sourceFiles = new ObservableCollection<object>();
+            _sourceFiles = new ObservableCollection<ItemFile>();
             _listItemRuleApply = new ObservableCollection<ItemRule>();
         }
 
@@ -39,11 +39,12 @@ namespace BatchRename
                 var fullPath = screen.FileName;
                 var info = new FileInfo(fullPath);
                 var shortName = info.Name;
-
-                _sourceFiles.Add(new
+                var filePath = info.DirectoryName;
+                _sourceFiles.Add(new ItemFile
                 {
-                    FullPath = fullPath,
-                    ShortName = shortName,
+                    OldName = shortName,
+                    NewName = shortName,
+                    FilePath = filePath
                 });
             }
 
@@ -222,9 +223,12 @@ namespace BatchRename
 
             // binding converter
             var converter = (PreviewRenameConverter)FindResource("PreviewRenameConverter");
-            converter.Rules = _activeRules;
+            foreach (IRule rule in _activeRules)
+            {
+                converter.Rules.Add((IRule)rule.Clone());
+            }
 
-            var temp = new ObservableCollection<object>();
+            var temp = new ObservableCollection<ItemFile>();
             foreach (var file in _sourceFiles)
             {
                 temp.Add(file);
@@ -244,6 +248,32 @@ namespace BatchRename
             return strings;
         }
 
-        
+        private void StartButton_Click(object sender, RoutedEventArgs e)
+        {
+            foreach (ItemFile itemFile in _sourceFiles)
+            {
+                foreach (IRule itemRule in _activeRules)
+                {
+                    //itemFile.OldName = itemFile.NewName;
+                    itemFile.NewName = itemRule.Rename(itemFile.NewName);
+                    //MessageBox.Show("New: " + itemFile.FilePath + "/" + itemFile.NewName + "\n Old: " + itemFile.FilePath + "/" + itemFile.OldName);
+                    //File.Copy(itemFile.FilePath + "/" + itemFile.OldName, itemFile.FilePath + "/" + itemFile.NewName, true);
+                }
+                try
+                {
+                    File.Move(itemFile.FilePath + "/" + itemFile.OldName, itemFile.FilePath + "/" + itemFile.NewName);
+                    itemFile.Result = "Success";
+                }
+                catch (FileNotFoundException)
+                {
+                    continue;
+                };
+            }
+        }
+
+        private void StartButton_Click_1(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

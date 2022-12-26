@@ -19,6 +19,7 @@
                 <ResourceDictionary Source="Theme/ButtonCustomColorPositive.xaml"/>
                 <ResourceDictionary Source="Theme/ButtonCustomColorCancel.xaml"/>
                 <ResourceDictionary Source="Theme/CustomTextBox.xaml"/>
+                <ResourceDictionary Source="Theme/TabItem.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
         </ResourceDictionary>

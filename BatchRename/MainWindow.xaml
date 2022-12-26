@@ -9,7 +9,7 @@
                      x:Name="WindowMain"
                      ResizeMode="NoResize"
                      Title="MainWindow"
-                     Height="600" Width="850"
+                     Height="600" Width="1000"
                      Loaded="Window_Loaded">
     <Window.Resources>
         <local:PreviewRenameConverter x:Key="PreviewRenameConverter" />
@@ -72,7 +72,7 @@
         <StackPanel Grid.Row="1"
                     Orientation="Horizontal" Grid.ColumnSpan="2">
             <StackPanel Orientation="Vertical">
-                <ListView x:Name="ListViewRulesApply" Width="300" Height="300"
+                <ListView x:Name="ListViewRulesApply" Width="303" Height="300"
                           Margin="2 0 0 0"
                           ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                           ScrollViewer.VerticalScrollBarVisibility="Visible"
@@ -155,48 +155,57 @@
                                 </Setter.Value>
                             </Setter>
                             <Setter Property="Tag" Value="{Binding ElementName=wdMain}" />
-                            <Setter Property="Margin" Value="5" />
+                            <Setter Property="Margin" Value="0 5" />
                         </Style>
                     </ListView.ItemContainerStyle>
                 </ListView>
             </StackPanel>
 
-            <GroupBox HorizontalAlignment="Left"
+            <TabControl Margin="0 0 0 0" BorderBrush="Gainsboro" Width="550">
+                <TabItem Header="File" Style="{StaticResource StabItemStyle}" Width="70">
+                    <GroupBox HorizontalAlignment="Left"
                       Height="340"
                       Header="File"
                       Margin="10"
                       VerticalAlignment="Top"
-                      Width="400">
-                <ListView x:Name="ListViewFile"
+                      Width="550">
+                        <ListView x:Name="ListViewFile"
                           HorizontalAlignment="Left"
-                          Height="319"
+                          Height="305"
                           VerticalAlignment="Top"
-                          Width="390"
+                          Width="518"
                           d:ItemsSource="{d:SampleData ItemCount=5}">
-                    <ListView.View>
-                        <GridView>
-                            <GridViewColumn Header="Filename"
-                                            Width="100"
-                                            DisplayMemberBinding="{Binding ShortName}" />
-                            <GridViewColumn Header="New Filename"
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Header="Filename"
                                             Width="120"
-                                            DisplayMemberBinding="{Binding ShortName,
+                                            DisplayMemberBinding="{Binding OldName}" />
+                                    <GridViewColumn Header="New Filename"
+                                            Width="150"
+                                            DisplayMemberBinding="{Binding OldName,
                                                         Converter={StaticResource PreviewRenameConverter}}" />
-                            <GridViewColumn Header= "Path"
-                                            Width="120"
-                                            DisplayMemberBinding="{Binding a}" />
-                            <GridViewColumn Header= "Note"
+                                    <GridViewColumn Header= "Path"
+                                            Width="150"
+                                            DisplayMemberBinding="{Binding FilePath}" />
+                                    <GridViewColumn Header= "Note"
                                             Width="60"
-                                            DisplayMemberBinding="{Binding a}" />
-                        </GridView>
-                    </ListView.View>
-                </ListView>
-            </GroupBox>
+                                            DisplayMemberBinding="{Binding Result}" />
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                    </GroupBox>
+                </TabItem>
+
+                <TabItem Header="Folder" Style="{StaticResource StabItemStyle}"
+                         Width="90" Margin="0 0 10 0">
+                </TabItem>
+            </TabControl>
 
             <StackPanel Orientation="Vertical">
-                <Button x:Name="LoadPresetButton"
+                <Button x:Name="StartButton"
                         Width="80" Height="35"
-                        Content="Load preset"
+                        Content="Start"
+                        Click="StartButton_Click"
                         Margin="10" />
                 <Button x:Name="AddFileButton"
                         Width="80" Height="35"

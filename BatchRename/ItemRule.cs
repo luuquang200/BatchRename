@@ -8,5 +8,7 @@ namespace BatchRename
         public string Data { get; set; } = "";
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        
     }
 }

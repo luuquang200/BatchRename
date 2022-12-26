@@ -28,14 +28,22 @@ namespace BatchRename
         }
         public string Rename(string origin)
         {
+            var tokens = origin.Split(new string[] { "." },
+                StringSplitOptions.None);
+            string fileName = tokens[0];
+            string extention = tokens[1];
+
+
             var builder = new StringBuilder();
-            builder.Append(origin);
+            builder.Append(fileName);
             builder.Append(" ");
             builder.Append(_current);
+            builder.Append(".");
+            builder.Append(extention);
 
-            _current += Step;
 
             string result = builder.ToString();
+            _current += Step;
             return result;
         }
 
