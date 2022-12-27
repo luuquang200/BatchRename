@@ -35,6 +35,7 @@ namespace BatchRename
             _sourceFiles = new ObservableCollection<ItemFile>();
             _listItemRuleApply = new ObservableCollection<ItemRule>();
             _availableRules = new ObservableCollection<ItemRule>();
+            _activeRules = new List<IRule>();
 
             DebuggingTest();
         }

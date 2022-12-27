@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BatchRename
+namespace BatchRename.Core
 {
     public class ItemFile : INotifyPropertyChanged
     {
@@ -14,9 +14,6 @@ namespace BatchRename
         public string FilePath { get; set; } = "";
         public string Result { get; set; } = "";
 
-
         public event PropertyChangedEventHandler PropertyChanged;
-
-
     }
 }
