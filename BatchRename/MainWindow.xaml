@@ -161,7 +161,7 @@
                                     </ControlTemplate>
                                 </Setter.Value>
                             </Setter>
-                            <Setter Property="Tag" Value="{Binding ElementName=wdMain}" />
+                            <Setter Property="Tag" Value="{Binding ElementName=WindowMain}" />
                             <Setter Property="Margin" Value="0 5" />
                         </Style>
                     </ListView.ItemContainerStyle>

@@ -261,25 +261,18 @@ namespace BatchRename
             {
                 foreach (IRule itemRule in _activeRules)
                 {
-                    //itemFile.OldName = itemFile.NewName;
                     itemFile.NewName = itemRule.Rename(itemFile.NewName);
-                    //MessageBox.Show("New: " + itemFile.FilePath + "/" + itemFile.NewName + "\n Old: " + itemFile.FilePath + "/" + itemFile.OldName);
-                    //File.Copy(itemFile.FilePath + "/" + itemFile.OldName, itemFile.FilePath + "/" + itemFile.NewName, true);
                 }
                 try
                 {
-                    File.Move(itemFile.FilePath + "/" + itemFile.OldName, itemFile.FilePath + "/" + itemFile.NewName);
+                    File.Move(Path.Combine(itemFile.FilePath, itemFile.OldName), Path.Combine(itemFile.FilePath, itemFile.NewName));
                     itemFile.Result = "Success";
                 }
                 catch (FileNotFoundException)
                 {
-                    continue;
-                };
+                    // Unhandled exception
+                }
             }
-        }
-
-        private void StartButton_Click_1(object sender, RoutedEventArgs e)
-        {
         }
 
         private void ButtonAddRule_Click(object sender, RoutedEventArgs e)
