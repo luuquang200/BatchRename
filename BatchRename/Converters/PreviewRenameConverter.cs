@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Windows.Data;
+using BatchRename.Core;
 
-namespace BatchRename
+namespace BatchRename.Converters
 {
     public class PreviewRenameConverter : IValueConverter
     {

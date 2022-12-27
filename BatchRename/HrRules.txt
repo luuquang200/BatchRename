@@ -1,4 +1,5 @@
 ﻿RemoveSpecialChars SpecialChars=-_
 AddPrefix Prefix=Facebook
+AddSuffix Suffix=hcmus
 OneSpace
 AddCounter Start=10,Step=5

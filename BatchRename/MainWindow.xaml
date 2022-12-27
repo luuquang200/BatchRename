@@ -4,37 +4,36 @@
                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                      xmlns:local="clr-namespace:BatchRename"
+                     xmlns:converters="clr-namespace:BatchRename.Converters"
                      xmlns:Fluent="urn:fluent-ribbon"
                      mc:Ignorable="d"
                      x:Name="WindowMain"
                      ResizeMode="NoResize"
                      Title="MainWindow"
-                     Height="600" Width="1000"
+                     Width="1000" Height="600"
                      Loaded="Window_Loaded">
     <Window.Resources>
-        <local:PreviewRenameConverter x:Key="PreviewRenameConverter" />
+        <converters:PreviewRenameConverter x:Key="PreviewRenameConverter" />
     </Window.Resources>
 
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="463*" />
-            <ColumnDefinition Width="337*" />
-        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <Fluent:Ribbon
-                       Background="#F4F2F0" Grid.ColumnSpan="2" VerticalAlignment="Center">
+        <Fluent:Ribbon Background="#F4F2F0"
+                       VerticalAlignment="Center">
             <!--Tabs-->
             <Fluent:RibbonTabItem Header="Home">
                 <Fluent:RibbonGroupBox Header="Preset"
-                                       Margin="0 10 0 0">
+
+                                       Margin="5 10 0 0">
                     <Fluent:Button Header="Open"
                                    Icon="/Images/icon_open.png"
                                    Margin="0 0 10 0" />
                     <Fluent:Button Header="New"
+                                   Margin="0 0 10 0"
                                    Icon="/Images/icon_new.png" />
                 </Fluent:RibbonGroupBox>
                 <Fluent:RibbonGroupBox Header="Rule"
@@ -46,11 +45,18 @@
                                      IsReadOnly="True"
                                      Margin="0,9,5,1"
                                      Width="160" />
-                    <Fluent:Button Header="Add"
-                                   Icon="/Images/icon_add_rule.png" />
+                    <Fluent:Button x:Name="ButtonAddRule"
+                                   Header="Add"
+                                   Margin="10 0 10 0"
+                                   Icon="/Images/icon_add_rule.png"
+                                   Click="ButtonAddRule_Click" />
                 </Fluent:RibbonGroupBox>
                 <Fluent:RibbonGroupBox Margin="0 10 0 0">
-                    <Fluent:Button Header="Apply" Icon="/Images/icon_apply.png" />
+                    <Fluent:Button x:Name="ButtonApply"
+                                   Header="Apply"
+                                   Margin="10 0 10 0"
+                                   Click="ButtonApply_Click"
+                                   Icon="/Images/icon_apply.png" />
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
 
@@ -70,13 +76,14 @@
         </Fluent:Ribbon>
 
         <StackPanel Grid.Row="1"
-                    Orientation="Horizontal" Grid.ColumnSpan="2">
+                    Orientation="Horizontal">
             <StackPanel Orientation="Vertical">
                 <ListView x:Name="ListViewRulesApply" Width="303" Height="300"
                           Margin="2 0 0 0"
                           ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                           ScrollViewer.VerticalScrollBarVisibility="Visible"
-                          HorizontalAlignment="Center" d:ItemsSource="{d:SampleData ItemCount=5}"
+                          HorizontalAlignment="Center"
+                          d:ItemsSource="{d:SampleData ItemCount=5}"
                           PreviewMouseLeftButtonDown="List_PreviewLeftMouseDown">
                     <ListView.ItemsPanel>
                         <ItemsPanelTemplate>
@@ -86,7 +93,7 @@
 
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <Border x:Name="border"
+                            <Border x:Name="Border"
                                 BorderBrush="#C0C0C0"
                                 BorderThickness="1.1"
                                 CornerRadius="3">
@@ -104,7 +111,7 @@
                                                VerticalAlignment="Center"
                                                Margin="45 0 0 0"
                                                Style="{StaticResource TextblockTitleNormal}" />
-                                    <Button x:Name="buttonConfig"
+                                    <Button x:Name="ButtonConfig"
                                             Width="27"
                                             Height="27"
                                             Margin="5 0 0 0"
@@ -112,7 +119,7 @@
                                             Style="{StaticResource ButtonConfig}"
                                             Click="ButtonConfig_Click" />
 
-                                    <Button x:Name="buttonRemove"
+                                    <Button x:Name="ButtonRemove"
                                             Width="27"
                                             Height="27"
                                             Margin="5 0 0 0"
@@ -126,18 +133,18 @@
                                 <Trigger Property="IsMouseOver"
                                  Value="True">
                                     <Setter Property="BorderBrush"
-                                    TargetName="border"
+                                    TargetName="Border"
                                     Value="Black" />
 
                                     <Setter Property="BorderThickness"
-                                    TargetName="border"
+                                    TargetName="Border"
                                     Value="1.2" />
                                 </Trigger>
                                 <DataTrigger Binding="{Binding Path=IsSelected, RelativeSource={
                                           RelativeSource Mode=FindAncestor, AncestorType={x:Type ListViewItem }}}"
                                           Value="True">
                                     <Setter Property="BorderBrush"
-                                    TargetName="border"
+                                    TargetName="Border"
                                     Value="#0033A1" />
                                 </DataTrigger>
                             </DataTemplate.Triggers>
@@ -211,12 +218,7 @@
                         Width="80" Height="35"
                         Content="Browse.."
                     Margin="10"
-                    Click="AddFileButton_Click" />
-                <Button x:Name="ApplyButton"
-                        Margin="10"
-                        Width="80" Height="35"
-                        Content="Apply"
-                        Click="ApplyButton_Click" />
+                    Click="ButtonAddFile_Click" />
             </StackPanel>
         </StackPanel>
     </Grid>
