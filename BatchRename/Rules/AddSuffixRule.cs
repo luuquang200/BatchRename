@@ -1,6 +1,4 @@
 ﻿using BatchRename.Core;
-using System;
-using System.Text;
 
 namespace BatchRename.Rules
 {

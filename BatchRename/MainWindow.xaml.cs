@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -34,6 +35,8 @@ namespace BatchRename
             _sourceFiles = new ObservableCollection<object>();
             _listItemRuleApply = new ObservableCollection<ItemRule>();
             _availableRules = new ObservableCollection<ItemRule>();
+
+            DebuggingTest();
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -252,6 +255,11 @@ namespace BatchRename
             var selectedRule = ComboboxRule.SelectedItem as ItemRule;
 
             _listItemRuleApply.Add(selectedRule);
+        }
+
+        private static void DebuggingTest()
+        {
+            var preset = new Preset();
         }
     }
 }
