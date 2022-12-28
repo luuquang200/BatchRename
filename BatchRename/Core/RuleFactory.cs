@@ -27,17 +27,15 @@ namespace BatchRename.Core
 
         public static IRule Parse(string data)
         {
-            const string Space = " ";
+            const char Space = ' ';
 
-            var tokens = data.Split(
-                new string[] { Space }, StringSplitOptions.None
-            );
+            var tokens = data.Split(Space);
             var keyword = tokens[0];
             IRule result = null;
 
-            if (_prototypes.ContainsKey(keyword))
+            if (_prototypes.TryGetValue(keyword, out IRule value))
             {
-                IRule prototype = _prototypes[keyword];
+                IRule prototype = value;
                 result = prototype.Parse(data);
             }
 

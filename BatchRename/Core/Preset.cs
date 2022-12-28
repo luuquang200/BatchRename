@@ -1,18 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
+using System.Windows.Documents;
 
 namespace BatchRename.Core
 {
     public class Preset
     {
-        private static string PRESET_FOLDER_PATH => Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..\\..\\..\\")) + @"Presets\";
-        private static readonly string PRESET_FILE_EXTENSION = ".txt";
+        public static string PRESET_FOLDER_PATH => Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..\\..\\..\\")) + @"Presets\";
+        public static readonly string PRESET_FILE_EXTENSION = ".txt";
 
         public string Name { get; }
 
@@ -52,6 +49,44 @@ namespace BatchRename.Core
         public bool Exists(string name = null)
         {
             return name is null ? File.Exists(GetPath()) : File.Exists(GetPath(name));
+        }
+
+        public string[] Read()
+        {
+            return File.ReadAllLines(GetPath());
+        }
+
+        public List<ItemRule> GetRuleItems()
+        {
+            var rules = new List<ItemRule>();
+
+            var lines = Read();
+
+            const char Space = ' ';
+
+            foreach (var line in lines)
+            {
+                string ruleName = line.Split(Space)[0];
+                rules.Add(new ItemRule
+                {
+                    NameRule = ruleName,
+                    Data = line
+                });
+            }
+            return rules;
+        }
+
+        public static Preset[] GetPresets()
+        {
+            DirectoryInfo directory = new(PRESET_FOLDER_PATH);
+            FileInfo[] files = directory.GetFiles("*.txt");
+            Preset[] presets = new Preset[files.Length];
+
+            for (int i = 0; i < files.Length; i++)
+            {
+                presets[i] = new Preset(Path.GetFileNameWithoutExtension(files[i].Name));
+            }
+            return presets;
         }
     }
 }

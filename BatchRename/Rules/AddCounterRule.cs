@@ -34,14 +34,14 @@ namespace BatchRename.Rules
             var tokens = origin.Split(new string[] { "." },
                 StringSplitOptions.None);
             string fileName = tokens[0];
-            string extention = tokens[1];
+            string extension = tokens[1];
 
             var builder = new StringBuilder();
             builder.Append(fileName);
             builder.Append(' ');
             builder.Append(_current);
             builder.Append('.');
-            builder.Append(extention);
+            builder.Append(extension);
 
             string result = builder.ToString();
             _current += Step;
