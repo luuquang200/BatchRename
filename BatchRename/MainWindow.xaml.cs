@@ -8,6 +8,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
+using System.Diagnostics.Metrics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -75,22 +76,43 @@ namespace BatchRename
 
         private void ButtonAddFile_Click(object sender, RoutedEventArgs e)
         {
-            var screen = new OpenFileDialog(); // CommonOpenFileDialog
+            var screen = new OpenFileDialog
+            {
+                Multiselect = true
+            }; 
 
             if (screen.ShowDialog() == true)
             {
-                var fullPath = screen.FileName;
-                var info = new FileInfo(fullPath);
-                var shortName = info.Name;
-                var filePath = info.DirectoryName;
-                _sourceFiles.Add(new ItemFile
-                {
-                    OldName = shortName,
-                    NewName = shortName,
-                    FilePath = filePath
-                });
-            }
+                string[] files = screen.FileNames;
 
+                foreach (string file in files)
+                {
+                    bool isExisted = false;
+                    var info = new FileInfo(file);
+                    var shortName = info.Name;
+                    var filePath = info.DirectoryName;
+
+                    foreach (var itemFile in _sourceFiles)
+                    {
+                        if (itemFile.OldName.Equals(shortName) && itemFile.FilePath.Equals(filePath))
+                        {
+                            isExisted = true;
+                            break;
+                        }
+                    }
+
+                    if (!isExisted)
+                    {
+                        _sourceFiles.Add(new ItemFile
+                        {
+                            OldName = shortName,
+                            NewName = shortName,
+                            FilePath = filePath
+                        });
+                    }
+                }
+                 
+            }
             ListViewFile.ItemsSource = _sourceFiles;
         }
 
@@ -99,7 +121,8 @@ namespace BatchRename
             var button = (Button)e.OriginalSource;
             ListViewRulesApply.SelectedItem = button.DataContext;
 
-            //RefreshStatus();
+            //11:15
+            RefreshStatus();
 
             int indexSelected = ListViewRulesApply.SelectedIndex;
             if (indexSelected != -1)
@@ -132,28 +155,38 @@ namespace BatchRename
                     string line = _listItemRuleApply[indexSelected].Data;
                     string start = "";
                     string step = "";
-
+                    string number = "";
                     if (line != "")
                     {
-                        var tokens = line.Split(' ');
+                        var tokens = line.Split(new string[] { " " },
+                            StringSplitOptions.None);
                         var data = tokens[1];
-                        var attributes = data.Split(',');
-                        var pairs0 = attributes[0].Split('=');
-                        var pairs1 = attributes[1].Split('=');
+                        var attributes = data.Split(new string[] { "," },
+                            StringSplitOptions.None);
+                        var pairs0 = attributes[0].Split(new string[] { "=" },
+                            StringSplitOptions.None);
+                        var pairs1 = attributes[1].Split(new string[] { "=" },
+                            StringSplitOptions.None);
+                        var pairs2 = attributes[2].Split(new string[] { "=" },
+                            StringSplitOptions.None);
                         start = pairs0[1];
                         step = pairs1[1];
+                        number = pairs2[1];
                     }
 
-                    var screen = new InputAddCounter(start, step);
+                    var screen = new InputAddCounter(start, step, number);
                     if (screen.ShowDialog() == true)
                     {
                         start = screen.inputStartTextBox.Text;
                         step = screen.inputStepTextBox.Text;
+                        number = screen.inputNumberDigitsTextBox.Text;
                         StringBuilder stringBuilder = new();
                         stringBuilder.Append("AddCounter Start=");
                         stringBuilder.Append(start);
                         stringBuilder.Append(",Step=");
                         stringBuilder.Append(step);
+                        stringBuilder.Append(",Number=");
+                        stringBuilder.Append(number);
                         _listItemRuleApply[indexSelected].Data = stringBuilder.ToString();
                     }
                 }
@@ -179,11 +212,15 @@ namespace BatchRename
             Button btn = (Button)e.OriginalSource;
             ListViewRulesApply.SelectedItem = btn.DataContext;
 
+            RefreshStatus();
             int indexSelected = ListViewRulesApply.SelectedIndex;
             if (indexSelected != -1)
             {
                 _listItemRuleApply.RemoveAt(indexSelected);
             }
+
+            UpdateActiveRules();
+            UpdateConverterPreview();
         }
 
         private void List_PreviewLeftMouseDown(object sender, MouseButtonEventArgs e)
@@ -221,36 +258,6 @@ namespace BatchRename
 
         private void ButtonApply_Click(object sender, RoutedEventArgs e)
         {
-            foreach (ItemFile itemFile in _sourceFiles)
-            {
-                foreach (IRule itemRule in _activeRules)
-                {
-                    itemFile.NewName = itemRule.Rename(itemFile.NewName);
-                }
-                try
-                {
-                    File.Move(Path.Combine(itemFile.FilePath, itemFile.OldName), Path.Combine(itemFile.FilePath, itemFile.NewName));
-                    itemFile.Result = "Success";
-                }
-                catch (FileNotFoundException)
-                {
-                    // Unhandled exception
-                }
-            }
-        }
-
-        public static List<string> GetListName(List<IRule> _activeRules)
-        {
-            List<string> strings = new();
-            foreach (IRule rule in _activeRules)
-            {
-                strings.Add(rule.Name);
-            }
-            return strings;
-        }
-
-        private void StartButton_Click(object sender, RoutedEventArgs e)
-        {
             UpdateActiveRules();
             foreach (ItemFile itemFile in _sourceFiles)
             {
@@ -268,6 +275,40 @@ namespace BatchRename
                     // Unhandled exception
                 }
             }
+            //UpdateConverterPreview();
+        }
+
+        public static List<string> GetListName(List<IRule> _activeRules)
+        {
+            List<string> strings = new();
+            foreach (IRule rule in _activeRules)
+            {
+                strings.Add(rule.Name);
+            }
+            return strings;
+        }
+
+        //funcion for test
+        private void StartButton_Click(object sender, RoutedEventArgs e)
+        {
+            //UpdateActiveRules();
+            //foreach (ItemFile itemFile in _sourceFiles)
+            //{
+            //    foreach (IRule itemRule in _activeRules)
+            //    {
+            //        itemFile.NewName = itemRule.Rename(itemFile.NewName);
+            //    }
+            //    try
+            //    {
+            //        File.Move(Path.Combine(itemFile.FilePath, itemFile.OldName), Path.Combine(itemFile.FilePath, itemFile.NewName));
+            //        itemFile.Result = "Success";
+            //    }
+            //    catch (FileNotFoundException)
+            //    {
+            //        // Unhandled exception
+            //    }
+            //}
+            RefreshStatus();
         }
 
         private void ButtonAddRule_Click(object sender, RoutedEventArgs e)
@@ -282,22 +323,13 @@ namespace BatchRename
 
         private static void DebuggingTest()
         {
-            var preset = new Preset();
+            //var preset = new Preset();
         }
 
         private void ButtonPreview_Click(object sender, RoutedEventArgs e)
         {
             UpdateActiveRules();
             UpdateConverterPreview();
-
-            var temp = new ObservableCollection<ItemFile>();
-            foreach (var file in _sourceFiles)
-            {
-                temp.Add(file);
-            }
-
-            _sourceFiles = temp;
-            ListViewFile.ItemsSource = _sourceFiles;
         }
 
         private void RefreshStatus()
@@ -307,6 +339,8 @@ namespace BatchRename
                 itemFile.OldName = itemFile.NewName;
                 itemFile.Result = "";
             }
+            UpdateActiveRules();
+            UpdateConverterPreview();
         }
 
         private void UpdateConverterPreview()
@@ -318,10 +352,10 @@ namespace BatchRename
             {
                 converter.Rules.Add((IRule)rule.Clone());
             }
-            //var temp = new ObservableCollection<ItemFile>();
+            var temp = new ObservableCollection<ItemFile>();
             //foreach (var file in _sourceFiles)
             //{
-            //    temp.Add(file);
+            //    temp.Add( (ItemFile)file.Clone() );
             //}
             //_sourceFiles = temp;
             ListViewFile.ItemsSource = null;
@@ -342,6 +376,16 @@ namespace BatchRename
                     }
                 }
             }
+        }
+
+        private void ButtonClearAllFile_Click(object sender, RoutedEventArgs e)
+        {
+            _sourceFiles.Clear();
+        }
+
+        private void ButtonRefresh_Click(object sender, RoutedEventArgs e)
+        {
+            RefreshStatus();
         }
     }
 }

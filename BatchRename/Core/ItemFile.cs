@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BatchRename.Core
 {
-    public class ItemFile : INotifyPropertyChanged
+    public class ItemFile : INotifyPropertyChanged, ICloneable
     {
         public string OldName { get; set; } = "";
         public string NewName { get; set; } = "";
@@ -15,5 +15,10 @@ namespace BatchRename.Core
         public string Result { get; set; } = "";
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        public object Clone()
+        {
+            return MemberwiseClone();
+        }
     }
 }

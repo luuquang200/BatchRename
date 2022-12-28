@@ -5,13 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BatchRename"
         mc:Ignorable="d"
-        Title="InputAddCounter"  Height="250" Width="350">
+        Title="InputAddCounter"  Height="280" Width="360">
     <Grid>
         <StackPanel VerticalAlignment="Center">
-            <TextBlock Text="Add Counter" Style="{StaticResource TextblockTitle}" FontSize="25" HorizontalAlignment="Center"/>
+            <TextBlock Text="Add Counter" Style="{StaticResource TextblockTitle}" FontSize="25" HorizontalAlignment="Center" Margin="25 0 0 0"/>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" >
                 <TextBlock  Width="41"
-                    Text="Start: " Style="{StaticResource TextblockTitleSmall}" Margin="10 10 0 0" VerticalAlignment="Center"/>
+                    Text="Start: " Style="{StaticResource TextblockTitleSmall}" Margin="43 10 0 0" VerticalAlignment="Center"/>
                 <TextBox x:Name="inputStartTextBox"
                          Height="30" Width="150"
                          Margin="5 10 0 0"
@@ -21,7 +21,7 @@
             </StackPanel>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" >
                 <TextBlock  Width="41" Padding="1.5 0 0 0"
-                    Text="Step: " Style="{StaticResource TextblockTitleSmall}" Margin="10 10 0 0" VerticalAlignment="Center"/>
+                    Text="Step: " Style="{StaticResource TextblockTitleSmall}" Margin="43 10 0 0" VerticalAlignment="Center"/>
                 <TextBox x:Name="inputStepTextBox"
                          Height="30" Width="150"
                          Margin="5 10 0 0"
@@ -30,7 +30,17 @@
                          VerticalAlignment="Center"/>
                 <!--Style="{StaticResource CustomTextbox}"-->
             </StackPanel>
-
+            
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" >
+                <TextBlock  Width="132" Padding="1.5 0 0 0"
+                    Text="Number Of Digits: " Style="{StaticResource TextblockTitleSmall}" Margin="0 10 1 0" VerticalAlignment="Center"/>
+                <TextBox x:Name="inputNumberDigitsTextBox"
+                         Height="30" Width="150"
+                         Margin="5 10 50 0"
+                         Padding="5"
+                         Text="{Binding NumberOfDigits}"
+                         VerticalAlignment="Center"/>
+            </StackPanel>
             <StackPanel Orientation="Horizontal" Margin="0 20 0 0" HorizontalAlignment="Center">
                 <Button x:Name="cancelButton" Content="Cancel" Style="{StaticResource ButtonCustomColorCancel}"
                         Foreground="#E1251B"

@@ -1,4 +1,16 @@
-﻿using System.Windows;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
 
 namespace BatchRename
 {
@@ -9,11 +21,13 @@ namespace BatchRename
     {
         public string Start { get; set; } = "";
         public string Step { get; set; } = "";
-        public InputAddCounter(string start, string step)
+        public string NumberOfDigits { get; set; } = "";
+        public InputAddCounter(string start, string step, string numberOfDigits)
         {
             InitializeComponent();
             Start = start;
             Step = step;
+            NumberOfDigits = numberOfDigits;
             DataContext = this;
         }
 

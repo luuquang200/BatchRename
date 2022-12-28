@@ -57,11 +57,12 @@
                                    Margin="10 0 10 0"
                                    Click="ButtonApply_Click"
                                    Icon="/Images/icon_apply.png" />
-                    <Fluent:Button x:Name="ButtonPreview"
-                                   Header="Preview"
+                    <Fluent:Button x:Name="ButtonRefresh"
+                                   Header="Refresh"
                                    Margin="10 0 10 0"
-                                   Click="ButtonPreview_Click"
-                                   Icon="/Images/icon_preview.png" />
+                                   Click="ButtonRefresh_Click"
+                                   Icon="/Images/refresh.png"
+                                   />
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
 
@@ -167,7 +168,7 @@
                                 </Setter.Value>
                             </Setter>
                             <Setter Property="Tag" Value="{Binding ElementName=WindowMain}" />
-                            <Setter Property="Margin" Value="0 5" />
+                            <Setter Property="Margin" Value="7 5 0 5" />
                         </Style>
                     </ListView.ItemContainerStyle>
                 </ListView>
@@ -175,18 +176,27 @@
 
             <TabControl Margin="0 0 0 0" BorderBrush="Gainsboro" Width="550">
                 <TabItem Header="File" Style="{StaticResource StabItemStyle}" Width="70">
-                    <GroupBox HorizontalAlignment="Left"
-                      Height="340"
-                      Header="File"
-                      Margin="10"
-                      VerticalAlignment="Top"
-                      Width="550">
+                    <StackPanel  Margin="7 0 0 0">
+                        <StackPanel Orientation="Horizontal" >
+                            <Button x:Name="ButtonAddFile"
+                                Content="Add New File"
+                                Width="110"
+                                Foreground="Black"
+                                Style="{StaticResource ButtonAddNew}" Height="31"
+                                    Click="ButtonAddFile_Click"/>
+                            <Button x:Name="ButtonClearAllFile"
+                                Content="Clear All"
+                                Width="128"
+                                Foreground="Black"
+                                Style="{StaticResource ButtonClearAll}" Height="31" Click="ButtonClearAllFile_Click"/>
+                        </StackPanel>
+                        
                         <ListView x:Name="ListViewFile"
-                          HorizontalAlignment="Left"
-                          Height="305"
-                          VerticalAlignment="Top"
-                          Width="518"
-                          d:ItemsSource="{d:SampleData ItemCount=5}">
+                                  HorizontalAlignment="Left"
+                                  Height="305"
+                                  VerticalAlignment="Top"
+                                  Width="518"
+                                  d:ItemsSource="{d:SampleData ItemCount=5}">
                             <ListView.View>
                                 <GridView>
                                     <GridViewColumn Header="Filename"
@@ -195,7 +205,8 @@
                                     <GridViewColumn Header="New Filename"
                                             Width="150"
                                             DisplayMemberBinding="{Binding OldName,
-                                                        Converter={StaticResource PreviewRenameConverter}}" />
+                                                        Converter={StaticResource PreviewRenameConverter},
+                                                        ConverterParameter=Result}" />
                                     <GridViewColumn Header= "Path"
                                             Width="150"
                                             DisplayMemberBinding="{Binding FilePath}" />
@@ -205,7 +216,8 @@
                                 </GridView>
                             </ListView.View>
                         </ListView>
-                    </GroupBox>
+                    </StackPanel>
+
                 </TabItem>
 
                 <TabItem Header="Folder" Style="{StaticResource StabItemStyle}"
@@ -214,16 +226,11 @@
             </TabControl>
 
             <StackPanel Orientation="Vertical">
-                <Button x:Name="StartButton"
+                <Button x:Name="Refresh"
                         Width="80" Height="35"
                         Content="Start"
                         Click="StartButton_Click"
                         Margin="10" />
-                <Button x:Name="AddFileButton"
-                        Width="80" Height="35"
-                        Content="Browse.."
-                    Margin="10"
-                    Click="ButtonAddFile_Click" />
             </StackPanel>
         </StackPanel>
     </Grid>

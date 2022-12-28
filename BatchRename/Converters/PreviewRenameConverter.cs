@@ -19,6 +19,13 @@ namespace BatchRename.Converters
         {
             string origin = (string)value;
 
+            string param = parameter as string;
+            if (param.Equals("Success"))
+            {
+                return origin;
+            }
+            
+
             string newName = origin;
 
             foreach (var rule in Rules)

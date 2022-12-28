@@ -1,4 +1,5 @@
 ﻿using BatchRename.Core;
+using System;
 
 namespace BatchRename.Rules
 {
@@ -28,12 +29,20 @@ namespace BatchRename.Rules
             var tokens = line.Split(' ');
             var data = tokens[1];
 
-            var pairs = data.Split(' ');
+            //var pairs = data.Split(' ');
+
+            //var tokens = line.Split(new string[] { " " },
+            //    StringSplitOptions.None);
+            //var data = tokens[1];
+
+            var pairs = data.Split(new string[] { "=" },
+                StringSplitOptions.None);
 
             var rule = new AddPrefixRule
             {
                 Prefix = pairs[1]
             };
+
             return rule;
         }
     }

@@ -18,8 +18,8 @@ namespace BatchRename.Rules
                 _current = value;
             }
         }
-
         public int Step { get; set; }
+        public int NumberOfDigits { get; set; } = 1;
 
         public string Name => "AddCounter";
 
@@ -28,7 +28,6 @@ namespace BatchRename.Rules
             Start = 1;
             Step = 3;
         }
-
         public string Rename(string origin)
         {
             var tokens = origin.Split(new string[] { "." },
@@ -36,11 +35,16 @@ namespace BatchRename.Rules
             string fileName = tokens[0];
             string extention = tokens[1];
 
+
             var builder = new StringBuilder();
             builder.Append(fileName);
-            builder.Append(' ');
+
+            for (int i = 0; i < NumberOfDigits - 1; i++)
+            {
+                builder.Append('0');
+            }
             builder.Append(_current);
-            builder.Append('.');
+            builder.Append(".");
             builder.Append(extention);
 
             string result = builder.ToString();
@@ -64,13 +68,15 @@ namespace BatchRename.Rules
                 StringSplitOptions.None);
             var pairs1 = attributes[1].Split(new string[] { "=" },
                 StringSplitOptions.None);
+            var pairs2 = attributes[2].Split(new string[] { "=" },
+                           StringSplitOptions.None);
 
             var rule = new AddCounterRule
             {
                 Start = int.Parse(pairs0[1]),
-                Step = int.Parse(pairs1[1])
+                Step = int.Parse(pairs1[1]),
+                NumberOfDigits = int.Parse(pairs2[1])
             };
-
             return rule;
         }
 
