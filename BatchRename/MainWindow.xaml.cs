@@ -99,6 +99,8 @@ namespace BatchRename
             var button = (Button)e.OriginalSource;
             ListViewRulesApply.SelectedItem = button.DataContext;
 
+            //RefreshStatus();
+
             int indexSelected = ListViewRulesApply.SelectedIndex;
             if (indexSelected != -1)
             {
@@ -165,6 +167,10 @@ namespace BatchRename
                     MessageBox.Show(SelectedItem.NameRule);
                     _listItemRuleApply[indexSelected].Data = "AddPrefix Prefix=Facebook";
                 }
+
+                UpdateActiveRules();
+                UpdateConverterPreview();
+
             }
         }
 
@@ -215,34 +221,22 @@ namespace BatchRename
 
         private void ButtonApply_Click(object sender, RoutedEventArgs e)
         {
-            _activeRules.Clear();
-            if (_listItemRuleApply.Any() && _listItemRuleApply != null)
+            foreach (ItemFile itemFile in _sourceFiles)
             {
-                foreach (var itemRule in _listItemRuleApply!.Where(itemRule => itemRule.Data != null))
+                foreach (IRule itemRule in _activeRules)
                 {
-                    IRule rule = RuleFactory.Parse(itemRule.Data);
-                    if (rule != null)
-                    {
-                        _activeRules.Add(rule);
-                    }
+                    itemFile.NewName = itemRule.Rename(itemFile.NewName);
+                }
+                try
+                {
+                    File.Move(Path.Combine(itemFile.FilePath, itemFile.OldName), Path.Combine(itemFile.FilePath, itemFile.NewName));
+                    itemFile.Result = "Success";
+                }
+                catch (FileNotFoundException)
+                {
+                    // Unhandled exception
                 }
             }
-
-            // binding converter
-            var converter = (PreviewRenameConverter)FindResource("PreviewRenameConverter");
-            foreach (IRule rule in _activeRules)
-            {
-                converter.Rules.Add((IRule)rule.Clone());
-            }
-
-            var temp = new ObservableCollection<ItemFile>();
-            foreach (var file in _sourceFiles)
-            {
-                temp.Add(file);
-            }
-
-            _sourceFiles = temp;
-            ListViewFile.ItemsSource = _sourceFiles;
         }
 
         public static List<string> GetListName(List<IRule> _activeRules)
@@ -257,6 +251,7 @@ namespace BatchRename
 
         private void StartButton_Click(object sender, RoutedEventArgs e)
         {
+            UpdateActiveRules();
             foreach (ItemFile itemFile in _sourceFiles)
             {
                 foreach (IRule itemRule in _activeRules)
@@ -278,13 +273,75 @@ namespace BatchRename
         private void ButtonAddRule_Click(object sender, RoutedEventArgs e)
         {
             var selectedRule = ComboboxRule.SelectedItem as ItemRule;
-
-            _listItemRuleApply.Add(selectedRule);
+            if (!_listItemRuleApply.Contains(selectedRule))
+            {
+                _listItemRuleApply.Add(selectedRule);
+            }
+           
         }
 
         private static void DebuggingTest()
         {
             var preset = new Preset();
+        }
+
+        private void ButtonPreview_Click(object sender, RoutedEventArgs e)
+        {
+            UpdateActiveRules();
+            UpdateConverterPreview();
+
+            var temp = new ObservableCollection<ItemFile>();
+            foreach (var file in _sourceFiles)
+            {
+                temp.Add(file);
+            }
+
+            _sourceFiles = temp;
+            ListViewFile.ItemsSource = _sourceFiles;
+        }
+
+        private void RefreshStatus()
+        {
+            foreach (ItemFile itemFile in _sourceFiles)
+            {
+                itemFile.OldName = itemFile.NewName;
+                itemFile.Result = "";
+            }
+        }
+
+        private void UpdateConverterPreview()
+        {
+            // binding converter
+            var converter = (PreviewRenameConverter)FindResource("PreviewRenameConverter");
+            converter.Rules.Clear();
+            foreach (IRule rule in _activeRules)
+            {
+                converter.Rules.Add((IRule)rule.Clone());
+            }
+            //var temp = new ObservableCollection<ItemFile>();
+            //foreach (var file in _sourceFiles)
+            //{
+            //    temp.Add(file);
+            //}
+            //_sourceFiles = temp;
+            ListViewFile.ItemsSource = null;
+            ListViewFile.ItemsSource = _sourceFiles;
+        }
+
+        private void UpdateActiveRules()
+        {
+            _activeRules.Clear();
+            if (_listItemRuleApply.Any() && _listItemRuleApply != null)
+            {
+                foreach (var itemRule in _listItemRuleApply!.Where(itemRule => itemRule.Data != null))
+                {
+                    IRule rule = RuleFactory.Parse(itemRule.Data);
+                    if (rule != null)
+                    {
+                        _activeRules.Add(rule);
+                    }
+                }
+            }
         }
     }
 }

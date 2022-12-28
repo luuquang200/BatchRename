@@ -16,6 +16,7 @@
     <None Remove="Images\confignew.png" />
     <None Remove="Images\configuration.png" />
     <None Remove="Images\Frame2.png" />
+    <None Remove="Images\icon_preview.png" />
     <None Remove="Images\NewConfig.png" />
     <None Remove="Images\remove.png" />
     <None Remove="Images\removenew.png" />
@@ -58,15 +59,18 @@
     <Resource Include="Images\icon_add_rule.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Images\icon_apply.png">
+    <Content Include="Images\icon_apply.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
+    </Content>
     <Resource Include="Images\icon_new.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\icon_open.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Content Include="Images\icon_preview.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>

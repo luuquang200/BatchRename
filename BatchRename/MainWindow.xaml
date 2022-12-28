@@ -57,6 +57,11 @@
                                    Margin="10 0 10 0"
                                    Click="ButtonApply_Click"
                                    Icon="/Images/icon_apply.png" />
+                    <Fluent:Button x:Name="ButtonPreview"
+                                   Header="Preview"
+                                   Margin="10 0 10 0"
+                                   Click="ButtonPreview_Click"
+                                   Icon="/Images/icon_preview.png" />
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
 
