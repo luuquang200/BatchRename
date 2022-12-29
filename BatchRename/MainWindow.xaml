@@ -65,8 +65,7 @@
                                    Header="Refresh"
                                    Margin="10 0 10 0"
                                    Click="ButtonRefresh_Click"
-                                   Icon="/Images/refresh.png"
-                                   />
+                                   Icon="/Images/refresh.png" />
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
 
@@ -189,20 +188,20 @@
             <TabControl Margin="0 0 0 0" BorderBrush="Gainsboro" Width="550">
                 <TabItem Header="File" Style="{StaticResource StabItemStyle}" Width="70">
                     <StackPanel  Margin="7 0 0 0">
-                        <StackPanel Orientation="Horizontal" >
+                        <StackPanel Orientation="Horizontal">
                             <Button x:Name="ButtonAddFile"
                                 Content="Add New File"
                                 Width="110"
                                 Foreground="Black"
                                 Style="{StaticResource ButtonAddNew}" Height="31"
-                                    Click="ButtonAddFile_Click"/>
+                                    Click="ButtonAddFile_Click" />
                             <Button x:Name="ButtonClearAllFile"
                                 Content="Clear All"
                                 Width="128"
                                 Foreground="Black"
-                                Style="{StaticResource ButtonClearAll}" Height="31" Click="ButtonClearAllFile_Click"/>
+                                Style="{StaticResource ButtonClearAll}" Height="31" Click="ButtonClearAllFile_Click" />
                         </StackPanel>
-                        
+
                         <ListView x:Name="ListViewFile"
                                   HorizontalAlignment="Left"
                                   Height="305"
@@ -229,21 +228,12 @@
                             </ListView.View>
                         </ListView>
                     </StackPanel>
-
                 </TabItem>
 
                 <TabItem Header="Folder" Style="{StaticResource StabItemStyle}"
                          Width="90" Margin="0 0 10 0">
                 </TabItem>
             </TabControl>
-
-            <StackPanel Orientation="Vertical">
-                <Button x:Name="Refresh"
-                        Width="80" Height="35"
-                        Content="Start"
-                        Click="ButtonStart_Click"
-                        Margin="10" />
-            </StackPanel>
         </StackPanel>
     </Grid>
 </Fluent:RibbonWindow>
