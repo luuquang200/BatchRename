@@ -207,6 +207,8 @@
                                   Height="305"
                                   VerticalAlignment="Top"
                                   Width="518"
+                                  AllowDrop="True"
+                                  Drop="ListViewFile_Drop"
                                   d:ItemsSource="{d:SampleData ItemCount=5}">
                             <ListView.View>
                                 <GridView>

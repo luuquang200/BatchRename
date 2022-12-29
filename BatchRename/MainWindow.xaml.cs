@@ -59,6 +59,7 @@ namespace BatchRename
 
             ListViewRulesApply.ItemsSource = _listItemRuleApply;
             ComboboxRule.ItemsSource = _availableRules;
+            ListViewFile.ItemsSource = _sourceFiles;
 
             RuleFactory.Register(new RemoveSpecialCharsRule());
             RuleFactory.Register(new AddPrefixRule());
@@ -490,6 +491,41 @@ namespace BatchRename
         private void ButtonRefresh_Click(object sender, RoutedEventArgs e)
         {
             RefreshStatus();
+        }
+
+        private void ListViewFile_Drop(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+                //MessageBox.Show("File: " + files[0]);
+                foreach (string file in files)
+                {
+                    bool isExisted = false;
+                    var info = new FileInfo(file);
+                    var shortName = info.Name;
+                    var filePath = info.DirectoryName;
+
+                    foreach (var itemFile in _sourceFiles)
+                    {
+                        if (itemFile.OldName.Equals(shortName) && itemFile.FilePath.Equals(filePath))
+                        {
+                            isExisted = true;
+                            break;
+                        }
+                    }
+
+                    if (!isExisted)
+                    {
+                        _sourceFiles.Add(new ItemFile
+                        {
+                            OldName = shortName,
+                            NewName = shortName,
+                            FilePath = filePath
+                        });
+                    }
+                }
+            }
         }
     }
 }
