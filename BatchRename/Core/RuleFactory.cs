@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection.Metadata;
 
 namespace BatchRename.Core
 {
@@ -21,10 +23,6 @@ namespace BatchRename.Core
             return _instance;
         }
 
-        private RuleFactory()
-        {
-        }
-
         public static IRule Parse(string data)
         {
             const char Space = ' ';
@@ -40,6 +38,11 @@ namespace BatchRename.Core
             }
 
             return result;
+        }
+
+        public static string[] GetAllRulesName()
+        {
+            return _prototypes.Keys.ToArray();
         }
     }
 }

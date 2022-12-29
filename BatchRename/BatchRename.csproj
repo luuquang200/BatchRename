@@ -11,6 +11,7 @@
     <None Remove="Images\ClearAll.png" />
     <None Remove="Images\icon_add_rule.png" />
     <None Remove="Images\icon_apply.png" />
+    <None Remove="Images\icon_delete.png" />
     <None Remove="Images\icon_new.png" />
     <None Remove="Images\icon_open.png" />
     <None Remove="Images\config.jpg" />
@@ -18,6 +19,7 @@
     <None Remove="Images\configuration.png" />
     <None Remove="Images\Frame2.png" />
     <None Remove="Images\icon_preview.png" />
+    <None Remove="Images\icon_save.png" />
     <None Remove="Images\NewConfig.png" />
     <None Remove="Images\refresh.png" />
     <None Remove="Images\remove.png" />
@@ -70,10 +72,16 @@
     <Content Include="Images\icon_apply.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Images\icon_delete.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Images\icon_new.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\icon_open.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\icon_save.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Content Include="Images\icon_preview.png">
