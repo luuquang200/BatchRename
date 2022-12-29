@@ -33,7 +33,7 @@ namespace BatchRename.Rules
             var tokens = origin.Split(new string[] { "." },
                 StringSplitOptions.None);
             string fileName = tokens[0];
-            string extention = tokens[1];
+            string extension = tokens[1];
 
 
             var builder = new StringBuilder();
@@ -44,8 +44,8 @@ namespace BatchRename.Rules
                 builder.Append('0');
             }
             builder.Append(_current);
-            builder.Append(".");
-            builder.Append(extention);
+            builder.Append('.');
+            builder.Append(extension);
 
             string result = builder.ToString();
             _current += Step;

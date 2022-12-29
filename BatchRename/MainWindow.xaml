@@ -29,11 +29,15 @@
                 <Fluent:RibbonGroupBox Header="Preset"
 
                                        Margin="5 10 0 0">
-                    <Fluent:Button Header="Open"
+                    <Fluent:Button x:Name="ButtonOpenPreset"
+                                   Header="Open"
                                    Icon="/Images/icon_open.png"
+                                   Click="ButtonOpenPreset_Click"
                                    Margin="0 0 10 0" />
-                    <Fluent:Button Header="New"
+                    <Fluent:Button x:Name="ButtonNewPreset"
+                                   Header="New"
                                    Margin="0 0 10 0"
+                                   Click="ButtonNewPreset_Click"
                                    Icon="/Images/icon_new.png" />
                 </Fluent:RibbonGroupBox>
                 <Fluent:RibbonGroupBox Header="Rule"
@@ -84,7 +88,15 @@
         <StackPanel Grid.Row="1"
                     Orientation="Horizontal">
             <StackPanel Orientation="Vertical">
-                <ListView x:Name="ListViewRulesApply" Width="303" Height="300"
+                <Fluent:ComboBox x:Name="ComboboxPreset"
+                                 Header="Preset:"
+                                 DisplayMemberPath="Name"
+                                 Width="250"
+                                 HorizontalAlignment="Left"
+                                 SelectionChanged="ComboboxPreset_SelectionChanged"
+                                 Margin="5" />
+                <ListView x:Name="ListViewRulesApply"
+                          Width="303" Height="300"
                           Margin="2 0 0 0"
                           ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                           ScrollViewer.VerticalScrollBarVisibility="Visible"
@@ -200,19 +212,19 @@
                             <ListView.View>
                                 <GridView>
                                     <GridViewColumn Header="Filename"
-                                            Width="120"
-                                            DisplayMemberBinding="{Binding OldName}" />
+                                                    Width="120"
+                                                    DisplayMemberBinding="{Binding OldName}" />
                                     <GridViewColumn Header="New Filename"
                                             Width="150"
                                             DisplayMemberBinding="{Binding OldName,
                                                         Converter={StaticResource PreviewRenameConverter},
                                                         ConverterParameter=Result}" />
                                     <GridViewColumn Header= "Path"
-                                            Width="150"
-                                            DisplayMemberBinding="{Binding FilePath}" />
+                                                    Width="150"
+                                                    DisplayMemberBinding="{Binding FilePath}" />
                                     <GridViewColumn Header= "Note"
-                                            Width="60"
-                                            DisplayMemberBinding="{Binding Result}" />
+                                                    Width="60"
+                                                    DisplayMemberBinding="{Binding Result}" />
                                 </GridView>
                             </ListView.View>
                         </ListView>
@@ -229,7 +241,7 @@
                 <Button x:Name="Refresh"
                         Width="80" Height="35"
                         Content="Start"
-                        Click="StartButton_Click"
+                        Click="ButtonStart_Click"
                         Margin="10" />
             </StackPanel>
         </StackPanel>
