@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using System.Windows.Shapes;
 using BatchRename.Core;
 
 namespace BatchRename.Rules
@@ -22,6 +23,7 @@ namespace BatchRename.Rules
         public int NumberOfDigits { get; set; } = 1;
 
         public string Name => "AddCounter";
+
 
         public AddCounterRule()
         {
@@ -83,6 +85,31 @@ namespace BatchRename.Rules
         public void ResetCounter()
         {
             _current = Start;
+        }
+
+        public IConfigRuleWindow ConfigRuleWindow()
+        {
+            return new InputAddCounter(Start.ToString(), Step.ToString(), NumberOfDigits.ToString());
+
+        }
+
+        public void SetData(string dataInput)
+        {
+            var tokens = dataInput.Split(new string[] { " " },
+               StringSplitOptions.None);
+            var data = tokens[1];
+            var attributes = data.Split(new string[] { "," },
+                StringSplitOptions.None);
+            var pairs0 = attributes[0].Split(new string[] { "=" },
+                StringSplitOptions.None);
+            var pairs1 = attributes[1].Split(new string[] { "=" },
+                StringSplitOptions.None);
+            var pairs2 = attributes[2].Split(new string[] { "=" },
+                           StringSplitOptions.None);
+
+            Start = int.Parse(pairs0[1]);
+            Step = int.Parse(pairs1[1]);
+            NumberOfDigits = int.Parse(pairs2[1]);
         }
     }
 }

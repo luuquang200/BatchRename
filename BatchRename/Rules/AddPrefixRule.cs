@@ -45,5 +45,15 @@ namespace BatchRename.Rules
 
             return rule;
         }
+
+        public IConfigRuleWindow ConfigRuleWindow()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetData(string data)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

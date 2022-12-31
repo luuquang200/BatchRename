@@ -9,5 +9,8 @@ namespace BatchRename.Core
         string Name { get; }
 
         IRule Parse(string line);
+
+        public IConfigRuleWindow ConfigRuleWindow();
+        public void SetData(string data);
     }
 }

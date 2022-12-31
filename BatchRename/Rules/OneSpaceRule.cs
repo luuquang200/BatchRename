@@ -12,6 +12,11 @@ namespace BatchRename.Rules
             return MemberwiseClone();
         }
 
+        public IConfigRuleWindow ConfigRuleWindow()
+        {
+            throw new System.NotImplementedException();
+        }
+
         public IRule Parse(string line)
         {
             return new OneSpaceRule();
@@ -39,6 +44,11 @@ namespace BatchRename.Rules
 
             var result = builder.ToString();
             return result;
+        }
+
+        public void SetData(string data)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

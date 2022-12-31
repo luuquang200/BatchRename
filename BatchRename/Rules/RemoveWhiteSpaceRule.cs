@@ -22,5 +22,15 @@ namespace BatchRename.Rules
         {
             return MemberwiseClone();
         }
+
+        public IConfigRuleWindow ConfigRuleWindow()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void SetData(string data)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

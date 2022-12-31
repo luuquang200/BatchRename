@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Text;
+using System.Windows.Shapes;
 using BatchRename.Core;
 
 namespace BatchRename.Rules
@@ -61,6 +63,27 @@ namespace BatchRename.Rules
             }
 
             return rule;
+        }
+
+        public IConfigRuleWindow ConfigRuleWindow()
+        {
+            return new InputRemoveSpecialCharsRule(SpecialChars);
+        }
+
+        public void SetData(string dataInput)
+        {
+            var tokens = dataInput.Split(new string[] { " " },
+                StringSplitOptions.None);
+            var data = tokens[1]; // SpecialChars=-_
+            var pairs = data.Split(new string[] { "=" },
+                StringSplitOptions.None); // -_
+            var specials = pairs[1];
+
+            SpecialChars.Clear();
+            foreach (var c in specials)
+            {
+                SpecialChars.Add($"{c}");
+            }
         }
     }
 }
