@@ -31,7 +31,6 @@ namespace BatchRename
         private readonly ObservableCollection<ItemFile> _sourceFiles;
         private readonly ObservableCollection<IRule> _availableRules;
         private ObservableCollection<IRule> _activeRules;
-        private ObservableCollection<IRule> _refeshRules;
         private readonly ObservableCollection<Preset> _presets;
         private Preset _activePreset;
 
@@ -42,7 +41,6 @@ namespace BatchRename
             _sourceFiles = new ObservableCollection<ItemFile>();
             _availableRules = new ObservableCollection<IRule>();
             _activeRules = new ObservableCollection<IRule>();
-            _refeshRules = new ObservableCollection<IRule>();
             _presets = new ObservableCollection<Preset>(Preset.GetPresets());
         }
 
@@ -308,11 +306,9 @@ namespace BatchRename
         {
             _activePreset = preset;
             _activeRules.Clear();
-            _refeshRules.Clear();
             foreach (var itemRule in _activePreset.GetRules())
             {
                 _activeRules.Add(itemRule);
-                _refeshRules.Add(itemRule);
             }
         }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using System.Windows;
 using System.Windows.Shapes;
 using BatchRename.Core;
 
@@ -42,10 +43,11 @@ namespace BatchRename.Rules
             builder.Append(fileName);
 
             int countNumber = CountNumber(_current);
-            if (NumberOfDigits > countNumber)
+            int tempNumberOfDigits = NumberOfDigits;
+            if (tempNumberOfDigits > countNumber)
             {
-                NumberOfDigits -= countNumber;
-                for (int i = 0; i < NumberOfDigits; i++)
+                tempNumberOfDigits -= countNumber;
+                for (int i = 0; i < tempNumberOfDigits; i++)
                 {
                     builder.Append('0');
                 }
@@ -119,7 +121,7 @@ namespace BatchRename.Rules
             NumberOfDigits = int.Parse(pairs2[1]);
         }
 
-        public int CountNumber(int num)
+        public static int CountNumber(int num)
         {
             int temp = num, count = 0;
             while (temp != 0)
