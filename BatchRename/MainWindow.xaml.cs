@@ -372,6 +372,7 @@ namespace BatchRename
         private void LoadPreset(Preset preset)
         {
             _activePreset = preset;
+            TextboxRename.Text = preset.Name;
 
             _listItemRuleApply.Clear();
             _activePreset?.GetRuleItems().ForEach(itemRule => _listItemRuleApply.Add(itemRule));
@@ -493,6 +494,28 @@ namespace BatchRename
 
             File.Delete(_activePreset.GetPath());
             _presets.Remove(_activePreset); // ComboBoxSelectionChanged will automatically called
+        }
+
+        private void ButtonSavePresetAlternative_Click(object sender, RoutedEventArgs e)
+        {
+            // Haven't implemented to handle saving preset's content
+
+            if (_activePreset is null)
+                return;
+
+            string newName = TextboxRename.Text;
+            if (string.IsNullOrEmpty(newName))
+            {
+                MessageBox.Show("Preset name cannot be empty.", "Invalid name", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
+            string oldName = _activePreset.Name;
+            if (_activePreset.Rename(newName))
+            {
+                File.Move(Preset.GetPath(oldName), Preset.GetPath(newName));
+                ComboboxPreset.Text = newName;
+            }
         }
     }
 }

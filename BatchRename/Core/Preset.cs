@@ -6,12 +6,12 @@ using System.Windows.Documents;
 
 namespace BatchRename.Core
 {
-    public class Preset
+    public class Preset : ObservableObject
     {
         public static string PRESET_FOLDER_PATH => Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..\\..\\..\\")) + @"Presets\";
         public static readonly string PRESET_FILE_EXTENSION = ".txt";
 
-        public string Name { get; }
+        public string Name { get; private set; }
 
         public Preset()
         {
@@ -40,11 +40,31 @@ namespace BatchRename.Core
             }
         }
 
-        public string GetPath(string name = null) => name switch
+        // Returns true if rename successfully, other wise returns false
+        public bool Rename(string newName)
         {
-            null => Path.Combine(PRESET_FOLDER_PATH, Name + PRESET_FILE_EXTENSION),
-            _ => Path.Combine(PRESET_FOLDER_PATH, name + PRESET_FILE_EXTENSION)
-        };
+            if (string.IsNullOrEmpty(newName))
+            {
+                throw new ArgumentException("Preset name cannot be null or empty.");
+            }
+
+            if (Exists(newName))
+                return false;
+
+            Name = newName;
+            NotifyPropertyChanged(nameof(Name));
+            return true;
+        }
+
+        public string GetPath()
+        {
+            return Path.Combine(PRESET_FOLDER_PATH, Name + PRESET_FILE_EXTENSION);
+        }
+
+        public static string GetPath(string name)
+        {
+            return Path.Combine(PRESET_FOLDER_PATH, name + PRESET_FILE_EXTENSION);
+        }
 
         public bool Exists(string name = null)
         {
