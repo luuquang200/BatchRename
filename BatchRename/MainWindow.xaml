@@ -33,17 +33,26 @@
                                    Header="Open"
                                    Icon="/Images/icon_open.png"
                                    Click="ButtonOpenPreset_Click"
-                                   Margin="0 0 10 0" />
+                                   Margin="0 0 20 0" />
                     <Fluent:Button x:Name="ButtonNewPreset"
                                    Header="New"
-                                   Margin="0 0 10 0"
+                                   Margin="0 0 20 0"
                                    Click="ButtonNewPreset_Click"
                                    Icon="/Images/icon_new.png" />
+                    <Fluent:Button x:Name="ButtonSavePreset"
+                                   Header="Save"
+                                   Margin="0 0 20 0"
+                                   Click="ButtonSavePreset_Click"
+                                   Icon="/Images/icon_save.png" />
+                    <Fluent:Button x:Name="ButtonDeletePreset"
+                                   Header="Delete"
+                                   Margin="0 0 20 0"
+                                   Icon="/Images/icon_delete.png"
+                                   Click="ButtonDeletePreset_Click" />
                 </Fluent:RibbonGroupBox>
                 <Fluent:RibbonGroupBox Header="Rule"
                                        Margin="0 10 0 0">
                     <Fluent:ComboBox x:Name="ComboboxRule"
-                                     DisplayMemberPath="NameRule"
                                      SelectedIndex="0"
                                      Header="Rule"
                                      IsReadOnly="True"
@@ -183,6 +192,22 @@
                         </Style>
                     </ListView.ItemContainerStyle>
                 </ListView>
+
+                <StackPanel Orientation="Horizontal"
+                            Margin="10 30 0 0">
+                    <Fluent:TextBox x:Name="TextboxRename"
+                                    Header="Preset:"
+                                    Width="200" />
+                    <Button x:Name="ButtonSavePresetAlternative"
+                            Content="Save"
+                            Background="#0033A1"
+                            FontWeight="Medium"
+                            Margin="5 0 0 0"
+                            Width="75"
+                            Click="ButtonSavePresetAlternative_Click"
+                            FontSize="11"
+                            Style="{StaticResource ButtonCustomColorPositive}" />
+                </StackPanel>
             </StackPanel>
 
             <TabControl Margin="0 0 0 0" BorderBrush="Gainsboro" Width="550">
@@ -190,7 +215,7 @@
                     <StackPanel  Margin="7 0 0 0">
                         <StackPanel Orientation="Horizontal">
                             <Button x:Name="ButtonAddFile"
-                                Content="Add New File"
+                                Content="Add Files"
                                 Width="110"
                                 Foreground="Black"
                                 Style="{StaticResource ButtonAddNew}" Height="31"

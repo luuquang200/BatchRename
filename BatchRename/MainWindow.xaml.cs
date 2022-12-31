@@ -28,7 +28,7 @@ namespace BatchRename
     public partial class MainWindow : INotifyPropertyChanged
     {
         private readonly ObservableCollection<ItemFile> _sourceFiles;
-        private readonly ObservableCollection<ItemRule> _availableRules;
+        private readonly ObservableCollection<string> _availableRules;
         private readonly ObservableCollection<ItemRule> _listItemRuleApply;
         private readonly List<IRule> _activeRules;
         private readonly ObservableCollection<Preset> _presets;
@@ -40,44 +40,33 @@ namespace BatchRename
 
             _sourceFiles = new ObservableCollection<ItemFile>();
             _listItemRuleApply = new ObservableCollection<ItemRule>();
-            _availableRules = new ObservableCollection<ItemRule>();
+            _availableRules = new ObservableCollection<string>();
             _activeRules = new List<IRule>();
             _presets = new ObservableCollection<Preset>(Preset.GetPresets());
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            // Đăng kí cho biết là mình có thể gặp những luật đổi tên gì?
-            // Cảnh giới cuối: Đọc dll, đăng kí khả năng, chọn tập tin luật
-
-            // Cách 1: Sắp làm: code cứng trước
-
-            // Cách 2: Cac luat duoc luu trong tap tin Preset
-
-            LoadAvailableRules();
-            ComboboxPreset.ItemsSource = _presets;
-
-            ListViewRulesApply.ItemsSource = _listItemRuleApply;
-            ComboboxRule.ItemsSource = _availableRules;
-            ListViewFile.ItemsSource = _sourceFiles;
-
             RuleFactory.Register(new RemoveSpecialCharsRule());
             RuleFactory.Register(new AddPrefixRule());
             RuleFactory.Register(new AddSuffixRule());
             RuleFactory.Register(new OneSpaceRule());
             RuleFactory.Register(new AddCounterRule());
             RuleFactory.Register(new RemoveWhiteSpaceRule());
+
+            LoadAvailableRules();
+            ComboboxPreset.ItemsSource = _presets;
+
+            ListViewRulesApply.ItemsSource = _listItemRuleApply;
+            ComboboxRule.ItemsSource = _availableRules;
         }
 
         private void LoadAvailableRules()
         {
-            // Temporary hard-coded rules
-            _availableRules.Add(new ItemRule() { NameRule = "RemoveSpecialChars" });
-            _availableRules.Add(new ItemRule() { NameRule = "AddCounter" });
-            _availableRules.Add(new ItemRule() { NameRule = "AddPrefix" });
-            _availableRules.Add(new ItemRule() { NameRule = "AddSuffix" });
-            _availableRules.Add(new ItemRule() { NameRule = "OneSpace" });
-            _availableRules.Add(new ItemRule() { NameRule = "RemoveWhiteSpace" });
+            foreach (var name in RuleFactory.GetAllRulesName())
+            {
+                _availableRules.Add(name);
+            }
         }
 
         private void ButtonAddFile_Click(object sender, RoutedEventArgs e)
@@ -170,69 +159,69 @@ namespace BatchRename
 
             UpdateActiveRules();
             UpdateConverterPreview();
-        }
 
-        private void HandleAddCounterConfig(int indexSelected)
-        {
-            string line = _listItemRuleApply[indexSelected].Data;
-            string start = "";
-            string step = "";
-            string number = "";
-            if (line != "")
+            // Local functions' definition
+            void HandleAddCounterConfig(int indexSelected)
             {
-                var tokens = line.Split(new string[] { " " },
-                    StringSplitOptions.None);
-                var data = tokens[1];
-                var attributes = data.Split(new string[] { "," },
-                    StringSplitOptions.None);
-                var pairs0 = attributes[0].Split(new string[] { "=" },
-                    StringSplitOptions.None);
-                var pairs1 = attributes[1].Split(new string[] { "=" },
-                    StringSplitOptions.None);
-                var pairs2 = attributes[2].Split(new string[] { "=" },
-                    StringSplitOptions.None);
-                start = pairs0[1];
-                step = pairs1[1];
-                number = pairs2[1];
+                string line = _listItemRuleApply[indexSelected].Data;
+                string start = "";
+                string step = "";
+                string number = "";
+                if (line != "")
+                {
+                    var tokens = line.Split(new string[] { " " },
+                        StringSplitOptions.None);
+                    var data = tokens[1];
+                    var attributes = data.Split(new string[] { "," },
+                        StringSplitOptions.None);
+                    var pairs0 = attributes[0].Split(new string[] { "=" },
+                        StringSplitOptions.None);
+                    var pairs1 = attributes[1].Split(new string[] { "=" },
+                        StringSplitOptions.None);
+                    var pairs2 = attributes[2].Split(new string[] { "=" },
+                        StringSplitOptions.None);
+                    start = pairs0[1];
+                    step = pairs1[1];
+                    number = pairs2[1];
+                }
+
+                var screen = new InputAddCounter(start, step, number);
+                if (screen.ShowDialog() == true)
+                {
+                    start = screen.inputStartTextBox.Text;
+                    step = screen.inputStepTextBox.Text;
+                    number = screen.inputNumberDigitsTextBox.Text;
+                    StringBuilder stringBuilder = new();
+                    stringBuilder.Append("AddCounter Start=");
+                    stringBuilder.Append(start);
+                    stringBuilder.Append(",Step=");
+                    stringBuilder.Append(step);
+                    stringBuilder.Append(",Number=");
+                    stringBuilder.Append(number);
+                    _listItemRuleApply[indexSelected].Data = stringBuilder.ToString();
+                }
             }
-
-            var screen = new InputAddCounter(start, step, number);
-            if (screen.ShowDialog() == true)
+            void HandleRemoveSpecialCharsConfig(int indexSelected)
             {
-                start = screen.inputStartTextBox.Text;
-                step = screen.inputStepTextBox.Text;
-                number = screen.inputNumberDigitsTextBox.Text;
-                StringBuilder stringBuilder = new();
-                stringBuilder.Append("AddCounter Start=");
-                stringBuilder.Append(start);
-                stringBuilder.Append(",Step=");
-                stringBuilder.Append(step);
-                stringBuilder.Append(",Number=");
-                stringBuilder.Append(number);
-                _listItemRuleApply[indexSelected].Data = stringBuilder.ToString();
-            }
-        }
+                string line = _listItemRuleApply[indexSelected].Data;
+                var specials = "";
+                if (line != "")
+                {
+                    var tokens = line.Split(' ');
+                    var data = tokens[1]; // SpecialChars=-_
+                    var pairs = data.Split('='); // -_
+                    specials = pairs[1];
+                }
 
-        private void HandleRemoveSpecialCharsConfig(int indexSelected)
-        {
-            string line = _listItemRuleApply[indexSelected].Data;
-            var specials = "";
-            if (line != "")
-            {
-                var tokens = line.Split(' ');
-                var data = tokens[1]; // SpecialChars=-_
-                var pairs = data.Split('='); // -_
-                specials = pairs[1];
-            }
-
-            var screen = new InputRemoveSpecialCharsRule(specials);
-            if (screen.ShowDialog() == true)
-            {
-                string input = screen.inputTextBox.Text;
-                StringBuilder stringBuilder = new();
-                stringBuilder.Append("RemoveSpecialChars SpecialChars=");
-                stringBuilder.Append(input);
-                _listItemRuleApply[indexSelected].Data = stringBuilder.ToString();
+                var screen = new InputRemoveSpecialCharsRule(specials);
+                if (screen.ShowDialog() == true)
+                {
+                    string input = screen.inputTextBox.Text;
+                    StringBuilder stringBuilder = new();
+                    stringBuilder.Append("RemoveSpecialChars SpecialChars=");
+                    stringBuilder.Append(input);
+                    _listItemRuleApply[indexSelected].Data = stringBuilder.ToString();
+                }
             }
         }
 
@@ -304,7 +293,6 @@ namespace BatchRename
                     // Unhandled exception
                 }
             }
-            //UpdateConverterPreview();
         }
 
         public static List<string> GetListName(List<IRule> _activeRules)
@@ -317,35 +305,15 @@ namespace BatchRename
             return strings;
         }
 
-        //funcion for test
-        private void ButtonStart_Click(object sender, RoutedEventArgs e)
-        {
-            //UpdateActiveRules();
-            //foreach (ItemFile itemFile in _sourceFiles)
-            //{
-            //    foreach (IRule itemRule in _activeRules)
-            //    {
-            //        itemFile.NewName = itemRule.Rename(itemFile.NewName);
-            //    }
-            //    try
-            //    {
-            //        File.Move(Path.Combine(itemFile.FilePath, itemFile.OldName), Path.Combine(itemFile.FilePath, itemFile.NewName));
-            //        itemFile.Result = "Success";
-            //    }
-            //    catch (FileNotFoundException)
-            //    {
-            //        // Unhandled exception
-            //    }
-            //}
-            RefreshStatus();
-        }
-
         private void ButtonAddRule_Click(object sender, RoutedEventArgs e)
         {
-            var selectedRule = ComboboxRule.SelectedItem as ItemRule;
-            if (!_listItemRuleApply.Contains(selectedRule))
+            var selectedRule = ComboboxRule.SelectedItem as string;
+            if (_listItemRuleApply.FirstOrDefault(ir => ir.NameRule == selectedRule) is null)
             {
-                _listItemRuleApply.Add(selectedRule);
+                _listItemRuleApply.Add(new ItemRule
+                {
+                    NameRule = selectedRule
+                });
             }
         }
 
@@ -368,35 +336,30 @@ namespace BatchRename
 
         private void UpdateConverterPreview()
         {
-            // binding converter
+            // Binding converter
             var converter = (PreviewRenameConverter)FindResource("PreviewRenameConverter");
             converter.Rules.Clear();
             foreach (IRule rule in _activeRules)
             {
                 converter.Rules.Add((IRule)rule.Clone());
             }
-            var temp = new ObservableCollection<ItemFile>();
-            //foreach (var file in _sourceFiles)
-            //{
-            //    temp.Add( (ItemFile)file.Clone() );
-            //}
-            //_sourceFiles = temp;
-            ListViewFile.ItemsSource = null;
+
             ListViewFile.ItemsSource = _sourceFiles;
         }
 
         private void UpdateActiveRules()
         {
             _activeRules.Clear();
-            if (_listItemRuleApply.Any() && _listItemRuleApply != null)
+            if (!_listItemRuleApply.Any() || _listItemRuleApply == null)
+                return;
+
+            foreach (var itemRule in _listItemRuleApply.Where(itemRule => itemRule.Data != null))
             {
-                foreach (var itemRule in _listItemRuleApply!.Where(itemRule => itemRule.Data != null))
+                IRule rule = RuleFactory.Parse(itemRule.Data);
+
+                if (rule is not null)
                 {
-                    IRule rule = RuleFactory.Parse(itemRule.Data);
-                    if (rule != null)
-                    {
-                        _activeRules.Add(rule);
-                    }
+                    _activeRules.Add(rule);
                 }
             }
         }
@@ -409,12 +372,10 @@ namespace BatchRename
         private void LoadPreset(Preset preset)
         {
             _activePreset = preset;
-            _listItemRuleApply.Clear();
+            TextboxRename.Text = preset?.Name;
 
-            foreach (var itemRule in _activePreset.GetRuleItems())
-            {
-                _listItemRuleApply.Add(itemRule);
-            }
+            _listItemRuleApply.Clear();
+            _activePreset?.GetRuleItems().ForEach(itemRule => _listItemRuleApply.Add(itemRule));
         }
 
         private void ComboboxPreset_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -443,9 +404,9 @@ namespace BatchRename
             if (dialog.ShowDialog() == true)
             {
                 var filePath = dialog.FileName;
-
+                const char SLASH = '\\';
                 /* Selected preset is in Presets folder */
-                if (Path.GetDirectoryName(filePath).TrimEnd('\\') == Preset.PRESET_FOLDER_PATH.TrimEnd('\\'))
+                if (Path.GetDirectoryName(filePath).TrimEnd(SLASH) == Preset.PRESET_FOLDER_PATH.TrimEnd(SLASH))
                 {
                     var name = Path.GetFileNameWithoutExtension(filePath);
                     ComboboxPreset.SelectedItem = _presets.FirstOrDefault(p => p.Name == name);
@@ -469,9 +430,7 @@ namespace BatchRename
                                     MessageBoxImage.Warning);
 
                     if (result == MessageBoxResult.No)
-                    {
                         return;
-                    }
 
                     File.Delete(newPath);
                     // Also delete from the presets list
@@ -525,6 +484,72 @@ namespace BatchRename
                         });
                     }
                 }
+            }
+        }
+
+        private void ButtonSavePreset_Click(object sender, RoutedEventArgs e)
+        {
+            // If no preset is opening, ask user to enter new name for the preset
+            if (_activePreset is null)
+            {
+                var dialog = new SaveFileDialog
+                {
+                    Filter = "txt files (*.txt)|*.txt",
+                    RestoreDirectory = true,
+                };
+
+                if (dialog.ShowDialog() == true)
+                {
+                    // Not yet implemented
+                    throw new NotImplementedException();
+                }
+
+                return;
+            }
+
+            // Else save to the opening preset
+            using StreamWriter presetFile = new(_activePreset.GetPath());
+            foreach (var rule in _listItemRuleApply)
+            {
+                // Not yet implemented
+            }
+        }
+
+        private void ButtonDeletePreset_Click(object sender, RoutedEventArgs e)
+        {
+            if (_activePreset is null)
+            {
+                _listItemRuleApply.Clear();
+                return;
+            }
+
+            var result = MessageBox.Show("Do you want to delete this preset?", "Delete", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (result == MessageBoxResult.No)
+                return;
+
+            File.Delete(_activePreset.GetPath());
+            _presets.Remove(_activePreset); // ComboBoxSelectionChanged will automatically called
+        }
+
+        private void ButtonSavePresetAlternative_Click(object sender, RoutedEventArgs e)
+        {
+            // Haven't implemented to handle saving preset's content
+
+            if (_activePreset is null)
+                return;
+
+            string newName = TextboxRename.Text;
+            if (string.IsNullOrEmpty(newName))
+            {
+                MessageBox.Show("Preset name cannot be empty.", "Invalid name", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
+            string oldName = _activePreset.Name;
+            if (_activePreset.Rename(newName))
+            {
+                File.Move(Preset.GetPath(oldName), Preset.GetPath(newName));
+                ComboboxPreset.Text = newName;
             }
         }
     }
