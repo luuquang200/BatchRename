@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BatchRename.Rules;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -56,22 +57,15 @@ namespace BatchRename.Core
             return File.ReadAllLines(GetPath());
         }
 
-        public List<ItemRule> GetRuleItems()
+        public List<IRule> GetRules()
         {
-            var rules = new List<ItemRule>();
+            var rules = new List<IRule>();
 
             var lines = Read();
 
-            const char Space = ' ';
-
             foreach (var line in lines)
             {
-                string ruleName = line.Split(Space)[0];
-                rules.Add(new ItemRule
-                {
-                    NameRule = ruleName,
-                    Data = line
-                });
+                rules.Add(RuleFactory.Parse(line));
             }
             return rules;
         }

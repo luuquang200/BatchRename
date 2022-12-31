@@ -30,17 +30,15 @@ namespace BatchRename
     {
         private readonly ObservableCollection<ItemFile> _sourceFiles;
         private readonly ObservableCollection<IRule> _availableRules;
-        private readonly ObservableCollection<IRule> _listItemRuleApply;
         private ObservableCollection<IRule> _activeRules;
         private readonly ObservableCollection<Preset> _presets;
-        private Preset _activePreset = null;
+        private Preset _activePreset;
 
         public MainWindow()
         {
             InitializeComponent();
 
             _sourceFiles = new ObservableCollection<ItemFile>();
-            _listItemRuleApply = new ObservableCollection<IRule>();
             _availableRules = new ObservableCollection<IRule>();
             _activeRules = new ObservableCollection<IRule>();
             _presets = new ObservableCollection<Preset>(Preset.GetPresets());
@@ -58,7 +56,6 @@ namespace BatchRename
             LoadAvailableRules();
             ComboboxPreset.ItemsSource = _presets;
 
-            //ListViewRulesApply.ItemsSource = _listItemRuleApply;
             ListViewRulesApply.ItemsSource = _activeRules;
             ComboboxRule.ItemsSource = _availableRules;
             ListViewFile.ItemsSource = _sourceFiles;
@@ -69,7 +66,6 @@ namespace BatchRename
             RuleFactory.Register(new OneSpaceRule());
             RuleFactory.Register(new AddCounterRule());
             RuleFactory.Register(new RemoveWhiteSpaceRule());
-            
         }
 
         private void LoadAvailableRules()
@@ -82,14 +78,12 @@ namespace BatchRename
             //_availableRules.Add(new ItemRule() { NameRule = "OneSpace" });
             //_availableRules.Add(new ItemRule() { NameRule = "RemoveWhiteSpace" });
 
-
             _availableRules.Add(new RemoveSpecialCharsRule());
             _availableRules.Add(new AddPrefixRule());
             _availableRules.Add(new AddSuffixRule());
             _availableRules.Add(new OneSpaceRule());
             _availableRules.Add(new AddCounterRule());
             _availableRules.Add(new RemoveWhiteSpaceRule());
-
         }
 
         private void ButtonAddFile_Click(object sender, RoutedEventArgs e)
@@ -155,7 +149,6 @@ namespace BatchRename
 
             //ItemRule SelectedItem = _listItemRuleApply[indexSelected];
 
-
             //switch (SelectedItem.NameRule)
             //{
             //    case "RemoveSpecialChars":
@@ -219,14 +212,14 @@ namespace BatchRename
             //}
             //MessageBox.Show(_activeRules[0].Name);
             var screen = _activeRules[0].ConfigRuleWindow();
-           
+
             if (screen.ShowDialog() == true)
             {
                 MessageBox.Show(screen.GetData());
-               
+
                 //_listItemRuleApply[indexSelected].Data = _activeRules[indexSelected].ConfigRuleWindow().GetData();
             }
-           
+
             //var screen = new InputAddCounter(start, step, number);
             //if (screen.ShowDialog() == true)
             //{
@@ -277,7 +270,7 @@ namespace BatchRename
             int indexSelected = ListViewRulesApply.SelectedIndex;
             if (indexSelected != -1)
             {
-                _listItemRuleApply.RemoveAt(indexSelected);
+                _activeRules.RemoveAt(indexSelected);
             }
 
             UpdateActiveRules();
@@ -405,7 +398,7 @@ namespace BatchRename
             {
                 converter.Rules.Add((IRule)rule.Clone());
             }
-            
+
             ListViewFile.ItemsSource = null;
             ListViewFile.ItemsSource = _sourceFiles;
         }
@@ -425,11 +418,11 @@ namespace BatchRename
             //    }
             //}
             ObservableCollection<IRule> temp = new();
-            foreach(IRule rule in _activeRules)
+            foreach (IRule rule in _activeRules)
             {
                 temp.Add((IRule)rule.Clone());
             }
-            _activeRules= temp;
+            _activeRules = temp;
         }
 
         private void ButtonClearAllFile_Click(object sender, RoutedEventArgs e)
@@ -437,22 +430,22 @@ namespace BatchRename
             _sourceFiles.Clear();
         }
 
-        //private void LoadPreset(Preset preset)
-        //{
-        //    _activePreset = preset;
-        //    _listItemRuleApply.Clear();
+        private void LoadPreset(Preset preset)
+        {
+            _activePreset = preset;
+            _activeRules.Clear();
 
-        //    foreach (var itemRule in _activePreset.GetRuleItems())
-        //    {
-        //        _listItemRuleApply.Add(itemRule);
-        //    }
-        //}
+            foreach (var itemRule in _activePreset.GetRules())
+            {
+                _activeRules.Add(itemRule);
+            }
+        }
 
         private void ComboboxPreset_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var combobox = sender as Fluent.ComboBox;
 
-            //LoadPreset(combobox.SelectedItem as Preset);
+            LoadPreset(combobox.SelectedItem as Preset);
         }
 
         private void ButtonNewPreset_Click(object sender, RoutedEventArgs e)
