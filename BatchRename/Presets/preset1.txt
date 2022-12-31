@@ -1,4 +1,4 @@
 RemoveSpecialChars SpecialChars=-_
 AddPrefix Prefix=Facebook
 OneSpace
-AddCounter Start=10,Step=5,NumberOfDigits=02
+AddCounter Start=10,Step=5,NumberOfDigits=2

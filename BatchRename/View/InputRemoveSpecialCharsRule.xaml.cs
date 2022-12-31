@@ -44,6 +44,7 @@ namespace BatchRename
             stringBuilder.Append("RemoveSpecialChars SpecialChars=");
             stringBuilder.Append(input);
             return stringBuilder.ToString();
+
         }
     }
 }

@@ -31,6 +31,7 @@ namespace BatchRename
         private readonly ObservableCollection<ItemFile> _sourceFiles;
         private readonly ObservableCollection<IRule> _availableRules;
         private ObservableCollection<IRule> _activeRules;
+        private ObservableCollection<IRule> _refeshRules;
         private readonly ObservableCollection<Preset> _presets;
         private Preset _activePreset;
 
@@ -41,6 +42,7 @@ namespace BatchRename
             _sourceFiles = new ObservableCollection<ItemFile>();
             _availableRules = new ObservableCollection<IRule>();
             _activeRules = new ObservableCollection<IRule>();
+            _refeshRules = new ObservableCollection<IRule>();
             _presets = new ObservableCollection<Preset>(Preset.GetPresets());
         }
 
@@ -71,12 +73,6 @@ namespace BatchRename
         private void LoadAvailableRules()
         {
             // Temporary hard-coded rules
-            //_availableRules.Add(new ItemRule() { NameRule = "RemoveSpecialChars" });
-            //_availableRules.Add(new ItemRule() { NameRule = "AddCounter" });
-            //_availableRules.Add(new ItemRule() { NameRule = "AddPrefix" });
-            //_availableRules.Add(new ItemRule() { NameRule = "AddSuffix" });
-            //_availableRules.Add(new ItemRule() { NameRule = "OneSpace" });
-            //_availableRules.Add(new ItemRule() { NameRule = "RemoveWhiteSpace" });
 
             _availableRules.Add(new RemoveSpecialCharsRule());
             _availableRules.Add(new AddPrefixRule());
@@ -142,124 +138,17 @@ namespace BatchRename
 
             if (screen.ShowDialog() == true)
             {
-                MessageBox.Show(screen.GetData());
-                _activeRules[indexSelected].SetData(screen.GetData());
-                //_listItemRuleApply[indexSelected].Data = _activeRules[indexSelected].ConfigRuleWindow().GetData();
+               
+                string data = screen.GetData();
+                MessageBox.Show(data);
+                _activeRules[indexSelected].SetData(data);
+                //_refeshRules[indexSelected].SetData(data);
             }
-
-            //ItemRule SelectedItem = _listItemRuleApply[indexSelected];
-
-            //switch (SelectedItem.NameRule)
-            //{
-            //    case "RemoveSpecialChars":
-            //        HandleRemoveSpecialCharsConfig(indexSelected);
-            //        break;
-
-            //    case "AddCounter":
-            //        HandleAddCounterConfig(indexSelected);
-            //        break;
-
-            //    case "OneSpace":
-            //        MessageBox.Show(SelectedItem.NameRule);
-            //        _listItemRuleApply[indexSelected].Data = "OneSpace";
-            //        break;
-
-            //    case "AddPrefix":
-            //        MessageBox.Show(SelectedItem.NameRule);
-            //        _listItemRuleApply[indexSelected].Data = "AddPrefix Prefix=Facebook";
-            //        break;
-
-            //    case "AddSuffix":
-            //        MessageBox.Show(SelectedItem.NameRule);
-            //        _listItemRuleApply[indexSelected].Data = "AddSuffix Prefix=hcmus";
-            //        break;
-
-            //    case "RemoveWhiteSpace":
-            //        MessageBox.Show(SelectedItem.NameRule);
-            //        _listItemRuleApply[indexSelected].Data = "RemoveWhiteSpace";
-            //        break;
-
-            //    default:
-            //        break;
-            //}
-
-            //UpdateActiveRules();
+              
             UpdateConverterPreview();
         }
 
-        private void HandleAddCounterConfig(int indexSelected)
-        {
-            //string line = _listItemRuleApply[indexSelected].Data;
-            //string start = "";
-            //string step = "";
-            //string number = "";
-            //if (line != "")
-            //{
-            //    var tokens = line.Split(new string[] { " " },
-            //        StringSplitOptions.None);
-            //    var data = tokens[1];
-            //    var attributes = data.Split(new string[] { "," },
-            //        StringSplitOptions.None);
-            //    var pairs0 = attributes[0].Split(new string[] { "=" },
-            //        StringSplitOptions.None);
-            //    var pairs1 = attributes[1].Split(new string[] { "=" },
-            //        StringSplitOptions.None);
-            //    var pairs2 = attributes[2].Split(new string[] { "=" },
-            //        StringSplitOptions.None);
-            //    start = pairs0[1];
-            //    step = pairs1[1];
-            //    number = pairs2[1];
-            //}
-            //MessageBox.Show(_activeRules[0].Name);
-            var screen = _activeRules[0].ConfigRuleWindow();
-
-            if (screen.ShowDialog() == true)
-            {
-                MessageBox.Show(screen.GetData());
-
-                //_listItemRuleApply[indexSelected].Data = _activeRules[indexSelected].ConfigRuleWindow().GetData();
-            }
-
-            //var screen = new InputAddCounter(start, step, number);
-            //if (screen.ShowDialog() == true)
-            //{
-            //    //start = screen.inputStartTextBox.Text;
-            //    //step = screen.inputStepTextBox.Text;
-            //    //number = screen.inputNumberDigitsTextBox.Text;
-            //    //StringBuilder stringBuilder = new();
-            //    //stringBuilder.Append("AddCounter Start=");
-            //    //stringBuilder.Append(start);
-            //    //stringBuilder.Append(",Step=");
-            //    //stringBuilder.Append(step);
-            //    //stringBuilder.Append(",Number=");
-            //    //stringBuilder.Append(number);
-
-            //    _listItemRuleApply[indexSelected].Data = screen.GetData();
-            //}
-        }
-
-        //private void HandleRemoveSpecialCharsConfig(int indexSelected)
-        //{
-        //    string line = _listItemRuleApply[indexSelected].Data;
-        //    var specials = "";
-        //    if (line != "")
-        //    {
-        //        var tokens = line.Split(' ');
-        //        var data = tokens[1]; // SpecialChars=-_
-        //        var pairs = data.Split('='); // -_
-        //        specials = pairs[1];
-        //    }
-
-        //    var screen = new InputRemoveSpecialCharsRule(specials);
-        //    if (screen.ShowDialog() == true)
-        //    {
-        //        string input = screen.inputTextBox.Text;
-        //        StringBuilder stringBuilder = new();
-        //        stringBuilder.Append("RemoveSpecialChars SpecialChars=");
-        //        stringBuilder.Append(input);
-        //        _listItemRuleApply[indexSelected].Data = stringBuilder.ToString();
-        //    }
-        //}
+        
 
         private void ButtonRemove_Click(object sender, RoutedEventArgs e)
         {
@@ -271,6 +160,7 @@ namespace BatchRename
             if (indexSelected != -1)
             {
                 _activeRules.RemoveAt(indexSelected);
+                //_refeshRules.RemoveAt(indexSelected);
             }
 
             UpdateActiveRules();
@@ -313,11 +203,22 @@ namespace BatchRename
         private void ButtonApply_Click(object sender, RoutedEventArgs e)
         {
             UpdateActiveRules();
+            ObservableCollection<IRule> _tempRules = new();
+            foreach (IRule itemRule in _activeRules)
+            {
+                _tempRules.Add((IRule)itemRule.Clone());
+            }
+
             foreach (ItemFile itemFile in _sourceFiles)
             {
-                foreach (IRule itemRule in _activeRules)
+                //foreach (IRule itemRule in _activeRules)
+                foreach (IRule itemRule in _tempRules)
                 {
-                    itemFile.NewName = itemRule.Rename(itemFile.NewName);
+                    if (!itemFile.Result.Equals("Success"))
+                    {
+                        itemFile.NewName = itemRule.Rename(itemFile.NewName);
+                    }
+                    
                 }
                 try
                 {
@@ -329,7 +230,7 @@ namespace BatchRename
                     // Unhandled exception
                 }
             }
-            //UpdateConverterPreview();
+            UpdateConverterPreview();
         }
 
         public static List<string> GetListName(List<IRule> _activeRules)
@@ -345,31 +246,15 @@ namespace BatchRename
         //funcion for test
         private void ButtonStart_Click(object sender, RoutedEventArgs e)
         {
-            //UpdateActiveRules();
-            //foreach (ItemFile itemFile in _sourceFiles)
-            //{
-            //    foreach (IRule itemRule in _activeRules)
-            //    {
-            //        itemFile.NewName = itemRule.Rename(itemFile.NewName);
-            //    }
-            //    try
-            //    {
-            //        File.Move(Path.Combine(itemFile.FilePath, itemFile.OldName), Path.Combine(itemFile.FilePath, itemFile.NewName));
-            //        itemFile.Result = "Success";
-            //    }
-            //    catch (FileNotFoundException)
-            //    {
-            //        // Unhandled exception
-            //    }
-            //}
+            
             RefreshStatus();
         }
 
         private void ButtonAddRule_Click(object sender, RoutedEventArgs e)
         {
             var selectedRule = ComboboxRule.SelectedItem as IRule;
-            //_listItemRuleApply.Add((ItemRule)selectedRule.Clone());
-            _activeRules.Add((IRule)selectedRule.Clone());
+            _activeRules.Add((IRule)selectedRule.Clone()); 
+            //_refeshRules.Add((IRule)selectedRule.Clone());
         }
 
         private void ButtonPreview_Click(object sender, RoutedEventArgs e)
@@ -380,6 +265,7 @@ namespace BatchRename
 
         private void RefreshStatus()
         {
+            
             foreach (ItemFile itemFile in _sourceFiles)
             {
                 itemFile.OldName = itemFile.NewName;
@@ -394,6 +280,7 @@ namespace BatchRename
             // binding converter
             var converter = (PreviewRenameConverter)FindResource("PreviewRenameConverter");
             converter.Rules.Clear();
+            //foreach (IRule rule in _refeshRules)
             foreach (IRule rule in _activeRules)
             {
                 converter.Rules.Add((IRule)rule.Clone());
@@ -405,24 +292,11 @@ namespace BatchRename
 
         private void UpdateActiveRules()
         {
-            //_activeRules.Clear();
-            //if (_listItemRuleApply.Any() && _listItemRuleApply != null)
-            //{
-            //    foreach (var itemRule in _listItemRuleApply!.Where(itemRule => itemRule.Data != null))
-            //    {
-            //        IRule rule = RuleFactory.Parse(itemRule.Data);
-            //        if (rule != null)
-            //        {
-            //            _activeRules.Add(rule);
-            //        }
-            //    }
-            //}
-            ObservableCollection<IRule> temp = new();
-            foreach (IRule rule in _activeRules)
-            {
-                temp.Add((IRule)rule.Clone());
-            }
-            _activeRules = temp;
+           // _activeRules.Clear();   
+           //foreach(IRule rule in _refeshRules)
+           //{
+           //     _activeRules.Add((IRule)rule.Clone());
+           //}
         }
 
         private void ButtonClearAllFile_Click(object sender, RoutedEventArgs e)
@@ -434,10 +308,11 @@ namespace BatchRename
         {
             _activePreset = preset;
             _activeRules.Clear();
-
+            _refeshRules.Clear();
             foreach (var itemRule in _activePreset.GetRules())
             {
                 _activeRules.Add(itemRule);
+                _refeshRules.Add(itemRule);
             }
         }
 

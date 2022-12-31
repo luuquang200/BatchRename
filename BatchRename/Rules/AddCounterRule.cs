@@ -41,10 +41,17 @@ namespace BatchRename.Rules
             var builder = new StringBuilder();
             builder.Append(fileName);
 
-            for (int i = 0; i < NumberOfDigits - 1; i++)
+            int countNumber = CountNumber(_current);
+            if (NumberOfDigits > countNumber)
             {
-                builder.Append('0');
+                NumberOfDigits -= countNumber;
+                for (int i = 0; i < NumberOfDigits; i++)
+                {
+                    builder.Append('0');
+                }
             }
+
+           
             builder.Append(_current);
             builder.Append('.');
             builder.Append(extension);
@@ -110,6 +117,17 @@ namespace BatchRename.Rules
             Start = int.Parse(pairs0[1]);
             Step = int.Parse(pairs1[1]);
             NumberOfDigits = int.Parse(pairs2[1]);
+        }
+
+        public int CountNumber(int num)
+        {
+            int temp = num, count = 0;
+            while (temp != 0)
+            {
+                count++;
+                temp = temp / 10;
+            }
+            return count;
         }
     }
 }
