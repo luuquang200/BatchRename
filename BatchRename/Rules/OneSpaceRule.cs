@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Collections.Generic;
+using System.Text;
 using BatchRename.Core;
 
 namespace BatchRename.Rules
@@ -6,6 +7,8 @@ namespace BatchRename.Rules
     public class OneSpaceRule : IRule
     {
         public string Name => "OneSpace";
+
+        public Dictionary<string, string> ListParameter { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
 
         public object Clone()
         {

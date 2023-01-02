@@ -1,4 +1,5 @@
 ﻿using BatchRename.Core;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace BatchRename.Rules
@@ -6,6 +7,8 @@ namespace BatchRename.Rules
     public class RemoveWhiteSpaceRule : IRule
     {
         public string Name => "RemoveWhiteSpace";
+
+        public Dictionary<string, string> ListParameter { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
 
         public IRule Parse(string line)
         {

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using System.Windows;
 using System.Windows.Shapes;
@@ -25,11 +26,21 @@ namespace BatchRename.Rules
 
         public string Name => "AddCounter";
 
+        public Dictionary<string, string> ListParameter { 
+            get;
+            set;
+        }
 
         public AddCounterRule()
         {
             Start = 1;
             Step = 3;
+            ListParameter = new Dictionary<string, string>
+            {
+                { "Start", Start.ToString() },
+                { "Step", Step.ToString() },
+                { "NumberOfDigits", NumberOfDigits.ToString() }
+            };
         }
         public string Rename(string origin)
         {
@@ -86,7 +97,13 @@ namespace BatchRename.Rules
             {
                 Start = int.Parse(pairs0[1]),
                 Step = int.Parse(pairs1[1]),
-                NumberOfDigits = int.Parse(pairs2[1])
+                NumberOfDigits = int.Parse(pairs2[1]),
+                ListParameter = new Dictionary<string, string>
+                {
+                    { "Start", Start.ToString() },
+                    { "Step", Step.ToString() },
+                    { "NumberOfDigits", NumberOfDigits.ToString() }
+                }
             };
             return rule;
         }
@@ -119,6 +136,10 @@ namespace BatchRename.Rules
             Start = int.Parse(pairs0[1]);
             Step = int.Parse(pairs1[1]);
             NumberOfDigits = int.Parse(pairs2[1]);
+            //
+            ListParameter["Start"] = Start.ToString();
+            ListParameter["Step"] = Step.ToString();
+            ListParameter["NumberOfDigits"] = NumberOfDigits.ToString();
         }
 
         public static int CountNumber(int num)
@@ -131,5 +152,7 @@ namespace BatchRename.Rules
             }
             return count;
         }
+
+
     }
 }

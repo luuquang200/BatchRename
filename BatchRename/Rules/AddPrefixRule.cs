@@ -1,5 +1,6 @@
 ﻿using BatchRename.Core;
 using System;
+using System.Collections.Generic;
 
 namespace BatchRename.Rules
 {
@@ -8,6 +9,11 @@ namespace BatchRename.Rules
         public string Prefix { get; set; }
 
         public string Name => "AddPrefix";
+
+        public Dictionary<string, string> ListParameter {
+            get => throw new NotImplementedException(); 
+            set => throw new NotImplementedException();
+        }
 
         public AddPrefixRule()
         {

@@ -14,11 +14,25 @@ namespace BatchRename.Rules
 
         public string Name => "RemoveSpecialChars";
 
+        public Dictionary<string, string> ListParameter { get; set;}
+         
         public RemoveSpecialCharsRule()
         {
             SpecialChars = new List<string>();
             Replacement = " ";
-        } // Tran---Duy-------Quang.pdf
+
+
+            StringBuilder stringBuilder = new StringBuilder();
+            foreach (string s in SpecialChars)
+            {
+                stringBuilder.Append(s);
+            }
+            ListParameter = new Dictionary<string, string>
+            {
+                { "SpecialChars", stringBuilder.ToString() }
+            };
+        } 
+        // Tran---Duy-------Quang.pdf
 
         //  Tran   Duy       Quang.pdf
 
@@ -62,6 +76,11 @@ namespace BatchRename.Rules
                 rule.SpecialChars.Add($"{c}");
             }
 
+            rule.ListParameter = new Dictionary<string, string>
+            {
+                { "SpecialChars", specials }
+            };
+
             return rule;
         }
 
@@ -84,6 +103,7 @@ namespace BatchRename.Rules
             {
                 SpecialChars.Add($"{c}");
             }
+            ListParameter["SpecialChars"] = specials;
         }
     }
 }

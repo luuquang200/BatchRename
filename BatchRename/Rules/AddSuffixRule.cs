@@ -1,4 +1,5 @@
 ﻿using BatchRename.Core;
+using System.Collections.Generic;
 
 namespace BatchRename.Rules
 {
@@ -8,6 +9,8 @@ namespace BatchRename.Rules
         public string Suffix { get; set; }
 
         public string Name => "AddSuffix";
+
+        public Dictionary<string, string> ListParameter { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
 
         public AddSuffixRule()
         {

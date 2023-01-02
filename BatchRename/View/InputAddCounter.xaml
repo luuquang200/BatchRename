@@ -9,9 +9,13 @@
     <Grid>
         <StackPanel VerticalAlignment="Center">
             <TextBlock Text="Add Counter" Style="{StaticResource TextblockTitle}" FontSize="25" HorizontalAlignment="Center" Margin="25 0 0 0"/>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" >
-                <TextBlock  Width="41"
-                    Text="Start: " Style="{StaticResource TextblockTitleSmall}" Margin="43 10 0 0" VerticalAlignment="Center"/>
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Right" >
+                <TextBlock  Width="141"
+                    Text="Start: " Style="{StaticResource TextblockTitleSmall}" 
+                            TextAlignment="Right"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center"/>
                 <TextBox x:Name="inputStartTextBox"
                          Height="30" Width="150"
                          Margin="5 10 0 0"
@@ -42,7 +46,9 @@
                          VerticalAlignment="Center"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Margin="0 20 0 0" HorizontalAlignment="Center">
-                <Button x:Name="cancelButton" Content="Cancel" Style="{StaticResource ButtonCustomColorCancel}"
+                <Button x:Name="cancelButton" 
+                        Content="Cancel"
+                        Style="{StaticResource ButtonCustomColorCancel}"
                         Foreground="#E1251B"
                         Margin="0 0 35 0"
                         Click="cancelButton_Click"/>

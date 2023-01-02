@@ -1,6 +1,7 @@
 ﻿using BatchRename.Converters;
 using BatchRename.Core;
 using BatchRename.Rules;
+using BatchRename.View;
 using Fluent;
 using Microsoft.Win32;
 using System;
@@ -132,17 +133,14 @@ namespace BatchRename
             int indexSelected = ListViewRulesApply.SelectedIndex;
             if (indexSelected == -1) return;
 
-            var screen = _activeRules[indexSelected].ConfigRuleWindow();
-
-            if (screen.ShowDialog() == true)
+            var screen = new ConfigWindow(_activeRules[indexSelected]);
+            if(screen.ShowDialog() == true)
             {
-               
                 string data = screen.GetData();
                 MessageBox.Show(data);
                 _activeRules[indexSelected].SetData(data);
-                //_refeshRules[indexSelected].SetData(data);
             }
-              
+
             UpdateConverterPreview();
         }
 
