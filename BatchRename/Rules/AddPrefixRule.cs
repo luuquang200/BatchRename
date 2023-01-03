@@ -1,6 +1,7 @@
 ﻿using BatchRename.Core;
 using System;
 using System.Collections.Generic;
+using System.Windows.Shapes;
 
 namespace BatchRename.Rules
 {
@@ -11,13 +12,17 @@ namespace BatchRename.Rules
         public string Name => "AddPrefix";
 
         public Dictionary<string, string> ListParameter {
-            get => throw new NotImplementedException(); 
-            set => throw new NotImplementedException();
+            get; 
+            set;
         }
 
         public AddPrefixRule()
         {
             Prefix = "";
+            ListParameter = new Dictionary<string, string>
+            {
+                { "Prefix", Prefix }
+            };
         }
 
         public string Rename(string origin)
@@ -57,9 +62,16 @@ namespace BatchRename.Rules
             throw new NotImplementedException();
         }
 
-        public void SetData(string data)
+        public void SetData(string line)
         {
-            throw new NotImplementedException();
+            var tokens = line.Split(' ');
+            var data = tokens[1];
+
+            var pairs = data.Split(new string[] { "=" },
+                StringSplitOptions.None);
+
+            Prefix = pairs[1];
+            ListParameter["Prefix"] = pairs[1];
         }
     }
 }

@@ -8,7 +8,7 @@ namespace BatchRename.Rules
     {
         public string Name => "RemoveWhiteSpace";
 
-        public Dictionary<string, string> ListParameter { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+        public Dictionary<string, string> ListParameter { get; set; } = new();
 
         public IRule Parse(string line)
         {
@@ -33,7 +33,7 @@ namespace BatchRename.Rules
 
         public void SetData(string data)
         {
-            throw new System.NotImplementedException();
+            
         }
     }
 }

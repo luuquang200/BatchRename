@@ -8,7 +8,7 @@ namespace BatchRename.Rules
     {
         public string Name => "OneSpace";
 
-        public Dictionary<string, string> ListParameter { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+        public Dictionary<string, string> ListParameter { get; set; } = new();
 
         public object Clone()
         {
@@ -22,7 +22,7 @@ namespace BatchRename.Rules
 
         public IRule Parse(string line)
         {
-            return new OneSpaceRule();
+            return new OneSpaceRule() ;
         }
 
         public string Rename(string origin)
@@ -51,7 +51,7 @@ namespace BatchRename.Rules
 
         public void SetData(string data)
         {
-            throw new System.NotImplementedException();
+            
         }
     }
 }

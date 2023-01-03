@@ -12,6 +12,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Xml.Linq;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace BatchRename.View
@@ -24,7 +25,7 @@ namespace BatchRename.View
         IRule RuleInput;
         private StackPanel stackPanelMain = new();
         private TextBlock textBlockTitleRule = new();
-
+        private TextBlock textBlockNoParam;
         private List<TextBox> textBoxes= new List<TextBox>();
 
         private StackPanel stackPanelButton = new();
@@ -35,6 +36,7 @@ namespace BatchRename.View
             InitializeComponent();
             RuleInput = rule;
             int NumberOfParameter = rule.ListParameter.Count;
+          
             stackPanelMain.HorizontalAlignment = HorizontalAlignment.Center;
             stackPanelMain.VerticalAlignment = VerticalAlignment.Center;
 
@@ -52,7 +54,7 @@ namespace BatchRename.View
                 StackPanel stackPanel = new();
                 stackPanel.Orientation = Orientation.Horizontal;
                 stackPanel.HorizontalAlignment = HorizontalAlignment.Center;
-                stackPanel.Margin = new Thickness(0, 10, 0, 0);
+                stackPanel.Margin = new Thickness(0, 10, 30, 0);
                 // Name of parameter:
                 TextBlock textBlock = new();
                 textBlock.Width = 135;
@@ -85,8 +87,23 @@ namespace BatchRename.View
             var bc1 = new BrushConverter();
             cancelButton.Foreground = (Brush)bc1.ConvertFrom("#E1251B");
             cancelButton.Style = (Style)System.Windows.Application.Current.FindResource("ButtonCustomColorCancel");
-            
-            stackPanelButton.Children.Add(cancelButton);
+
+            if (NumberOfParameter != 0)
+            {
+                stackPanelButton.Children.Add(cancelButton);
+            }
+            else
+            {
+                textBlockNoParam = new();
+                textBlockNoParam.Text = "No parameter !";
+                textBlockNoParam.Style = (Style)System.Windows.Application.Current.FindResource("TextblockTitleSmall");
+                textBlockNoParam.FontSize = 20;
+                textBlockNoParam.HorizontalAlignment = HorizontalAlignment.Center;
+                textBlockNoParam.Margin = new Thickness(25, 0, 0, 0);
+
+                stackPanelMain.Children.Add(textBlockNoParam);
+            }
+           
             // Ok button:
             okButton.Content = "Ok";
             okButton.Width = 80;
@@ -109,10 +126,16 @@ namespace BatchRename.View
 
         public string GetData()
         {
+            int lenght = RuleInput.ListParameter.Count;
+            if (lenght == 0)
+            {
+                return string.Empty;
+            }
+
             StringBuilder stringBuilder = new();
             stringBuilder.Append(RuleInput.Name);
             stringBuilder.Append(' ');
-            int lenght = RuleInput.ListParameter.Count;
+            
             for (int i = 0; i < lenght; i++)
             {
                 stringBuilder.Append(RuleInput.ListParameter.ElementAt(i).Key);
