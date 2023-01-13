@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Diagnostics;
+using System.Text;
 using Core;
 
 namespace AddCounterRule
@@ -41,11 +42,17 @@ namespace AddCounterRule
         }
         public string Rename(string origin)
         {
-            var tokens = origin.Split(new string[] { "." },
-                StringSplitOptions.None);
-            string fileName = tokens[0];
-            string extension = tokens[1];
+            int indexExtension = 0;
+            for (int i = 0; i < origin.Length; i++)
+            {
+                if (origin[i].Equals('.'))
+                {
+                    indexExtension = i;
+                }
+            }
 
+            string fileName = origin.Substring(0, indexExtension);
+            string extension = origin.Substring(indexExtension + 1, origin.Length - indexExtension - 1);
 
             var builder = new StringBuilder();
             builder.Append(fileName);

@@ -169,4 +169,173 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+
+    <Style TargetType="{x:Type Button}"
+           x:Key="ButtonOnTop">
+        <Setter Property="RenderTransformOrigin" Value="0.5, 0.5"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Grid>
+                        <Border CornerRadius="3.25" Background="{TemplateBinding Background}" 
+                                Height="{TemplateBinding Height}" 
+                                SnapsToDevicePixels="True">
+                            <StackPanel Orientation="Horizontal"
+                                    VerticalAlignment="Center">
+                                <Image Source="../Images/OnTop.png"
+                               RenderOptions.BitmapScalingMode="HighQuality"/>
+                            </StackPanel>
+                        </Border>
+
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Cursor" Value="Hand" />
+                            <Setter Property="RenderTransform">
+                                <Setter.Value>
+                                    <ScaleTransform ScaleX="1.07" ScaleY="1.07"/>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Cursor" Value="Hand" />
+                            <Setter Property="RenderTransform">
+                                <Setter.Value>
+                                    <ScaleTransform ScaleX="0.98" ScaleY="0.98"/>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type Button}"
+           x:Key="ButtonOnBottom">
+        <Setter Property="RenderTransformOrigin" Value="0.5, 0.5"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Grid>
+                        <Border CornerRadius="3.25" Background="{TemplateBinding Background}" 
+                                Height="{TemplateBinding Height}" 
+                                SnapsToDevicePixels="True">
+                            <StackPanel Orientation="Horizontal"
+                                    VerticalAlignment="Center">
+                                <Image Source="../Images/OnBottom.png"
+                               RenderOptions.BitmapScalingMode="HighQuality"/>
+                            </StackPanel>
+                        </Border>
+
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Cursor" Value="Hand" />
+                            <Setter Property="RenderTransform">
+                                <Setter.Value>
+                                    <ScaleTransform ScaleX="1.07" ScaleY="1.07"/>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Cursor" Value="Hand" />
+                            <Setter Property="RenderTransform">
+                                <Setter.Value>
+                                    <ScaleTransform ScaleX="0.98" ScaleY="0.98"/>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type Button}"
+           x:Key="ButtonOnNext">
+        <Setter Property="RenderTransformOrigin" Value="0.5, 0.5"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Grid>
+                        <Border CornerRadius="3.25" Background="{TemplateBinding Background}" 
+                                Height="{TemplateBinding Height}" 
+                                SnapsToDevicePixels="True">
+                            <StackPanel Orientation="Horizontal"
+                                    VerticalAlignment="Center">
+                                <Image Source="../Images/OnNext.png"
+                               RenderOptions.BitmapScalingMode="HighQuality"/>
+                            </StackPanel>
+                        </Border>
+
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Cursor" Value="Hand" />
+                            <Setter Property="RenderTransform">
+                                <Setter.Value>
+                                    <ScaleTransform ScaleX="1.07" ScaleY="1.07"/>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Cursor" Value="Hand" />
+                            <Setter Property="RenderTransform">
+                                <Setter.Value>
+                                    <ScaleTransform ScaleX="0.98" ScaleY="0.98"/>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type Button}"
+           x:Key="ButtonOnPreview">
+        <Setter Property="RenderTransformOrigin" Value="0.5, 0.5"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Grid>
+                        <Border CornerRadius="3.25" Background="{TemplateBinding Background}" 
+                                Height="{TemplateBinding Height}" 
+                                SnapsToDevicePixels="True">
+                            <StackPanel Orientation="Horizontal"
+                                    VerticalAlignment="Center">
+                                <Image Source="../Images/OnPreview.png"
+                               RenderOptions.BitmapScalingMode="HighQuality"/>
+                            </StackPanel>
+                        </Border>
+
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Cursor" Value="Hand" />
+                            <Setter Property="RenderTransform">
+                                <Setter.Value>
+                                    <ScaleTransform ScaleX="1.07" ScaleY="1.07"/>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Cursor" Value="Hand" />
+                            <Setter Property="RenderTransform">
+                                <Setter.Value>
+                                    <ScaleTransform ScaleX="0.98" ScaleY="0.98"/>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary>

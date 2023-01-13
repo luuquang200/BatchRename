@@ -74,6 +74,10 @@
                     <Fluent:Button Header="Option 1" />
                     <Fluent:Button Header="Option 2" />
                 </Fluent:RibbonGroupBox>
+                <Fluent:RibbonGroupBox Header="Save">
+                    <Fluent:RadioButton Name="renamingOriginal" Header="Renaming on the original" Margin="0 10 0 0" IsChecked="True"/>
+                    <Fluent:RadioButton Name="makeCopy" Header="Make a copy in a selected folder"/>
+                </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
 
             <Fluent:RibbonTabItem Header="Help">
@@ -94,6 +98,17 @@
                                  HorizontalAlignment="Left"
                                  SelectionChanged="ComboboxPreset_SelectionChanged"
                                  Margin="5" />
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="20 0 0 0">
+                    <Button x:Name="ButtonClearAllRule"
+                                Content="Clear All"
+                                Width="90"
+                                Foreground="Black"
+                                Style="{StaticResource ButtonClearAll}" Height="36" Click="ButtonClearAllRule_Click" />
+                    <Button Style="{StaticResource ButtonOnTop}" Width="26" Height="26" Margin="7 0" Click="OnTop_Click" />
+                    <Button Style="{StaticResource ButtonOnPreview}" Width="26" Height="26" Margin="5" Click="OnPreview_Click" />
+                    <Button Style="{StaticResource ButtonOnNext}" Width="26" Height="26" Margin="5" Click="OnNext_Click"/>
+                    <Button Style="{StaticResource ButtonOnBottom}" Width="26" Height="26" Margin="5" Click="OnBottom_Click"/>
+                </StackPanel>
                 <ListView x:Name="ListViewRulesApply"
                           Width="303" Height="300"
                           Margin="2 0 0 0"
@@ -209,6 +224,7 @@
                                   Width="518"
                                   AllowDrop="True"
                                   Drop="ListViewFile_Drop"
+                                  Margin="0 5 0 0"
                                   d:ItemsSource="{d:SampleData ItemCount=5}">
                             <ListView.View>
                                 <GridView>

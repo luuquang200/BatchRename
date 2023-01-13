@@ -34,7 +34,7 @@ namespace UppercaseRule
 
             string fileName = origin.Substring(0, indexExtension);
             string extension = origin.Substring(indexExtension + 1, origin.Length - indexExtension - 1);
-
+           
             StringBuilder stringBuilder = new();
             stringBuilder.Append(fileName.ToUpper());
             stringBuilder.Append('.');

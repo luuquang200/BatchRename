@@ -21,9 +21,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OneSpaceRule", "OneSpaceRul
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChangeExtentionRule", "ChangeExtentionRule\ChangeExtentionRule.csproj", "{ECA9DF18-BFF9-4019-B785-32B88815B112}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UppercaseRule", "UppercaseRule\UppercaseRule.csproj", "{FF26E718-5059-4886-ACDA-2802C0FE7D67}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UppercaseRule", "UppercaseRule\UppercaseRule.csproj", "{FF26E718-5059-4886-ACDA-2802C0FE7D67}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LowercaseRule", "LowercaseRule\LowercaseRule.csproj", "{8BCC8267-DE7F-420F-ADCA-794D4A4D982D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LowercaseRule", "LowercaseRule\LowercaseRule.csproj", "{8BCC8267-DE7F-420F-ADCA-794D4A4D982D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PascalCaseRule", "PascalCaseRule\PascalCaseRule.csproj", "{2386CAD9-3AB1-4312-A121-CB3D793A28E4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -75,6 +77,10 @@ Global
 		{8BCC8267-DE7F-420F-ADCA-794D4A4D982D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8BCC8267-DE7F-420F-ADCA-794D4A4D982D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8BCC8267-DE7F-420F-ADCA-794D4A4D982D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2386CAD9-3AB1-4312-A121-CB3D793A28E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2386CAD9-3AB1-4312-A121-CB3D793A28E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2386CAD9-3AB1-4312-A121-CB3D793A28E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2386CAD9-3AB1-4312-A121-CB3D793A28E4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -63,57 +63,10 @@ namespace BatchRename
             ComboboxRule.ItemsSource = _availableRules;
             ListViewFile.ItemsSource = _sourceFiles;
 
-            //RuleFactory.Register(new RemoveSpecialCharsRule());
-            //RuleFactory.Register(new AddPrefixRule());
-            //RuleFactory.Register(new AddSuffixRule());
-            //RuleFactory.Register(new OneSpaceRule());
-            //RuleFactory.Register(new AddCounterRule());
-            //RuleFactory.Register(new RemoveWhiteSpaceRule());
         }
 
         private void LoadAvailableRules()
         {
-            // Temporary hard-coded rules
-
-            //_availableRules.Add(new RemoveSpecialCharsRule());
-            //_availableRules.Add(new AddPrefixRule());
-            //_availableRules.Add(new AddSuffixRule());
-            //_availableRules.Add(new OneSpaceRule());
-            //_availableRules.Add(new AddCounterRule());
-            //_availableRules.Add(new RemoveWhiteSpaceRule());
-
-            // Initiate Data Lists/Collections
-            //List<IRule> ruleHandlers = new();
-
-            //var exeFolder = AppDomain.CurrentDomain.BaseDirectory;
-            //var dlls = new DirectoryInfo(exeFolder).GetFiles("rules/*.dll");
-
-            //foreach (var dll in dlls)
-            //{
-            //    var assembly = Assembly.LoadFile(dll.FullName);
-            //    var types = assembly.GetTypes();
-            //    MessageBox.Show(dll.FullName);
-            //    foreach (var type in types)
-            //    {
-            //        if (type.IsClass)
-            //        {
-            //            if (typeof(IRule).IsAssignableFrom(type))
-            //            {
-            //                var temp_rule = Activator.CreateInstance(type) as IRule;
-            //                RuleFactory.Register(temp_rule);
-            //                ruleHandlers.Add(temp_rule);
-            //                MessageBox.Show(temp_rule.Name);
-            //            }
-            //        }
-            //    }
-            //}
-
-
-            //ruleHandlers.ForEach(E =>
-            //{
-            //    _availableRules.Add(E);
-            //});
-
             var exeFolder = AppDomain.CurrentDomain.BaseDirectory;
             //var folderInfo = new DirectoryInfo(exeFolder);
             var dllFiles = new DirectoryInfo(exeFolder).GetFiles("rules/*.dll");
@@ -261,6 +214,18 @@ namespace BatchRename
             {
                 _tempRules.Add((IRule)itemRule.Clone());
             }
+            // 
+            string targetFolder = "";
+            if ((bool)makeCopy.IsChecked)
+            {
+                var dialog = new System.Windows.Forms.FolderBrowserDialog();
+                var result = dialog.ShowDialog();
+
+                if (System.Windows.Forms.DialogResult.OK == result)
+                {
+                    targetFolder = dialog.SelectedPath;
+                }
+            }
 
             foreach (ItemFile itemFile in _sourceFiles)
             {
@@ -271,11 +236,14 @@ namespace BatchRename
                     {
                         itemFile.NewName = itemRule.Rename(itemFile.NewName);
                     }
-                    
                 }
+
                 try
                 {
-                    File.Move(Path.Combine(itemFile.FilePath, itemFile.OldName), Path.Combine(itemFile.FilePath, itemFile.NewName));
+                    if((bool)makeCopy.IsChecked)
+                        File.Copy(Path.Combine(itemFile.FilePath, itemFile.OldName), Path.Combine(targetFolder, itemFile.NewName));
+                    else
+                        File.Move(Path.Combine(itemFile.FilePath, itemFile.OldName), Path.Combine(itemFile.FilePath, itemFile.NewName));
                     itemFile.Result = "Success";
                 }
                 catch (FileNotFoundException)
@@ -475,6 +443,58 @@ namespace BatchRename
                         });
                     }
                 }
+            }
+        }
+
+        private void ButtonClearAllRule_Click(object sender, RoutedEventArgs e)
+        {
+            _activeRules.Clear();
+            UpdateConverterPreview();
+        }
+
+        private void OnTop_Click(object sender, RoutedEventArgs e)
+        {
+            int index = ListViewRulesApply.SelectedIndex;
+            if (index != -1)
+            {
+                IRule temp = _activeRules[index];
+                for (int i = index; i > 0; --i)
+                    _activeRules[i] = _activeRules[i - 1];
+                _activeRules[0] = temp;
+            }
+        }
+
+        private void OnBottom_Click(object sender, RoutedEventArgs e)
+        {
+            int index = ListViewRulesApply.SelectedIndex;
+            if (index != -1)
+            {
+                IRule temp = _activeRules[index];
+                for (int i = index; i < _activeRules.Count - 1; ++i)
+                    _activeRules[i] = _activeRules[i + 1];
+                _activeRules[_activeRules.Count - 1] = temp;
+            }   
+        }
+
+        private void OnNext_Click(object sender, RoutedEventArgs e)
+        {
+            int index = ListViewRulesApply.SelectedIndex;
+            if (index != -1 && index != _activeRules.Count - 1)
+            {
+                IRule temp = _activeRules[index + 1];
+                _activeRules[index + 1] = _activeRules[index];
+                _activeRules[index] = temp;
+            }
+        }
+
+        private void OnPreview_Click(object sender, RoutedEventArgs e)
+        {
+            int index = ListViewRulesApply.SelectedIndex;
+            if (index != -1 && index != 0)
+            {
+                IRule temp = _activeRules[index - 1];
+                _activeRules[index - 1] = _activeRules[index];
+                _activeRules[index] = temp;
             }
         }
     }
