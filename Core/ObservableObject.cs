@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace BatchRename.Core
+namespace Core
 {
     public class ObservableObject : INotifyPropertyChanged
     {

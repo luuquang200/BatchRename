@@ -1,8 +1,6 @@
 ﻿using Core;
-using System.Collections.Generic;
-using System.Linq;
 
-namespace BatchRename.Rules
+namespace RemoveWhiteSpaceRule
 {
     public class RemoveWhiteSpaceRule : IRule
     {
@@ -26,14 +24,10 @@ namespace BatchRename.Rules
             return MemberwiseClone();
         }
 
-        public IConfigRuleWindow ConfigRuleWindow()
-        {
-            throw new System.NotImplementedException();
-        }
 
         public void SetData(string data)
         {
-            
+
         }
     }
 }

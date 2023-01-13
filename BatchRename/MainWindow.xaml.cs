@@ -1,7 +1,8 @@
 ﻿using BatchRename.Converters;
-using BatchRename.Core;
+using Core;
 using BatchRename.Rules;
 using BatchRename.View;
+using Core;
 using Fluent;
 using Microsoft.Win32;
 using System;
@@ -13,6 +14,7 @@ using System.Diagnostics;
 using System.Diagnostics.Metrics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -61,24 +63,79 @@ namespace BatchRename
             ComboboxRule.ItemsSource = _availableRules;
             ListViewFile.ItemsSource = _sourceFiles;
 
-            RuleFactory.Register(new RemoveSpecialCharsRule());
-            RuleFactory.Register(new AddPrefixRule());
-            RuleFactory.Register(new AddSuffixRule());
-            RuleFactory.Register(new OneSpaceRule());
-            RuleFactory.Register(new AddCounterRule());
-            RuleFactory.Register(new RemoveWhiteSpaceRule());
+            //RuleFactory.Register(new RemoveSpecialCharsRule());
+            //RuleFactory.Register(new AddPrefixRule());
+            //RuleFactory.Register(new AddSuffixRule());
+            //RuleFactory.Register(new OneSpaceRule());
+            //RuleFactory.Register(new AddCounterRule());
+            //RuleFactory.Register(new RemoveWhiteSpaceRule());
         }
 
         private void LoadAvailableRules()
         {
             // Temporary hard-coded rules
 
-            _availableRules.Add(new RemoveSpecialCharsRule());
-            _availableRules.Add(new AddPrefixRule());
-            _availableRules.Add(new AddSuffixRule());
-            _availableRules.Add(new OneSpaceRule());
-            _availableRules.Add(new AddCounterRule());
-            _availableRules.Add(new RemoveWhiteSpaceRule());
+            //_availableRules.Add(new RemoveSpecialCharsRule());
+            //_availableRules.Add(new AddPrefixRule());
+            //_availableRules.Add(new AddSuffixRule());
+            //_availableRules.Add(new OneSpaceRule());
+            //_availableRules.Add(new AddCounterRule());
+            //_availableRules.Add(new RemoveWhiteSpaceRule());
+
+            // Initiate Data Lists/Collections
+            //List<IRule> ruleHandlers = new();
+
+            //var exeFolder = AppDomain.CurrentDomain.BaseDirectory;
+            //var dlls = new DirectoryInfo(exeFolder).GetFiles("rules/*.dll");
+
+            //foreach (var dll in dlls)
+            //{
+            //    var assembly = Assembly.LoadFile(dll.FullName);
+            //    var types = assembly.GetTypes();
+            //    MessageBox.Show(dll.FullName);
+            //    foreach (var type in types)
+            //    {
+            //        if (type.IsClass)
+            //        {
+            //            if (typeof(IRule).IsAssignableFrom(type))
+            //            {
+            //                var temp_rule = Activator.CreateInstance(type) as IRule;
+            //                RuleFactory.Register(temp_rule);
+            //                ruleHandlers.Add(temp_rule);
+            //                MessageBox.Show(temp_rule.Name);
+            //            }
+            //        }
+            //    }
+            //}
+
+
+            //ruleHandlers.ForEach(E =>
+            //{
+            //    _availableRules.Add(E);
+            //});
+
+            var exeFolder = AppDomain.CurrentDomain.BaseDirectory;
+            //var folderInfo = new DirectoryInfo(exeFolder);
+            var dllFiles = new DirectoryInfo(exeFolder).GetFiles("rules/*.dll");
+            foreach (var file in dllFiles)
+            {
+                var assembly = Assembly.LoadFrom(file.FullName);
+                var types = assembly.GetTypes();
+                //MessageBox.Show(file.FullName);
+                foreach (var type in types)
+                {
+                    //MessageBox.Show("ok");
+                    if (type.IsClass && typeof(IRule).IsAssignableFrom(type))
+                    {
+                        
+                        IRule rule = (IRule)Activator.CreateInstance(type)!;
+                        
+                        RuleFactory.Register(rule);
+                        _availableRules.Add(rule);
+                    }
+                }
+            }
+
         }
 
         private void ButtonAddFile_Click(object sender, RoutedEventArgs e)

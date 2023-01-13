@@ -1,9 +1,6 @@
 ﻿using Core;
-using System;
-using System.Collections.Generic;
-using System.Windows.Shapes;
 
-namespace BatchRename.Rules
+namespace AddPrefixRule
 {
     public class AddPrefixRule : IRule
     {
@@ -11,8 +8,9 @@ namespace BatchRename.Rules
 
         public string Name => "AddPrefix";
 
-        public Dictionary<string, string> ListParameter {
-            get; 
+        public Dictionary<string, string> ListParameter
+        {
+            get;
             set;
         }
 
@@ -39,12 +37,6 @@ namespace BatchRename.Rules
         {
             var tokens = line.Split(' ');
             var data = tokens[1];
-
-            //var pairs = data.Split(' ');
-
-            //var tokens = line.Split(new string[] { " " },
-            //    StringSplitOptions.None);
-            //var data = tokens[1];
 
             var pairs = data.Split(new string[] { "=" },
                 StringSplitOptions.None);

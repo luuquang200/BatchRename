@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
+﻿using Core;
 using System.Text;
-using System.Windows.Shapes;
-using Core;
 
-namespace BatchRename.Rules
+namespace RemoveSpecialCharsRule
 {
     public class RemoveSpecialCharsRule : IRule
     {
@@ -14,8 +10,8 @@ namespace BatchRename.Rules
 
         public string Name => "RemoveSpecialChars";
 
-        public Dictionary<string, string> ListParameter { get; set;}
-         
+        public Dictionary<string, string> ListParameter { get; set; }
+
         public RemoveSpecialCharsRule()
         {
             SpecialChars = new List<string>();
@@ -31,10 +27,7 @@ namespace BatchRename.Rules
             {
                 { "SpecialChars", stringBuilder.ToString() }
             };
-        } 
-        // Tran---Duy-------Quang.pdf
-
-        //  Tran   Duy       Quang.pdf
+        }
 
         public string Rename(string origin)
         {
@@ -84,10 +77,7 @@ namespace BatchRename.Rules
             return rule;
         }
 
-        public IConfigRuleWindow ConfigRuleWindow()
-        {
-            return null;
-        }
+       
 
         public void SetData(string dataInput)
         {

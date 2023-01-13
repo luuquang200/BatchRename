@@ -1,8 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using Core;
 using System.Text;
-using Core;
 
-namespace BatchRename.Rules
+namespace OneSpaceRule
 {
     public class OneSpaceRule : IRule
     {
@@ -15,14 +14,10 @@ namespace BatchRename.Rules
             return MemberwiseClone();
         }
 
-        public IConfigRuleWindow ConfigRuleWindow()
-        {
-            throw new System.NotImplementedException();
-        }
 
         public IRule Parse(string line)
         {
-            return new OneSpaceRule() ;
+            return new OneSpaceRule();
         }
 
         public string Rename(string origin)
@@ -51,7 +46,7 @@ namespace BatchRename.Rules
 
         public void SetData(string data)
         {
-            
+
         }
     }
 }

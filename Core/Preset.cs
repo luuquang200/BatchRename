@@ -1,11 +1,10 @@
-﻿using BatchRename.Rules;
+﻿
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Windows.Documents;
 
-namespace BatchRename.Core
+namespace Core
 {
     public class Preset
     {

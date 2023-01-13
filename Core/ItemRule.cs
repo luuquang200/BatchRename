@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BatchRename.Core
+namespace Core
 {
     public class ItemRule: ICloneable
     {

@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows;
-using System.Windows.Shapes;
+﻿using System.Text;
 using Core;
 
-namespace BatchRename.Rules
+namespace AddCounterRule
 {
     public class AddCounterRule : IRule
     {
@@ -26,7 +22,8 @@ namespace BatchRename.Rules
 
         public string Name => "AddCounter";
 
-        public Dictionary<string, string> ListParameter { 
+        public Dictionary<string, string> ListParameter
+        {
             get;
             set;
         }
@@ -64,7 +61,7 @@ namespace BatchRename.Rules
                 }
             }
 
-           
+
             builder.Append(_current);
             builder.Append('.');
             builder.Append(extension);
@@ -113,11 +110,6 @@ namespace BatchRename.Rules
             _current = Start;
         }
 
-        public IConfigRuleWindow ConfigRuleWindow()
-        {
-            return null;
-
-        }
 
         public void SetData(string dataInput)
         {

@@ -1,10 +1,9 @@
 ﻿using Core;
-using System;
-using System.Collections.Generic;
+using System.Diagnostics;
+using System.Security.AccessControl;
 using System.Text;
-using System.Windows.Shapes;
 
-namespace BatchRename.Rules
+namespace AddSuffixRule
 {
     public class AddSuffixRule : IRule
     {
@@ -26,19 +25,27 @@ namespace BatchRename.Rules
 
         public string Rename(string origin)
         {
-            var tokens = origin.Split(new string[] { "." },
-               StringSplitOptions.None);
-            string fileName = tokens[0];
-            string extension = tokens[1];
+            int indexExtension = 0;
+            for (int i = 0; i < origin.Length; i++)
+            {
+                if (origin[i].Equals('.'))
+                {
+                    indexExtension = i;
+                }
+            }
 
+            string fileName = origin.Substring(0, indexExtension);
+            Debug.WriteLine("indexExt: " + indexExtension + "origin.Length :" +origin.Length.ToString() );
+            string extension = origin.Substring(indexExtension + 1, origin.Length - indexExtension - 1);
+            Debug.WriteLine("FileName: " + fileName);
+            Debug.WriteLine("extension: " + extension);
             StringBuilder stringBuilder = new();
-            stringBuilder.Append(fileName);
+            stringBuilder.Append(fileName);    
             stringBuilder.Append(Suffix);
             stringBuilder.Append('.');
             stringBuilder.Append(extension);
 
             return stringBuilder.ToString();
-            //return string.Concat(origin, Suffix);
         }
 
         public IRule Parse(string line)
@@ -59,10 +66,6 @@ namespace BatchRename.Rules
             return MemberwiseClone();
         }
 
-        public IConfigRuleWindow ConfigRuleWindow()
-        {
-            throw new System.NotImplementedException();
-        }
 
         public void SetData(string data)
         {

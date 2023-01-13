@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace BatchRename.Core
+namespace Core
 {
     public interface IRule : ICloneable
     {
@@ -11,7 +11,6 @@ namespace BatchRename.Core
 
         IRule Parse(string line);
         public Dictionary<string, string> ListParameter { get; set; }
-        public IConfigRuleWindow ConfigRuleWindow();
         public void SetData(string data);
     }
 }

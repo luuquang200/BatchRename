@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 
-namespace BatchRename.Core
+namespace Core
 {
     public class ItemFile : INotifyPropertyChanged, ICloneable
     {

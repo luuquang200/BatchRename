@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Windows.Data;
-using BatchRename.Core;
+using Core;
 
 namespace BatchRename.Converters
 {
