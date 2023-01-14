@@ -83,9 +83,9 @@ namespace AddCounterRule
             return MemberwiseClone();
         }
 
-        public IRule Parse(string line)
+        public IRule Parse(string dataInput)
         {
-            var tokens = line.Split(new string[] { " " },
+            var tokens = dataInput.Split(new string[] { " " },
                 StringSplitOptions.None);
             var data = tokens[1];
             var attributes = data.Split(new string[] { "," },
@@ -97,6 +97,8 @@ namespace AddCounterRule
             var pairs2 = attributes[2].Split(new string[] { "=" },
                            StringSplitOptions.None);
 
+
+
             var rule = new AddCounterRule
             {
                 Start = int.Parse(pairs0[1]),
@@ -104,11 +106,12 @@ namespace AddCounterRule
                 NumberOfDigits = int.Parse(pairs2[1]),
                 ListParameter = new Dictionary<string, string>
                 {
-                    { "Start", Start.ToString() },
-                    { "Step", Step.ToString() },
-                    { "NumberOfDigits", NumberOfDigits.ToString() }
+                    { "Start", int.Parse(pairs0[1]).ToString() },
+                    { "Step", int.Parse(pairs1[1]).ToString() },
+                    { "NumberOfDigits", int.Parse(pairs2[1]).ToString() }
                 }
             };
+            Debug.WriteLine("parameter: " + ListParameter.ElementAt(0).Key + " - " + ListParameter.ElementAt(0).Value);
             return rule;
         }
 

@@ -56,7 +56,11 @@ namespace AddSuffixRule
 
             var rule = new AddSuffixRule
             {
-                Suffix = tokens[SUFFIX_INDEX]
+                Suffix = tokens[SUFFIX_INDEX],
+                ListParameter = new Dictionary<string, string>
+                {
+                    { "Suffix", tokens[SUFFIX_INDEX] }
+                }
             };
             return rule;
         }

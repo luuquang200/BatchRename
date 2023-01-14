@@ -43,7 +43,11 @@ namespace AddPrefixRule
 
             var rule = new AddPrefixRule
             {
-                Prefix = pairs[1]
+                Prefix = pairs[1],
+                ListParameter = new Dictionary<string, string>
+                {
+                    { "Prefix", pairs[1] }
+                }
             };
 
             return rule;

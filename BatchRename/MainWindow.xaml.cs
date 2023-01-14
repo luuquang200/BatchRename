@@ -143,6 +143,7 @@ namespace BatchRename
             int indexSelected = ListViewRulesApply.SelectedIndex;
             if (indexSelected == -1) return;
 
+            
             var screen = new ConfigWindow(_activeRules[indexSelected]);
             if(screen.ShowDialog() == true)
             {
@@ -331,7 +332,7 @@ namespace BatchRename
             _activeRules.Clear();
             foreach (var itemRule in _activePreset.GetRules())
             {
-                _activeRules.Add(itemRule);
+                _activeRules.Add((IRule)itemRule.Clone());
             }
         }
 

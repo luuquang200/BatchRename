@@ -68,9 +68,13 @@ namespace PascalCaseRule
             var pairs = data.Split(new string[] { "=" },
                 StringSplitOptions.None);
 
-            var rule = new PascalCaseRule();
+            var rule = new PascalCaseRule
             {
-                Delimiter = pairs[1];
+                Delimiter = pairs[1],
+                ListParameter = new Dictionary<string, string>
+                {
+                    { "Delimiter", pairs[1] }
+                }
             };
 
             return rule;

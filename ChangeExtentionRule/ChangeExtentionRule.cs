@@ -65,9 +65,13 @@ namespace ChangeExtentionRule
             var pairs = data.Split(new string[] { "=" },
                 StringSplitOptions.None);
 
-            var rule = new ChangeExtentionRule();
+            var rule = new ChangeExtentionRule
             {
-                Extention = pairs[1];
+                Extention = pairs[1],
+                ListParameter = new Dictionary<string, string>
+                {
+                    { "Extention", pairs[1] }
+                }
             };
 
             return rule;

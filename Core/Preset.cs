@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 
@@ -64,7 +65,10 @@ namespace Core
 
             foreach (var line in lines)
             {
-                rules.Add(RuleFactory.Parse(line));
+                //rules.Add(RuleFactory.Parse(line));
+                IRule rule = RuleFactory.Parse(line);
+                rules.Add(rule);
+                Debug.WriteLine(rule.Name);
             }
             return rules;
         }

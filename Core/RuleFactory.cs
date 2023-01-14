@@ -25,20 +25,22 @@ namespace Core
         {
         }
 
-        public static IRule Parse(string line)
+        public static IRule Parse(string data)
         {
             const char Space = ' ';
 
-            var tokens = line.Split(Space);
+            var tokens = data.Split(Space);
             var keyword = tokens[0];
             IRule result = null;
 
-            if (_prototypes.TryGetValue(keyword, out IRule rule))
+            if (_prototypes.TryGetValue(keyword, out IRule value))
             {
-                result = rule.Parse(line);
+                IRule prototype = value;
+                result = prototype.Parse(data);
             }
 
             return result;
         }
+
     }
 }
