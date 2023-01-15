@@ -161,7 +161,6 @@ namespace BatchRename
             if(screen.ShowDialog() == true)
             {
                 string data = screen.GetData();
-                MessageBox.Show(data);
                 _activeRules[indexSelected].SetData(data);
             }
 
@@ -364,7 +363,7 @@ namespace BatchRename
             ListViewFile.ItemsSource = _sourceFiles;
 
             var converter2 = (PreviewRenameConverterFolder)FindResource("PreviewRenameConverterFolder");
-            converter2.Rules.Clear();
+            converter2.Rules.Clear(); 
             foreach (IRule rule in _activeRules)
             {
                 converter2.Rules.Add((IRule)rule.Clone());

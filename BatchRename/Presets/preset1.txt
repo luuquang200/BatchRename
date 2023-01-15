@@ -1,6 +1,5 @@
 RemoveSpecialChars SpecialChars=-_
 AddPrefix Prefix=Facebook
-OneSpace
 AddCounter Start=10,Step=5,NumberOfDigits=2
 AddSuffix Suffix=End
 ChangeExtention Extention=pdf

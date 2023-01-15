@@ -227,7 +227,7 @@
                 </StackPanel>
             </StackPanel>
 
-            <TabControl Margin="0 0 0 0" BorderBrush="Gainsboro" Width="550">
+            <TabControl Margin="0 0 0 0" BorderBrush="Gainsboro" Width="650">
                 <TabItem Header="File" Style="{StaticResource StabItemStyle}" Width="70">
                     <StackPanel  Margin="7 0 0 0">
                         <StackPanel Orientation="Horizontal">
@@ -248,7 +248,7 @@
                                   HorizontalAlignment="Left"
                                   Height="305"
                                   VerticalAlignment="Top"
-                                  Width="518"
+                                  Width="630"
                                   AllowDrop="True"
                                   Drop="ListViewFile_Drop"
                                   Margin="0 5 0 0"
@@ -256,18 +256,18 @@
                             <ListView.View>
                                 <GridView>
                                     <GridViewColumn Header="Filename"
-                                                    Width="120"
+                                                    Width="160"
                                                     DisplayMemberBinding="{Binding OldName}" />
                                     <GridViewColumn Header="New Filename"
-                                            Width="150"
+                                            Width="165"
                                             DisplayMemberBinding="{Binding OldName,
                                                         Converter={StaticResource PreviewRenameConverter},
                                                         ConverterParameter=Result}" />
                                     <GridViewColumn Header= "Path"
-                                                    Width="150"
+                                                    Width="180"
                                                     DisplayMemberBinding="{Binding FilePath}" />
-                                    <GridViewColumn Header= "Note"
-                                                    Width="60"
+                                    <GridViewColumn Header= "Result"
+                                                    Width="100"
                                                     DisplayMemberBinding="{Binding Result}" />
                                 </GridView>
                             </ListView.View>
@@ -296,7 +296,7 @@
                                   HorizontalAlignment="Left"
                                   Height="305"
                                   VerticalAlignment="Top"
-                                  Width="518"
+                                  Width="630"
                                   AllowDrop="True"
                                   Drop="ListViewFile_Drop"
                                   Margin="0 5 0 0"
@@ -304,18 +304,18 @@
                             <ListView.View>
                                 <GridView>
                                     <GridViewColumn Header="Folder Name"
-                                                    Width="120"
+                                                    Width="160"
                                                     DisplayMemberBinding="{Binding OldName}" />
                                     <GridViewColumn Header="New Name"
-                                            Width="150"
+                                            Width="165"
                                             DisplayMemberBinding="{Binding OldName,
                                                         Converter={StaticResource PreviewRenameConverterFolder},
                                                         ConverterParameter=Result}" />
                                     <GridViewColumn Header= "Path"
-                                                    Width="150"
+                                                    Width="180"
                                                     DisplayMemberBinding="{Binding FolderPath}" />
                                     <GridViewColumn Header= "Note"
-                                                    Width="60"
+                                                    Width="100"
                                                     DisplayMemberBinding="{Binding Result}" />
                                 </GridView>
                             </ListView.View>
