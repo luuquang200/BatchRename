@@ -1,8 +1,6 @@
 ﻿using BatchRename.Converters;
 using Core;
-using BatchRename.Rules;
 using BatchRename.View;
-using Core;
 using Fluent;
 using Microsoft.Win32;
 using System;
@@ -23,6 +21,8 @@ using System.Windows.Media;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using Button = System.Windows.Controls.Button;
 using FButton = Fluent.Button;
+using System.Windows.Media.Media3D;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 namespace BatchRename
 {
@@ -32,6 +32,7 @@ namespace BatchRename
     public partial class MainWindow : INotifyPropertyChanged
     {
         private readonly ObservableCollection<ItemFile> _sourceFiles;
+        private readonly ObservableCollection<ItemFolder> _sourceFolder;
         private readonly ObservableCollection<IRule> _availableRules;
         private ObservableCollection<IRule> _activeRules;
         private readonly ObservableCollection<Preset> _presets;
@@ -42,6 +43,7 @@ namespace BatchRename
             InitializeComponent();
 
             _sourceFiles = new ObservableCollection<ItemFile>();
+            _sourceFolder = new ObservableCollection<ItemFolder>();
             _availableRules = new ObservableCollection<IRule>();
             _activeRules = new ObservableCollection<IRule>();
             _presets = new ObservableCollection<Preset>(Preset.GetPresets());
@@ -62,27 +64,22 @@ namespace BatchRename
             ListViewRulesApply.ItemsSource = _activeRules;
             ComboboxRule.ItemsSource = _availableRules;
             ListViewFile.ItemsSource = _sourceFiles;
-
+            ListViewFolder.ItemsSource = _sourceFolder;
         }
 
         private void LoadAvailableRules()
         {
             var exeFolder = AppDomain.CurrentDomain.BaseDirectory;
-            //var folderInfo = new DirectoryInfo(exeFolder);
             var dllFiles = new DirectoryInfo(exeFolder).GetFiles("rules/*.dll");
             foreach (var file in dllFiles)
             {
                 var assembly = Assembly.LoadFrom(file.FullName);
                 var types = assembly.GetTypes();
-                //MessageBox.Show(file.FullName);
                 foreach (var type in types)
                 {
-                    //MessageBox.Show("ok");
                     if (type.IsClass && typeof(IRule).IsAssignableFrom(type))
                     {
-                        
                         IRule rule = (IRule)Activator.CreateInstance(type)!;
-                        
                         RuleFactory.Register(rule);
                         _availableRules.Add(rule);
                     }
@@ -93,40 +90,56 @@ namespace BatchRename
 
         private void ButtonAddFile_Click(object sender, RoutedEventArgs e)
         {
-            var screen = new OpenFileDialog
-            {
-                Multiselect = true
-            };
+            string[] files = Array.Empty<string>();
+            if ((bool)addingRecursively.IsChecked) {
 
-            if (screen.ShowDialog() == true)
-            {
-                string[] files = screen.FileNames;
-
-                foreach (string file in files)
+                var screen = new System.Windows.Forms.FolderBrowserDialog();
+                if (screen.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
-                    bool isExisted = false;
-                    var info = new FileInfo(file);
-                    var shortName = info.Name;
-                    var filePath = info.DirectoryName;
-
-                    foreach (var itemFile in _sourceFiles)
+                    string SelectedPath = screen.SelectedPath;
+                    files = Directory.GetFiles(SelectedPath);
+                    foreach(var file in files)
                     {
-                        if (itemFile.OldName.Equals(shortName) && itemFile.FilePath.Equals(filePath))
-                        {
-                            isExisted = true;
-                            break;
-                        }
+                        Debug.WriteLine(file);
                     }
+                }
+            }
+            else
+            {
+                var screen = new OpenFileDialog
+                {
+                    Multiselect = true
+                };
 
-                    if (!isExisted)
+                if (screen.ShowDialog() == true)
+                {
+                    files = screen.FileNames;
+                }
+            }
+            foreach (string file in files)
+            {
+                bool isExisted = false;
+                var info = new FileInfo(file);
+                var shortName = info.Name;
+                var filePath = info.DirectoryName;
+
+                foreach (var itemFile in _sourceFiles)
+                {
+                    if (itemFile.OldName.Equals(shortName) && itemFile.FilePath.Equals(filePath))
                     {
-                        _sourceFiles.Add(new ItemFile
-                        {
-                            OldName = shortName,
-                            NewName = shortName,
-                            FilePath = filePath
-                        });
+                        isExisted = true;
+                        break;
                     }
+                }
+
+                if (!isExisted)
+                {
+                    _sourceFiles.Add(new ItemFile
+                    {
+                        OldName = shortName,
+                        NewName = shortName,
+                        FilePath = filePath
+                    });
                 }
             }
             ListViewFile.ItemsSource = _sourceFiles;
@@ -249,9 +262,40 @@ namespace BatchRename
                 }
                 catch (FileNotFoundException)
                 {
-                    // Unhandled exception
+                    itemFile.Result = "Source file not found";
+                    continue;
                 }
             }
+
+            _tempRules.Clear();
+            foreach (IRule itemRule in _activeRules)
+            {
+                _tempRules.Add((IRule)itemRule.Clone());
+            }
+
+            foreach (ItemFolder itemFolder in _sourceFolder)
+            {
+                //foreach (IRule itemRule in _activeRules)
+                foreach (IRule itemRule in _tempRules)
+                {
+                    if (!itemFolder.Result.Equals("Success"))
+                    {
+                        itemFolder.NewName = itemRule.Rename(itemFolder.NewName, false);
+                    }
+                }
+
+                try
+                {
+                    Directory.Move(Path.Combine(itemFolder.FolderPath, itemFolder.OldName), Path.Combine(itemFolder.FolderPath, itemFolder.NewName));
+                    itemFolder.Result = "Success";
+                }
+                catch (DirectoryNotFoundException)
+                {
+                    itemFolder.Result = "Source directory not found";
+                    continue;
+                }
+            }
+
             UpdateConverterPreview();
         }
 
@@ -293,6 +337,11 @@ namespace BatchRename
                 itemFile.OldName = itemFile.NewName;
                 itemFile.Result = "";
             }
+            foreach(ItemFolder itemFolder in _sourceFolder)
+            {
+                itemFolder.OldName = itemFolder.NewName;
+                itemFolder.Result = "";
+            }
             UpdateActiveRules();
             UpdateConverterPreview();
         }
@@ -302,14 +351,21 @@ namespace BatchRename
             // binding converter
             var converter = (PreviewRenameConverter)FindResource("PreviewRenameConverter");
             converter.Rules.Clear();
-            //foreach (IRule rule in _refeshRules)
             foreach (IRule rule in _activeRules)
             {
                 converter.Rules.Add((IRule)rule.Clone());
             }
-
             ListViewFile.ItemsSource = null;
             ListViewFile.ItemsSource = _sourceFiles;
+
+            var converter2 = (PreviewRenameConverterFolder)FindResource("PreviewRenameConverterFolder");
+            converter2.Rules.Clear();
+            foreach (IRule rule in _activeRules)
+            {
+                converter2.Rules.Add((IRule)rule.Clone());
+            }
+            ListViewFolder.ItemsSource = null;
+            ListViewFolder.ItemsSource = _sourceFolder;
         }
 
         private void UpdateActiveRules()
@@ -497,6 +553,119 @@ namespace BatchRename
                 _activeRules[index - 1] = _activeRules[index];
                 _activeRules[index] = temp;
             }
+        }
+
+        private void ButtonSavePreset_Click(object sender, RoutedEventArgs e)
+        {
+            // If no preset is opening, ask user to enter new name for the preset
+            if (_activePreset is null)
+            {
+                return;
+            }
+
+            // Else save to the opening preset
+            using StreamWriter presetFile = new(_activePreset.GetPath());
+            foreach (var rule in _activeRules)
+            {
+                // Not yet implemented
+                int lenght = rule.ListParameter.Count;
+                StringBuilder stringBuilder = new();
+                stringBuilder.Append(rule.Name);
+                stringBuilder.Append(' ');
+
+                for (int i = 0; i < lenght; i++)
+                {
+                    stringBuilder.Append(rule.ListParameter.ElementAt(i).Key);
+                    stringBuilder.Append('=');
+                    stringBuilder.Append(rule.ListParameter.ElementAt(i).Value);
+                    stringBuilder.Append(',');
+                }
+                stringBuilder.Remove(stringBuilder.Length - 1, 1);
+
+                presetFile.WriteLine(stringBuilder.ToString());
+
+            }
+        }
+
+        private void ButtonDeletePreset_Click(object sender, RoutedEventArgs e)
+        {
+            if (_activePreset is null)
+            {
+                //_listItemRuleApply.Clear();
+                _activeRules.Clear();
+                return;
+            }
+
+            var result = MessageBox.Show("Do you want to delete this preset?", "Delete", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (result == MessageBoxResult.No)
+                return;
+
+            File.Delete(_activePreset.GetPath());
+            _presets.Remove(_activePreset); // ComboBoxSelectionChanged will automatically called
+        }
+
+        private void ButtonSavePresetAlternative_Click(object sender, RoutedEventArgs e)
+        {
+            // Haven't implemented to handle saving preset's content
+
+            if (_activePreset is null)
+                return;
+
+            string newName = TextboxRename.Text;
+            if (string.IsNullOrEmpty(newName))
+            {
+                MessageBox.Show("Preset name cannot be empty.", "Invalid name", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
+            string oldName = _activePreset.Name;
+            if (_activePreset.Rename(newName))
+            {
+                File.Move(Preset.GetPath(oldName), Preset.GetPath(newName));
+                ComboboxPreset.Text = newName;
+            }
+        }
+
+        private void ButtonAddFolder_Click(object sender, RoutedEventArgs e)
+        {
+            var screen = new System.Windows.Forms.FolderBrowserDialog();
+            if (screen.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                string SelectedPath = screen.SelectedPath;
+                string[] folders = Directory.GetDirectories(SelectedPath);
+                //Directory.GetFiles(path)   
+                foreach (var folder in folders)
+                {
+                    string shortName = folder.Remove(0, SelectedPath.Length + 1);
+                    Debug.WriteLine(SelectedPath);
+                    bool isExisted = false;
+
+                    foreach (var itemFolder in _sourceFolder)
+                    {
+                        if (itemFolder.OldName.Equals(shortName) && itemFolder.FolderPath.Equals(SelectedPath))
+                        {
+                            isExisted = true;
+                            break;
+                        }
+                    }
+
+                    if (!isExisted)
+                    {
+                        _sourceFolder.Add(new ItemFolder
+                        {
+                            OldName = shortName,
+                            NewName = shortName,
+                            FolderPath = SelectedPath
+                        });
+                    }
+                }
+            }
+           
+        }
+
+        private void ButtonClearAllFolder_Click(object sender, RoutedEventArgs e)
+        {
+            _sourceFolder.Clear();
         }
     }
 }

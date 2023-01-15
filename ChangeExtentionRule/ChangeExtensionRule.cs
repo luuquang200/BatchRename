@@ -3,7 +3,7 @@ using System.Text;
 
 namespace ChangeExtentionRule
 {
-    public class ChangeExtentionRule : IRule
+    public class ChangeExtensionRule : IRule
     {
         public string Extention { get; set; }
 
@@ -15,7 +15,7 @@ namespace ChangeExtentionRule
             set;
         }
 
-        public ChangeExtentionRule()
+        public ChangeExtensionRule()
         {
             Extention = "";
             ListParameter = new Dictionary<string, string>
@@ -24,8 +24,12 @@ namespace ChangeExtentionRule
             };
         }
 
-        public string Rename(string origin)
+        public string Rename(string origin, bool isFile)
         {
+            if (!isFile)
+            {
+                return origin;
+            }
             int indexExtension = 0;
             for (int i = 0; i < origin.Length; i++)
             {
@@ -65,7 +69,7 @@ namespace ChangeExtentionRule
             var pairs = data.Split(new string[] { "=" },
                 StringSplitOptions.None);
 
-            var rule = new ChangeExtentionRule
+            var rule = new ChangeExtensionRule
             {
                 Extention = pairs[1],
                 ListParameter = new Dictionary<string, string>

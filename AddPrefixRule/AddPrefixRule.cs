@@ -23,7 +23,7 @@ namespace AddPrefixRule
             };
         }
 
-        public string Rename(string origin)
+        public string Rename(string origin, bool isFile)
         {
             return string.Concat(Prefix, origin);
         }

@@ -10,7 +10,7 @@ namespace Core
         public string FilePath { get; set; } = "";
         public string Result { get; set; } = "";
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 
         public object Clone()
         {

@@ -40,19 +40,23 @@ namespace AddCounterRule
                 { "NumberOfDigits", NumberOfDigits.ToString() }
             };
         }
-        public string Rename(string origin)
+        public string Rename(string origin, bool isFile)
         {
-            int indexExtension = 0;
-            for (int i = 0; i < origin.Length; i++)
+            string fileName = origin;
+            string extension = "";
+            if (isFile)
             {
-                if (origin[i].Equals('.'))
+                int indexExtension = 0;
+                for (int i = 0; i < origin.Length; i++)
                 {
-                    indexExtension = i;
+                    if (origin[i].Equals('.'))
+                    {
+                        indexExtension = i;
+                    }
                 }
+                fileName = origin.Substring(0, indexExtension);
+                extension = origin.Substring(indexExtension + 1, origin.Length - indexExtension - 1);
             }
-
-            string fileName = origin.Substring(0, indexExtension);
-            string extension = origin.Substring(indexExtension + 1, origin.Length - indexExtension - 1);
 
             var builder = new StringBuilder();
             builder.Append(fileName);
@@ -70,8 +74,11 @@ namespace AddCounterRule
 
 
             builder.Append(_current);
-            builder.Append('.');
-            builder.Append(extension);
+            if(isFile)
+            {
+                builder.Append('.');
+                builder.Append(extension);
+            }
 
             string result = builder.ToString();
             _current += Step;

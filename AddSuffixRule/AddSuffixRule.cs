@@ -23,27 +23,33 @@ namespace AddSuffixRule
             };
         }
 
-        public string Rename(string origin)
+        public string Rename(string origin, bool isFile)
         {
-            int indexExtension = 0;
-            for (int i = 0; i < origin.Length; i++)
+            string fileName = origin;
+            string extension = "";
+            if (isFile)
             {
-                if (origin[i].Equals('.'))
+                int indexExtension = 0;
+                for (int i = 0; i < origin.Length; i++)
                 {
-                    indexExtension = i;
+                    if (origin[i].Equals('.'))
+                    {
+                        indexExtension = i;
+                    }
                 }
+                fileName = origin.Substring(0, indexExtension);
+                extension = origin.Substring(indexExtension + 1, origin.Length - indexExtension - 1);
             }
 
-            string fileName = origin.Substring(0, indexExtension);
-            Debug.WriteLine("indexExt: " + indexExtension + "origin.Length :" +origin.Length.ToString() );
-            string extension = origin.Substring(indexExtension + 1, origin.Length - indexExtension - 1);
-            Debug.WriteLine("FileName: " + fileName);
-            Debug.WriteLine("extension: " + extension);
+
             StringBuilder stringBuilder = new();
             stringBuilder.Append(fileName);    
             stringBuilder.Append(Suffix);
-            stringBuilder.Append('.');
-            stringBuilder.Append(extension);
+            if (isFile)
+            {
+                stringBuilder.Append('.');
+                stringBuilder.Append(extension);
+            };
 
             return stringBuilder.ToString();
         }

@@ -20,7 +20,7 @@ namespace OneSpaceRule
             return new OneSpaceRule();
         }
 
-        public string Rename(string origin)
+        public string Rename(string origin, bool isFile)
         {
             var builder = new StringBuilder();
             builder.Append(origin[0]);

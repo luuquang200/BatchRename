@@ -14,6 +14,7 @@
                      Loaded="Window_Loaded">
     <Window.Resources>
         <converters:PreviewRenameConverter x:Key="PreviewRenameConverter" />
+        <converters:PreviewRenameConverterFolder x:Key="PreviewRenameConverterFolder"/>
     </Window.Resources>
 
     <Grid>
@@ -33,12 +34,23 @@
                                    Header="Open"
                                    Icon="/Images/icon_open.png"
                                    Click="ButtonOpenPreset_Click"
-                                   Margin="0 0 10 0" />
+                                   Margin="0 0 20 0" />
                     <Fluent:Button x:Name="ButtonNewPreset"
                                    Header="New"
-                                   Margin="0 0 10 0"
+                                   Margin="0 0 20 0"
                                    Click="ButtonNewPreset_Click"
                                    Icon="/Images/icon_new.png" />
+
+                    <Fluent:Button x:Name="ButtonSavePreset"
+                                   Header="Save"
+                                   Margin="0 0 20 0"
+                                   Click="ButtonSavePreset_Click"
+                                   Icon="/Images/icon_save.png" />
+                    <Fluent:Button x:Name="ButtonDeletePreset"
+                                   Header="Delete"
+                                   Margin="0 0 20 0"
+                                   Icon="/Images/icon_delete.png"
+                                   Click="ButtonDeletePreset_Click" />
                 </Fluent:RibbonGroupBox>
                 <Fluent:RibbonGroupBox Header="Rule"
                                        Margin="0 10 0 0">
@@ -70,11 +82,11 @@
             </Fluent:RibbonTabItem>
 
             <Fluent:RibbonTabItem Header="Options">
-                <Fluent:RibbonGroupBox>
-                    <Fluent:Button Header="Option 1" />
-                    <Fluent:Button Header="Option 2" />
+                <Fluent:RibbonGroupBox Header="Add Items">
+                    <Fluent:RadioButton Name="addingDirectly" Header="Adding Directly" Margin="0 10 0 0" IsChecked="True"/>
+                    <Fluent:RadioButton Name="addingRecursively" Header="Adding Recursively"/>
                 </Fluent:RibbonGroupBox>
-                <Fluent:RibbonGroupBox Header="Save">
+                <Fluent:RibbonGroupBox Header="Save files">
                     <Fluent:RadioButton Name="renamingOriginal" Header="Renaming on the original" Margin="0 10 0 0" IsChecked="True"/>
                     <Fluent:RadioButton Name="makeCopy" Header="Make a copy in a selected folder"/>
                 </Fluent:RibbonGroupBox>
@@ -198,6 +210,21 @@
                         </Style>
                     </ListView.ItemContainerStyle>
                 </ListView>
+                <StackPanel Orientation="Horizontal"
+                            Margin="10 30 0 0">
+                    <Fluent:TextBox x:Name="TextboxRename"
+                                    Header="Preset:"
+                                    Width="200" />
+                    <Button x:Name="ButtonSavePresetAlternative"
+                            Content="Save"
+                            Background="#0033A1"
+                            FontWeight="Medium"
+                            Margin="5 0 0 0"
+                            Width="75"
+                            Click="ButtonSavePresetAlternative_Click"
+                            FontSize="11"
+                            Style="{StaticResource ButtonCustomColorPositive}" />
+                </StackPanel>
             </StackPanel>
 
             <TabControl Margin="0 0 0 0" BorderBrush="Gainsboro" Width="550">
@@ -205,7 +232,7 @@
                     <StackPanel  Margin="7 0 0 0">
                         <StackPanel Orientation="Horizontal">
                             <Button x:Name="ButtonAddFile"
-                                Content="Add New File"
+                                Content="Add Files"
                                 Width="110"
                                 Foreground="Black"
                                 Style="{StaticResource ButtonAddNew}" Height="31"
@@ -250,6 +277,50 @@
 
                 <TabItem Header="Folder" Style="{StaticResource StabItemStyle}"
                          Width="90" Margin="0 0 10 0">
+                    <StackPanel  Margin="7 0 0 0">
+                        <StackPanel Orientation="Horizontal">
+                            <Button x:Name="ButtonAddFolder"
+                                Content="Add Folder"
+                                Width="110"
+                                Foreground="Black"
+                                Style="{StaticResource ButtonAddNew}" Height="31"
+                                    Click="ButtonAddFolder_Click" />
+                            <Button x:Name="ButtonClearAllFolder"
+                                Content="Clear All"
+                                Width="128"
+                                Foreground="Black"
+                                Style="{StaticResource ButtonClearAll}" Height="31" Click="ButtonClearAllFolder_Click" />
+                        </StackPanel>
+
+                        <ListView x:Name="ListViewFolder"
+                                  HorizontalAlignment="Left"
+                                  Height="305"
+                                  VerticalAlignment="Top"
+                                  Width="518"
+                                  AllowDrop="True"
+                                  Drop="ListViewFile_Drop"
+                                  Margin="0 5 0 0"
+                                  d:ItemsSource="{d:SampleData ItemCount=5}">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Header="Folder Name"
+                                                    Width="120"
+                                                    DisplayMemberBinding="{Binding OldName}" />
+                                    <GridViewColumn Header="New Name"
+                                            Width="150"
+                                            DisplayMemberBinding="{Binding OldName,
+                                                        Converter={StaticResource PreviewRenameConverterFolder},
+                                                        ConverterParameter=Result}" />
+                                    <GridViewColumn Header= "Path"
+                                                    Width="150"
+                                                    DisplayMemberBinding="{Binding FolderPath}" />
+                                    <GridViewColumn Header= "Note"
+                                                    Width="60"
+                                                    DisplayMemberBinding="{Binding Result}" />
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                    </StackPanel>
                 </TabItem>
             </TabControl>
         </StackPanel>

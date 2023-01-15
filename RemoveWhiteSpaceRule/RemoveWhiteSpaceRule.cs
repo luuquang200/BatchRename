@@ -13,7 +13,7 @@ namespace RemoveWhiteSpaceRule
             return new RemoveWhiteSpaceRule();
         }
 
-        public string Rename(string origin)
+        public string Rename(string origin, bool isFile)
         {
             return new string(origin.Where(c => !char.IsWhiteSpace(c))
                                     .ToArray());

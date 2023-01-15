@@ -29,7 +29,7 @@ namespace RemoveSpecialCharsRule
             };
         }
 
-        public string Rename(string origin)
+        public string Rename(string origin, bool isFile)
         {
             StringBuilder builder = new();
             foreach (var c in origin)

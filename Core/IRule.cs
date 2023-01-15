@@ -5,7 +5,7 @@ namespace Core
 {
     public interface IRule : ICloneable
     {
-        string Rename(string origin);
+        string Rename(string origin, bool isFile = true);
 
         string Name { get; }
 
