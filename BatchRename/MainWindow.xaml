@@ -14,7 +14,7 @@
                      Loaded="Window_Loaded">
     <Window.Resources>
         <converters:PreviewRenameConverter x:Key="PreviewRenameConverter" />
-        <converters:PreviewRenameConverterFolder x:Key="PreviewRenameConverterFolder"/>
+        <converters:PreviewRenameConverterFolder x:Key="PreviewRenameConverterFolder" />
     </Window.Resources>
 
     <Grid>
@@ -83,19 +83,12 @@
 
             <Fluent:RibbonTabItem Header="Options">
                 <Fluent:RibbonGroupBox Header="Add Items">
-                    <Fluent:RadioButton Name="addingDirectly" Header="Adding Directly" Margin="0 10 0 0" IsChecked="True"/>
-                    <Fluent:RadioButton Name="addingRecursively" Header="Adding Recursively"/>
+                    <Fluent:RadioButton Name="addingDirectly" Header="Adding Directly" Margin="0 10 0 0" IsChecked="True" />
+                    <Fluent:RadioButton Name="addingRecursively" Header="Adding Recursively" />
                 </Fluent:RibbonGroupBox>
                 <Fluent:RibbonGroupBox Header="Save files">
-                    <Fluent:RadioButton Name="renamingOriginal" Header="Renaming on the original" Margin="0 10 0 0" IsChecked="True"/>
-                    <Fluent:RadioButton Name="makeCopy" Header="Make a copy in a selected folder"/>
-                </Fluent:RibbonGroupBox>
-            </Fluent:RibbonTabItem>
-
-            <Fluent:RibbonTabItem Header="Help">
-                <Fluent:RibbonGroupBox>
-                    <Fluent:Button Header="Help 1" />
-                    <Fluent:Button Header="Help 2" />
+                    <Fluent:RadioButton Name="renamingOriginal" Header="Renaming on the original" Margin="0 10 0 0" IsChecked="True" />
+                    <Fluent:RadioButton Name="makeCopy" Header="Make a copy in a selected folder" />
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
         </Fluent:Ribbon>
@@ -118,8 +111,8 @@
                                 Style="{StaticResource ButtonClearAll}" Height="36" Click="ButtonClearAllRule_Click" />
                     <Button Style="{StaticResource ButtonOnTop}" Width="26" Height="26" Margin="7 0" Click="OnTop_Click" />
                     <Button Style="{StaticResource ButtonOnPreview}" Width="26" Height="26" Margin="5" Click="OnPreview_Click" />
-                    <Button Style="{StaticResource ButtonOnNext}" Width="26" Height="26" Margin="5" Click="OnNext_Click"/>
-                    <Button Style="{StaticResource ButtonOnBottom}" Width="26" Height="26" Margin="5" Click="OnBottom_Click"/>
+                    <Button Style="{StaticResource ButtonOnNext}" Width="26" Height="26" Margin="5" Click="OnNext_Click" />
+                    <Button Style="{StaticResource ButtonOnBottom}" Width="26" Height="26" Margin="5" Click="OnBottom_Click" />
                 </StackPanel>
                 <ListView x:Name="ListViewRulesApply"
                           Width="303" Height="300"
