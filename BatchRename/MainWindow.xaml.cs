@@ -51,13 +51,7 @@ namespace BatchRename
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            // Đăng kí cho biết là mình có thể gặp những luật đổi tên gì?
-            // Cảnh giới cuối: Đọc dll, đăng kí khả năng, chọn tập tin luật
-
-            // Cách 1: Sắp làm: code cứng trước
-
-            // Cách 2: Cac luat duoc luu trong tap tin Preset
-
+            SetupFolder();
             LoadAvailableRules();
             ComboboxPreset.ItemsSource = _presets;
 
@@ -86,6 +80,28 @@ namespace BatchRename
                 }
             }
 
+        }
+
+        private static void SetupFolder()
+        {
+            var exeFolder = AppDomain.CurrentDomain.BaseDirectory;
+            var rulesPath = Path.Combine(exeFolder, "rules");
+            if (!File.Exists(rulesPath))
+            {
+                CreateFolder(rulesPath);
+            }
+        }
+
+        public static void CreateFolder(string strPath)
+        {
+            try
+            {
+                if (!Directory.Exists(strPath))
+                {
+                    Directory.CreateDirectory(strPath);
+                }
+            }
+            catch { /* Do nothing */ }
         }
 
         private void ButtonAddFile_Click(object sender, RoutedEventArgs e)
