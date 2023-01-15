@@ -183,7 +183,6 @@ namespace BatchRename
                 //_refeshRules.RemoveAt(indexSelected);
             }
 
-            UpdateActiveRules();
             UpdateConverterPreview();
         }
 
@@ -222,7 +221,6 @@ namespace BatchRename
 
         private void ButtonApply_Click(object sender, RoutedEventArgs e)
         {
-            UpdateActiveRules();
             ObservableCollection<IRule> _tempRules = new();
             foreach (IRule itemRule in _activeRules)
             {
@@ -251,6 +249,12 @@ namespace BatchRename
                         itemFile.NewName = itemRule.Rename(itemFile.NewName);
                     }
                 }
+                string validCheck = CheckValid.CheckValidName(itemFile.NewName, true);
+                if (validCheck != "")
+                {
+                    itemFile.Result = "Invalid name: " + validCheck;
+                    continue;
+                }
 
                 try
                 {
@@ -275,13 +279,18 @@ namespace BatchRename
 
             foreach (ItemFolder itemFolder in _sourceFolder)
             {
-                //foreach (IRule itemRule in _activeRules)
                 foreach (IRule itemRule in _tempRules)
                 {
                     if (!itemFolder.Result.Equals("Success"))
                     {
                         itemFolder.NewName = itemRule.Rename(itemFolder.NewName, false);
                     }
+                }
+                string validCheck = CheckValid.CheckValidName(itemFolder.NewName, true); ;
+                if (validCheck != "")
+                {
+                    itemFolder.Result = "Invalid name: " + validCheck;
+                    continue;
                 }
 
                 try
@@ -295,7 +304,6 @@ namespace BatchRename
                     continue;
                 }
             }
-
             UpdateConverterPreview();
         }
 
@@ -320,12 +328,10 @@ namespace BatchRename
         {
             var selectedRule = ComboboxRule.SelectedItem as IRule;
             _activeRules.Add((IRule)selectedRule.Clone()); 
-            //_refeshRules.Add((IRule)selectedRule.Clone());
         }
 
         private void ButtonPreview_Click(object sender, RoutedEventArgs e)
         {
-            UpdateActiveRules();
             UpdateConverterPreview();
         }
 
@@ -342,7 +348,6 @@ namespace BatchRename
                 itemFolder.OldName = itemFolder.NewName;
                 itemFolder.Result = "";
             }
-            UpdateActiveRules();
             UpdateConverterPreview();
         }
 
@@ -366,15 +371,6 @@ namespace BatchRename
             }
             ListViewFolder.ItemsSource = null;
             ListViewFolder.ItemsSource = _sourceFolder;
-        }
-
-        private void UpdateActiveRules()
-        {
-           // _activeRules.Clear();   
-           //foreach(IRule rule in _refeshRules)
-           //{
-           //     _activeRules.Add((IRule)rule.Clone());
-           //}
         }
 
         private void ButtonClearAllFile_Click(object sender, RoutedEventArgs e)
