@@ -1,0 +1,27 @@
+﻿<Application x:Class="BatchRename.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:BatchRename"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        
+        <ResourceDictionary>
+
+            <FontFamily x:Key="Inter">pack://application:,,,/Fonts/#Inter</FontFamily>
+            <FontFamily x:Key="MDL2">pack://application:,,,/Fonts/#Segoe MDL2 Assets</FontFamily>
+
+
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/Fluent;Component/Themes/Generic.xaml"/>
+                <ResourceDictionary Source="Theme/ViewTitleTheme.xaml"/>
+                <ResourceDictionary Source="Theme/ScrollBar.xaml"/>
+                <ResourceDictionary Source="Theme/Button.xaml"/>
+                <ResourceDictionary Source="Theme/ButtonCustomColorPositive.xaml"/>
+                <ResourceDictionary Source="Theme/ButtonCustomColorCancel.xaml"/>
+                <ResourceDictionary Source="Theme/CustomTextBox.xaml"/>
+                <ResourceDictionary Source="Theme/TabItem.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

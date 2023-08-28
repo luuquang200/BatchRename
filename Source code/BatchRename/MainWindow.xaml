@@ -1,0 +1,328 @@
+﻿<Fluent:RibbonWindow x:Class="BatchRename.MainWindow"
+                     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                     xmlns:local="clr-namespace:BatchRename"
+                     xmlns:converters="clr-namespace:BatchRename.Converters"
+                     xmlns:Fluent="urn:fluent-ribbon"
+                     mc:Ignorable="d"
+                     x:Name="WindowMain"
+                     ResizeMode="NoResize"
+                     Title="MainWindow"
+                     Width="1000" Height="600"
+                     Loaded="Window_Loaded">
+    <Window.Resources>
+        <converters:PreviewRenameConverter x:Key="PreviewRenameConverter" />
+        <converters:PreviewRenameConverterFolder x:Key="PreviewRenameConverterFolder"/>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Fluent:Ribbon Background="#F4F2F0"
+                       VerticalAlignment="Center">
+            <!--Tabs-->
+            <Fluent:RibbonTabItem Header="Home">
+                <Fluent:RibbonGroupBox Header="Preset"
+
+                                       Margin="5 10 0 0">
+                    <Fluent:Button x:Name="ButtonOpenPreset"
+                                   Header="Open"
+                                   Icon="/Images/icon_open.png"
+                                   Click="ButtonOpenPreset_Click"
+                                   Margin="0 0 20 0" />
+                    <Fluent:Button x:Name="ButtonNewPreset"
+                                   Header="New"
+                                   Margin="0 0 20 0"
+                                   Click="ButtonNewPreset_Click"
+                                   Icon="/Images/icon_new.png" />
+
+                    <Fluent:Button x:Name="ButtonSavePreset"
+                                   Header="Save"
+                                   Margin="0 0 20 0"
+                                   Click="ButtonSavePreset_Click"
+                                   Icon="/Images/icon_save.png" />
+                    <Fluent:Button x:Name="ButtonDeletePreset"
+                                   Header="Delete"
+                                   Margin="0 0 20 0"
+                                   Icon="/Images/icon_delete.png"
+                                   Click="ButtonDeletePreset_Click" />
+                </Fluent:RibbonGroupBox>
+                <Fluent:RibbonGroupBox Header="Rule"
+                                       Margin="0 10 0 0">
+                    <Fluent:ComboBox x:Name="ComboboxRule"
+                                     DisplayMemberPath="Name"
+                                     SelectedIndex="0"
+                                     Header="Rule"
+                                     IsReadOnly="True"
+                                     Margin="0,9,5,1"
+                                     Width="160" />
+                    <Fluent:Button x:Name="ButtonAddRule"
+                                   Header="Add"
+                                   Margin="10 0 10 0"
+                                   Icon="/Images/icon_add_rule.png"
+                                   Click="ButtonAddRule_Click" />
+                </Fluent:RibbonGroupBox>
+                <Fluent:RibbonGroupBox Margin="0 10 0 0">
+                    <Fluent:Button x:Name="ButtonApply"
+                                   Header="Apply"
+                                   Margin="10 0 10 0"
+                                   Click="ButtonApply_Click"
+                                   Icon="/Images/icon_apply.png" />
+                    <Fluent:Button x:Name="ButtonRefresh"
+                                   Header="Refresh"
+                                   Margin="10 0 10 0"
+                                   Click="ButtonRefresh_Click"
+                                   Icon="/Images/refresh.png" />
+                </Fluent:RibbonGroupBox>
+            </Fluent:RibbonTabItem>
+
+            <Fluent:RibbonTabItem Header="Options">
+                <Fluent:RibbonGroupBox Header="Add Items">
+                    <Fluent:RadioButton Name="addingDirectly" Header="Adding Directly" Margin="0 10 0 0" IsChecked="True"/>
+                    <Fluent:RadioButton Name="addingRecursively" Header="Adding Recursively"/>
+                </Fluent:RibbonGroupBox>
+                <Fluent:RibbonGroupBox Header="Save files">
+                    <Fluent:RadioButton Name="renamingOriginal" Header="Renaming on the original" Margin="0 10 0 0" IsChecked="True"/>
+                    <Fluent:RadioButton Name="makeCopy" Header="Make a copy in a selected folder"/>
+                </Fluent:RibbonGroupBox>
+            </Fluent:RibbonTabItem>
+
+            <Fluent:RibbonTabItem Header="Help">
+                <Fluent:RibbonGroupBox>
+                    <Fluent:Button Header="Help 1" />
+                    <Fluent:Button Header="Help 2" />
+                </Fluent:RibbonGroupBox>
+            </Fluent:RibbonTabItem>
+        </Fluent:Ribbon>
+
+        <StackPanel Grid.Row="1"
+                    Orientation="Horizontal">
+            <StackPanel Orientation="Vertical">
+                <Fluent:ComboBox x:Name="ComboboxPreset"
+                                 Header="Preset:"
+                                 DisplayMemberPath="Name"
+                                 Width="250"
+                                 HorizontalAlignment="Left"
+                                 SelectionChanged="ComboboxPreset_SelectionChanged"
+                                 Margin="5" />
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="20 0 0 0">
+                    <Button x:Name="ButtonClearAllRule"
+                                Content="Clear All"
+                                Width="90"
+                                Foreground="Black"
+                                Style="{StaticResource ButtonClearAll}" Height="36" Click="ButtonClearAllRule_Click" />
+                    <Button Style="{StaticResource ButtonOnTop}" Width="26" Height="26" Margin="7 0" Click="OnTop_Click" />
+                    <Button Style="{StaticResource ButtonOnPreview}" Width="26" Height="26" Margin="5" Click="OnPreview_Click" />
+                    <Button Style="{StaticResource ButtonOnNext}" Width="26" Height="26" Margin="5" Click="OnNext_Click"/>
+                    <Button Style="{StaticResource ButtonOnBottom}" Width="26" Height="26" Margin="5" Click="OnBottom_Click"/>
+                </StackPanel>
+                <ListView x:Name="ListViewRulesApply"
+                          Width="303" Height="300"
+                          Margin="2 0 0 0"
+                          ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                          ScrollViewer.VerticalScrollBarVisibility="Visible"
+                          HorizontalAlignment="Center"
+                          d:ItemsSource="{d:SampleData ItemCount=5}"
+                          PreviewMouseLeftButtonDown="List_PreviewLeftMouseDown">
+                    <ListView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel />
+                        </ItemsPanelTemplate>
+                    </ListView.ItemsPanel>
+
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Border x:Name="Border"
+                                BorderBrush="#C0C0C0"
+                                BorderThickness="1.1"
+                                CornerRadius="3">
+                                <Border.Background>
+                                    <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                                        <GradientStop Color="Transparent" Offset="1.0" />
+                                    </LinearGradientBrush>
+                                </Border.Background>
+                                <StackPanel Orientation="Horizontal"
+                                        Width="300"
+                                        Height="30"
+                                            HorizontalAlignment="Right">
+                                    <TextBlock Text="{Binding Name}"
+                                               Width="180"
+                                               VerticalAlignment="Center"
+                                               Margin="45 0 0 0"
+                                               Style="{StaticResource TextblockTitleNormal}" />
+                                    <Button x:Name="ButtonConfig"
+                                            Width="27"
+                                            Height="27"
+                                            Margin="5 0 0 0"
+                                            Content="config"
+                                            Style="{StaticResource ButtonConfig}"
+                                            Click="ButtonConfig_Click" />
+
+                                    <Button x:Name="ButtonRemove"
+                                            Width="27"
+                                            Height="27"
+                                            Margin="5 0 0 0"
+                                            Content="config"
+                                            Style="{StaticResource ButtonRemove}"
+                                            Click="ButtonRemove_Click" />
+                                </StackPanel>
+                            </Border>
+
+                            <DataTemplate.Triggers>
+                                <Trigger Property="IsMouseOver"
+                                 Value="True">
+                                    <Setter Property="BorderBrush"
+                                    TargetName="Border"
+                                    Value="Black" />
+
+                                    <Setter Property="BorderThickness"
+                                    TargetName="Border"
+                                    Value="1.2" />
+                                </Trigger>
+                                <DataTrigger Binding="{Binding Path=IsSelected, RelativeSource={
+                                          RelativeSource Mode=FindAncestor, AncestorType={x:Type ListViewItem }}}"
+                                          Value="True">
+                                    <Setter Property="BorderBrush"
+                                    TargetName="Border"
+                                    Value="#0033A1" />
+                                </DataTrigger>
+                            </DataTemplate.Triggers>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="{x:Type ListViewItem}">
+                            <!--remove green selected area-->
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type ListViewItem}">
+                                        <ContentPresenter />
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                            <Setter Property="Tag" Value="{Binding ElementName=WindowMain}" />
+                            <Setter Property="Margin" Value="7 5 0 5" />
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                </ListView>
+                <StackPanel Orientation="Horizontal"
+                            Margin="10 30 0 0">
+                    <Fluent:TextBox x:Name="TextboxRename"
+                                    Header="Preset:"
+                                    Width="200" />
+                    <Button x:Name="ButtonSavePresetAlternative"
+                            Content="Save"
+                            Background="#0033A1"
+                            FontWeight="Medium"
+                            Margin="5 0 0 0"
+                            Width="75"
+                            Click="ButtonSavePresetAlternative_Click"
+                            FontSize="11"
+                            Style="{StaticResource ButtonCustomColorPositive}" />
+                </StackPanel>
+            </StackPanel>
+
+            <TabControl Margin="0 0 0 0" BorderBrush="Gainsboro" Width="650">
+                <TabItem Header="File" Style="{StaticResource StabItemStyle}" Width="70">
+                    <StackPanel  Margin="7 0 0 0">
+                        <StackPanel Orientation="Horizontal">
+                            <Button x:Name="ButtonAddFile"
+                                Content="Add Files"
+                                Width="110"
+                                Foreground="Black"
+                                Style="{StaticResource ButtonAddNew}" Height="31"
+                                    Click="ButtonAddFile_Click" />
+                            <Button x:Name="ButtonClearAllFile"
+                                Content="Clear All"
+                                Width="128"
+                                Foreground="Black"
+                                Style="{StaticResource ButtonClearAll}" Height="31" Click="ButtonClearAllFile_Click" />
+                        </StackPanel>
+
+                        <ListView x:Name="ListViewFile"
+                                  HorizontalAlignment="Left"
+                                  Height="305"
+                                  VerticalAlignment="Top"
+                                  Width="630"
+                                  AllowDrop="True"
+                                  Drop="ListViewFile_Drop"
+                                  Margin="0 5 0 0"
+                                  d:ItemsSource="{d:SampleData ItemCount=5}">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Header="Filename"
+                                                    Width="160"
+                                                    DisplayMemberBinding="{Binding OldName}" />
+                                    <GridViewColumn Header="New Filename"
+                                            Width="165"
+                                            DisplayMemberBinding="{Binding OldName,
+                                                        Converter={StaticResource PreviewRenameConverter},
+                                                        ConverterParameter=Result}" />
+                                    <GridViewColumn Header= "Path"
+                                                    Width="180"
+                                                    DisplayMemberBinding="{Binding FilePath}" />
+                                    <GridViewColumn Header= "Result"
+                                                    Width="100"
+                                                    DisplayMemberBinding="{Binding Result}" />
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                    </StackPanel>
+                </TabItem>
+
+                <TabItem Header="Folder" Style="{StaticResource StabItemStyle}"
+                         Width="90" Margin="0 0 10 0">
+                    <StackPanel  Margin="7 0 0 0">
+                        <StackPanel Orientation="Horizontal">
+                            <Button x:Name="ButtonAddFolder"
+                                Content="Add Folder"
+                                Width="110"
+                                Foreground="Black"
+                                Style="{StaticResource ButtonAddNew}" Height="31"
+                                    Click="ButtonAddFolder_Click" />
+                            <Button x:Name="ButtonClearAllFolder"
+                                Content="Clear All"
+                                Width="128"
+                                Foreground="Black"
+                                Style="{StaticResource ButtonClearAll}" Height="31" Click="ButtonClearAllFolder_Click" />
+                        </StackPanel>
+
+                        <ListView x:Name="ListViewFolder"
+                                  HorizontalAlignment="Left"
+                                  Height="305"
+                                  VerticalAlignment="Top"
+                                  Width="630"
+                                  AllowDrop="True"
+                                  Drop="ListViewFile_Drop"
+                                  Margin="0 5 0 0"
+                                  d:ItemsSource="{d:SampleData ItemCount=5}">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Header="Folder Name"
+                                                    Width="160"
+                                                    DisplayMemberBinding="{Binding OldName}" />
+                                    <GridViewColumn Header="New Name"
+                                            Width="165"
+                                            DisplayMemberBinding="{Binding OldName,
+                                                        Converter={StaticResource PreviewRenameConverterFolder},
+                                                        ConverterParameter=Result}" />
+                                    <GridViewColumn Header= "Path"
+                                                    Width="180"
+                                                    DisplayMemberBinding="{Binding FolderPath}" />
+                                    <GridViewColumn Header= "Note"
+                                                    Width="100"
+                                                    DisplayMemberBinding="{Binding Result}" />
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                    </StackPanel>
+                </TabItem>
+            </TabControl>
+        </StackPanel>
+    </Grid>
+</Fluent:RibbonWindow>
