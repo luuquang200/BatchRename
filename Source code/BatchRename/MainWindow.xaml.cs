@@ -400,6 +400,11 @@ namespace BatchRename
 		{
 			var combobox = sender as Fluent.ComboBox;
 
+			if (combobox.SelectedItem is null)
+			{
+				return;
+			}
+
 			LoadPreset(combobox.SelectedItem as Preset);
 		}
 
