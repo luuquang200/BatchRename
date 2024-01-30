@@ -159,9 +159,6 @@ namespace BatchRename
 			var button = (Button)e.OriginalSource;
 			ListViewRulesApply.SelectedItem = button.DataContext;
 
-			//11:15
-			//RefreshStatus();
-
 			int indexSelected = ListViewRulesApply.SelectedIndex;
 			if (indexSelected == -1) return;
 
@@ -185,7 +182,6 @@ namespace BatchRename
 			if (indexSelected != -1)
 			{
 				_activeRules.RemoveAt(indexSelected);
-				//_refeshRules.RemoveAt(indexSelected);
 			}
 
 			UpdateConverterPreview();
@@ -246,7 +242,6 @@ namespace BatchRename
 
 			foreach (ItemFile itemFile in _sourceFiles)
 			{
-				//foreach (IRule itemRule in _activeRules)
 				foreach (IRule itemRule in _tempRules)
 				{
 					if (!itemFile.Result.Equals("Success"))
@@ -320,12 +315,6 @@ namespace BatchRename
 				strings.Add(rule.Name);
 			}
 			return strings;
-		}
-
-		//funcion for test
-		private void ButtonStart_Click(object sender, RoutedEventArgs e)
-		{
-			RefreshStatus();
 		}
 
 		private void ButtonAddRule_Click(object sender, RoutedEventArgs e)
@@ -482,7 +471,6 @@ namespace BatchRename
 			if (e.Data.GetDataPresent(DataFormats.FileDrop))
 			{
 				string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
-				//MessageBox.Show("File: " + files[0]);
 				foreach (string file in files)
 				{
 					bool isExisted = false;
@@ -570,14 +558,29 @@ namespace BatchRename
 
 		private void ButtonSavePreset_Click(object sender, RoutedEventArgs e)
 		{
-			// If no preset is opening, ask user to enter new name for the preset
+			// If no preset is selected, ask to create a new one
 			if (_activePreset is null)
 			{
+				MessageBox.Show("Please select a preset to save or create a new one.", "No preset selected", MessageBoxButton.OK, MessageBoxImage.Information);
 				return;
+			}
+
+			string presetText = ComboboxPreset.Text;
+			if (string.IsNullOrEmpty(presetText))
+			{
+				MessageBox.Show("Preset name cannot be empty.", "Invalid name", MessageBoxButton.OK, MessageBoxImage.Information);
+				return;
+			}
+
+			// If the name is different from the selected preset, rename the preset
+			if (presetText != _activePreset.Name)
+			{
+				RenamePreset(presetText);
 			}
 
 			// Else save to the opening preset
 			using StreamWriter presetFile = new(_activePreset.GetPath());
+
 			foreach (var rule in _activeRules)
 			{
 				// Not yet implemented
@@ -603,7 +606,6 @@ namespace BatchRename
 		{
 			if (_activePreset is null)
 			{
-				//_listItemRuleApply.Clear();
 				_activeRules.Clear();
 				return;
 			}
@@ -618,12 +620,14 @@ namespace BatchRename
 
 		private void ButtonSavePresetAlternative_Click(object sender, RoutedEventArgs e)
 		{
-			// Haven't implemented to handle saving preset's content
-
 			if (_activePreset is null)
 				return;
 
-			string newName = TextboxRename.Text;
+			RenamePreset(TextboxRename.Text);
+		}
+
+		private void RenamePreset(string newName)
+		{
 			if (string.IsNullOrEmpty(newName))
 			{
 				MessageBox.Show("Preset name cannot be empty.", "Invalid name", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -645,7 +649,6 @@ namespace BatchRename
 			{
 				string SelectedPath = screen.SelectedPath;
 				string[] folders = Directory.GetDirectories(SelectedPath);
-				//Directory.GetFiles(path)
 				foreach (var folder in folders)
 				{
 					string shortName = folder.Remove(0, SelectedPath.Length + 1);
