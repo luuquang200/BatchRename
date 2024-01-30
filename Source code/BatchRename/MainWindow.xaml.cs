@@ -291,7 +291,7 @@ namespace BatchRename
 						itemFolder.NewName = itemRule.Rename(itemFolder.NewName, false);
 					}
 				}
-				string validCheck = CheckValid.CheckValidName(itemFolder.NewName, true);
+				string validCheck = CheckValid.CheckValidName(itemFolder.NewName, false);
 				if (validCheck != "")
 				{
 					itemFolder.Result = "Invalid name: " + validCheck;
