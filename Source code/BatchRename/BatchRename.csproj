@@ -29,6 +29,15 @@
     <None Remove="Images\refresh.png" />
     <None Remove="Images\remove.png" />
     <None Remove="Images\removenew.png" />
+    <None Remove="rules\AddCounterRule.dll" />
+    <None Remove="rules\AddPrefixRule.dll" />
+    <None Remove="rules\AddSuffixRule.dll" />
+    <None Remove="rules\ChangeExtensionRule.dll" />
+    <None Remove="rules\LowercaseRule.dll" />
+    <None Remove="rules\PascalCaseRule.dll" />
+    <None Remove="rules\RemoveSpecialCharsRule.dll" />
+    <None Remove="rules\RemoveWhiteSpaceRule.dll" />
+    <None Remove="rules\UppercaseRule.dll" />
   </ItemGroup>
 
   <ItemGroup>
@@ -70,6 +79,33 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\removenew.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="rules\AddCounterRule.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="rules\AddPrefixRule.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="rules\AddSuffixRule.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="rules\ChangeExtensionRule.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="rules\LowercaseRule.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="rules\PascalCaseRule.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="rules\RemoveSpecialCharsRule.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="rules\RemoveWhiteSpaceRule.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="rules\UppercaseRule.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
