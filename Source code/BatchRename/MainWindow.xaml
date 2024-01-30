@@ -9,7 +9,7 @@
                      mc:Ignorable="d"
                      x:Name="WindowMain"
                      ResizeMode="NoResize"
-                     Title="MainWindow"
+                     Title="Batch Rename"
                      Width="1000" Height="600"
                      Loaded="Window_Loaded">
     <Window.Resources>
