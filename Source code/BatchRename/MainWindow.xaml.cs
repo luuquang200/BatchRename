@@ -151,6 +151,7 @@ namespace BatchRename
 				}
 			}
 			ListViewFile.ItemsSource = _sourceFiles;
+			UpdateConverterPreview();
 		}
 
 		private void ButtonConfig_Click(object sender, RoutedEventArgs e)
@@ -665,6 +666,7 @@ namespace BatchRename
 						});
 					}
 				}
+				UpdateConverterPreview();
 			}
 		}
 
