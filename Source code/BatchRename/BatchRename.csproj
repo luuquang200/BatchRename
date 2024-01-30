@@ -34,6 +34,7 @@
     <None Remove="rules\AddSuffixRule.dll" />
     <None Remove="rules\ChangeExtensionRule.dll" />
     <None Remove="rules\LowercaseRule.dll" />
+    <None Remove="rules\OneSpaceRule.dll" />
     <None Remove="rules\PascalCaseRule.dll" />
     <None Remove="rules\RemoveSpecialCharsRule.dll" />
     <None Remove="rules\RemoveWhiteSpaceRule.dll" />
@@ -94,6 +95,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="rules\LowercaseRule.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="rules\OneSpaceRule.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="rules\PascalCaseRule.dll">
