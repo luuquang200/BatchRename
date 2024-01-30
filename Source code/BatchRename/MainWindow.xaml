@@ -213,10 +213,10 @@
                 <StackPanel Orientation="Horizontal"
                             Margin="10 30 0 0">
                     <Fluent:TextBox x:Name="TextboxRename"
-                                    Header="Preset:"
-                                    Width="200" />
+                                    Header="Change name:"
+                                    Width="214" />
                     <Button x:Name="ButtonSavePresetAlternative"
-                            Content="Save"
+                            Content="Change"
                             Background="#0033A1"
                             FontWeight="Medium"
                             Margin="5 0 0 0"
