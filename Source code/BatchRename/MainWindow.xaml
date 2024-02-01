@@ -127,6 +127,7 @@
                           ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                           ScrollViewer.VerticalScrollBarVisibility="Visible"
                           HorizontalAlignment="Center"
+                          SelectionMode="Single"
                           d:ItemsSource="{d:SampleData ItemCount=5}"
                           PreviewMouseLeftButtonDown="List_PreviewLeftMouseDown">
                     <ListView.ItemsPanel>

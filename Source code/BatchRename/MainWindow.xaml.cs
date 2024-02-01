@@ -168,6 +168,7 @@ namespace BatchRename
 				string data = screen.GetData();
 				_activeRules[indexSelected].SetData(data);
 			}
+			screen.Close();
 
 			UpdateConverterPreview();
 		}
